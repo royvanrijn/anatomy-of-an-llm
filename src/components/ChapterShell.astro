@@ -1,0 +1,107 @@
+---
+import StickyVisual from "./StickyVisual.astro";
+
+interface Props {
+  id: string;
+  number: string;
+  title: string;
+  summary: string;
+  visualTitle?: string;
+  showVisual?: boolean;
+}
+
+const { id, number, title, summary, visualTitle = "Chapter Visual", showVisual = true } = Astro.props;
+---
+
+<section id={id} class="chapter-shell" aria-labelledby={`chapter-${number}`}>
+  <div class={`chapter-content ${showVisual ? "" : "full-width"}`}>
+    <article class="chapter-main">
+      <p class="chapter-kicker">Chapter {number}</p>
+      <h2 id={`chapter-${number}`}>{title}</h2>
+      <p class="chapter-summary">{summary}</p>
+      <div class="chapter-body">
+        <slot />
+      </div>
+    </article>
+
+    {
+      showVisual && (
+        <StickyVisual title={visualTitle}>
+          <slot name="visual" />
+        </StickyVisual>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .chapter-shell {
+    scroll-margin-top: 6rem;
+  }
+
+  .chapter-content {
+    display: grid;
+    gap: 1.4rem;
+    grid-template-columns: minmax(0, 1.5fr) minmax(280px, 1fr);
+    align-items: start;
+  }
+
+  .chapter-main {
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-subtle);
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, 0.88), rgba(248, 243, 232, 0.84));
+    box-shadow: var(--shadow-soft);
+    padding: 1.45rem;
+  }
+
+  .chapter-kicker {
+    margin: 0;
+    color: #52525b;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  h2 {
+    margin: 0.35rem 0 0;
+    font-size: clamp(1.4rem, 2.8vw, 2.1rem);
+    font-family: "Fraunces", "Iowan Old Style", "Georgia", serif;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  .chapter-summary {
+    margin: 1.5rem 0 0;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 64ch;
+  }
+
+  .chapter-body {
+    margin-top: 1.25rem;
+    color: var(--text-secondary);
+    display: grid;
+    gap: 1rem;
+  }
+
+  .chapter-content.full-width {
+    grid-template-columns: 1fr;
+  }
+
+  .chapter-content.full-width .chapter-main {
+    width: 100%;
+    max-width: none;
+  }
+
+  .chapter-content.full-width .chapter-summary {
+    max-width: none;
+  }
+
+  @media (max-width: 900px) {
+    .chapter-content {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

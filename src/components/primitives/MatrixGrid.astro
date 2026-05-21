@@ -1,0 +1,37 @@
+---
+interface Props {
+  rows?: number;
+  cols?: number;
+}
+
+const { rows = 5, cols = 6 } = Astro.props;
+const cells = Array.from({ length: rows * cols }, (_, i) => i);
+---
+
+<div class="matrix-grid" style={`--rows:${rows};--cols:${cols};`} aria-label="Matrix sample">
+  {
+    cells.map((cellIndex) => (
+      <span class={`cell ${cellIndex % (cols + 1) === 0 ? "diag" : ""}`}></span>
+    ))
+  }
+</div>
+
+<style>
+  .matrix-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    gap: 0.24rem;
+  }
+
+  .cell {
+    aspect-ratio: 1 / 1;
+    border-radius: 5px;
+    border: 1px solid rgba(39, 39, 42, 0.1);
+    background: rgba(255, 255, 255, 0.7);
+  }
+
+  .cell.diag {
+    background: rgba(202, 138, 4, 0.2);
+    border-color: rgba(202, 138, 4, 0.45);
+  }
+</style>

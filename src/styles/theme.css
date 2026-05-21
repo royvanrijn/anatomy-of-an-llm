@@ -1,0 +1,88 @@
+:root {
+  --bg-deep: #f8f7f2;
+  --bg-main: #fbfaf5;
+  --bg-elevated: #f3f0e6;
+  --surface-base: #fffdf7;
+  --surface-raised: #fffaf0;
+  --surface-active: #f4efe2;
+  --text-primary: #171717;
+  --text-secondary: #3f3f46;
+  --text-muted: #71717a;
+  --text-faint: #a1a1aa;
+  --brand-cyan: #156a82;
+  --brand-violet: #5b4f9d;
+  --brand-emerald: #1f7a63;
+  --concept-tokens: #22d3ee;
+  --concept-embeddings: #a78bfa;
+  --concept-neurons: #fdba74;
+  --concept-training: #fb7185;
+  --concept-attention: #facc15;
+  --concept-transformer: #34d399;
+  --concept-sampling: #38bdf8;
+  --concept-quantization: #f472b6;
+  --border-subtle: rgba(39, 39, 42, 0.14);
+  --shadow-soft: 0 10px 25px rgba(39, 39, 42, 0.07);
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --space-page: clamp(1rem, 2vw, 2rem);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  color: var(--text-primary);
+  font-family: "IBM Plex Sans", "Avenir Next", "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at 12% 12%, rgba(21, 106, 130, 0.08), transparent 42%),
+    radial-gradient(circle at 85% 0%, rgba(91, 79, 157, 0.08), transparent 38%),
+    linear-gradient(180deg, var(--bg-main), var(--bg-deep));
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+}
+
+.site-shell {
+  margin: 0 auto;
+  width: min(1150px, 100%);
+  padding: var(--space-page);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+@media (max-width: 768px) {
+  :root {
+    --radius-lg: 14px;
+    --radius-md: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

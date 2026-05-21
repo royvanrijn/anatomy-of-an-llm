@@ -13,6 +13,7 @@ See:
 - `docs/curriculum.md`
 - `docs/visual-style.md`
 - `docs/data-correctness.md`
+- `docs/chapter-writing-style.md`
 
 ## Hard constraints
 
@@ -124,6 +125,7 @@ Before a chapter is done:
 * reduced motion is respected
 * reset state exists
 * explanation is concise
+* chapter opens with concept and "why" before implementation details
 
 ## Git rules
 

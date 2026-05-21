@@ -1,0 +1,311 @@
+{
+  "source": "Real tokenization using o200k_base.",
+  "generatedAt": "deterministic-build",
+  "encoding": "o200k_base",
+  "examples": [
+    {
+      "id": "brain",
+      "label": "Classic cognition quote (long sentence)",
+      "text": "If the human brain were so simple that we could understand it, we would be so simple that we couldn't.",
+      "tokenCount": 22,
+      "tokens": [
+        {
+          "id": 3335,
+          "piece": "If",
+          "pieceVisible": "If"
+        },
+        {
+          "id": 290,
+          "piece": " the",
+          "pieceVisible": "·the"
+        },
+        {
+          "id": 5396,
+          "piece": " human",
+          "pieceVisible": "·human"
+        },
+        {
+          "id": 12891,
+          "piece": " brain",
+          "pieceVisible": "·brain"
+        },
+        {
+          "id": 1504,
+          "piece": " were",
+          "pieceVisible": "·were"
+        },
+        {
+          "id": 813,
+          "piece": " so",
+          "pieceVisible": "·so"
+        },
+        {
+          "id": 4705,
+          "piece": " simple",
+          "pieceVisible": "·simple"
+        },
+        {
+          "id": 484,
+          "piece": " that",
+          "pieceVisible": "·that"
+        },
+        {
+          "id": 581,
+          "piece": " we",
+          "pieceVisible": "·we"
+        },
+        {
+          "id": 2023,
+          "piece": " could",
+          "pieceVisible": "·could"
+        },
+        {
+          "id": 4218,
+          "piece": " understand",
+          "pieceVisible": "·understand"
+        },
+        {
+          "id": 480,
+          "piece": " it",
+          "pieceVisible": "·it"
+        },
+        {
+          "id": 11,
+          "piece": ",",
+          "pieceVisible": ","
+        },
+        {
+          "id": 581,
+          "piece": " we",
+          "pieceVisible": "·we"
+        },
+        {
+          "id": 1481,
+          "piece": " would",
+          "pieceVisible": "·would"
+        },
+        {
+          "id": 413,
+          "piece": " be",
+          "pieceVisible": "·be"
+        },
+        {
+          "id": 813,
+          "piece": " so",
+          "pieceVisible": "·so"
+        },
+        {
+          "id": 4705,
+          "piece": " simple",
+          "pieceVisible": "·simple"
+        },
+        {
+          "id": 484,
+          "piece": " that",
+          "pieceVisible": "·that"
+        },
+        {
+          "id": 581,
+          "piece": " we",
+          "pieceVisible": "·we"
+        },
+        {
+          "id": 21149,
+          "piece": " couldn't",
+          "pieceVisible": "·couldn't"
+        },
+        {
+          "id": 13,
+          "piece": ".",
+          "pieceVisible": "."
+        }
+      ]
+    },
+    {
+      "id": "llm",
+      "label": "Technical LLM description",
+      "text": "Large language models predict the next token by repeatedly transforming context into probabilities.",
+      "tokenCount": 14,
+      "tokens": [
+        {
+          "id": 42565,
+          "piece": "Large",
+          "pieceVisible": "Large"
+        },
+        {
+          "id": 6439,
+          "piece": " language",
+          "pieceVisible": "·language"
+        },
+        {
+          "id": 7015,
+          "piece": " models",
+          "pieceVisible": "·models"
+        },
+        {
+          "id": 17946,
+          "piece": " predict",
+          "pieceVisible": "·predict"
+        },
+        {
+          "id": 290,
+          "piece": " the",
+          "pieceVisible": "·the"
+        },
+        {
+          "id": 2613,
+          "piece": " next",
+          "pieceVisible": "·next"
+        },
+        {
+          "id": 6602,
+          "piece": " token",
+          "pieceVisible": "·token"
+        },
+        {
+          "id": 656,
+          "piece": " by",
+          "pieceVisible": "·by"
+        },
+        {
+          "id": 45605,
+          "piece": " repeatedly",
+          "pieceVisible": "·repeatedly"
+        },
+        {
+          "id": 64779,
+          "piece": " transforming",
+          "pieceVisible": "·transforming"
+        },
+        {
+          "id": 3814,
+          "piece": " context",
+          "pieceVisible": "·context"
+        },
+        {
+          "id": 1511,
+          "piece": " into",
+          "pieceVisible": "·into"
+        },
+        {
+          "id": 100033,
+          "piece": " probabilities",
+          "pieceVisible": "·probabilities"
+        },
+        {
+          "id": 13,
+          "piece": ".",
+          "pieceVisible": "."
+        }
+      ]
+    },
+    {
+      "id": "unicode",
+      "label": "Unicode, accents, and punctuation mix",
+      "text": "Tokenization handles emoji 🙂, accents café, and punctuation: commas, dashes, and quotes.",
+      "tokenCount": 20,
+      "tokens": [
+        {
+          "id": 4421,
+          "piece": "Token",
+          "pieceVisible": "Token"
+        },
+        {
+          "id": 2860,
+          "piece": "ization",
+          "pieceVisible": "ization"
+        },
+        {
+          "id": 25640,
+          "piece": " handles",
+          "pieceVisible": "·handles"
+        },
+        {
+          "id": 74471,
+          "piece": " emoji",
+          "pieceVisible": "·emoji"
+        },
+        {
+          "id": 26192,
+          "piece": " 🙂",
+          "pieceVisible": "·🙂"
+        },
+        {
+          "id": 11,
+          "piece": ",",
+          "pieceVisible": ","
+        },
+        {
+          "id": 73830,
+          "piece": " accents",
+          "pieceVisible": "·accents"
+        },
+        {
+          "id": 30469,
+          "piece": " café",
+          "pieceVisible": "·café"
+        },
+        {
+          "id": 11,
+          "piece": ",",
+          "pieceVisible": ","
+        },
+        {
+          "id": 326,
+          "piece": " and",
+          "pieceVisible": "·and"
+        },
+        {
+          "id": 107300,
+          "piece": " punctuation",
+          "pieceVisible": "·punctuation"
+        },
+        {
+          "id": 25,
+          "piece": ":",
+          "pieceVisible": ":"
+        },
+        {
+          "id": 179663,
+          "piece": " commas",
+          "pieceVisible": "·commas"
+        },
+        {
+          "id": 11,
+          "piece": ",",
+          "pieceVisible": ","
+        },
+        {
+          "id": 272,
+          "piece": " d",
+          "pieceVisible": "·d"
+        },
+        {
+          "id": 26376,
+          "piece": "ashes",
+          "pieceVisible": "ashes"
+        },
+        {
+          "id": 11,
+          "piece": ",",
+          "pieceVisible": ","
+        },
+        {
+          "id": 326,
+          "piece": " and",
+          "pieceVisible": "·and"
+        },
+        {
+          "id": 22661,
+          "piece": " quotes",
+          "pieceVisible": "·quotes"
+        },
+        {
+          "id": 13,
+          "piece": ".",
+          "pieceVisible": "."
+        }
+      ]
+    }
+  ]
+}

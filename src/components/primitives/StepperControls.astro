@@ -1,0 +1,37 @@
+---
+interface Props {
+  current?: number;
+  total?: number;
+}
+
+const { current = 2, total = 4 } = Astro.props;
+---
+
+<div class="stepper-controls" role="group" aria-label="Step controls">
+  <button type="button" aria-label="Previous step">Prev</button>
+  <span>Step {current}/{total}</span>
+  <button type="button" aria-label="Next step">Next</button>
+</div>
+
+<style>
+  .stepper-controls {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  button {
+    border: 1px solid var(--border-subtle);
+    background: rgba(255, 255, 255, 0.72);
+    color: var(--text-secondary);
+    border-radius: 999px;
+    padding: 0.28rem 0.68rem;
+    font-size: 0.74rem;
+    cursor: pointer;
+  }
+
+  span {
+    font-size: 0.74rem;
+    color: var(--text-muted);
+  }
+</style>

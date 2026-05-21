@@ -1,0 +1,337 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import EmbeddingChapter from "../components/chapters/EmbeddingChapter.svelte";
+import SingleNeuronChapter from "../components/chapters/SingleNeuronChapter.svelte";
+import TokenizationChapter from "../components/chapters/TokenizationChapter.svelte";
+import ChapterShell from "../components/ChapterShell.astro";
+import PrimitiveShowcase from "../components/PrimitiveShowcase.astro";
+import StoryProgressNav from "../components/StoryProgressNav.astro";
+import embeddingsData from "../data/generated/embeddings-o200k-base.json";
+import tokenizationData from "../data/generated/tokenization-o200k-base.json";
+
+const chapterList = [
+  { id: "c1", number: "01", title: "Tokenization", status: "active" as const, showVisual: false },
+  { id: "c2", number: "02", title: "Vector Embedding", status: "active" as const, showVisual: false },
+  { id: "c3", number: "03", title: "Neuron Activation", status: "active" as const, showVisual: false },
+  { id: "c4", number: "04", title: "Tiny Network", status: "planned" as const },
+  { id: "c5", number: "05", title: "Logits and Sampling", status: "planned" as const },
+  { id: "c6", number: "06", title: "Backpropagation", status: "planned" as const },
+  { id: "c7", number: "07", title: "Optimizers", status: "planned" as const },
+  { id: "c8", number: "08", title: "QKV", status: "planned" as const },
+  { id: "c9", number: "09", title: "Attention Math", status: "planned" as const },
+  { id: "c10", number: "10", title: "Multi-Head", status: "planned" as const },
+  { id: "c11", number: "11", title: "RoPE", status: "planned" as const },
+  { id: "c12", number: "12", title: "Transformer Block", status: "planned" as const },
+  { id: "c13", number: "13", title: "Training Phases", status: "planned" as const },
+  { id: "c14", number: "14", title: "Post-Training", status: "planned" as const },
+  { id: "c15", number: "15", title: "Context and KV Cache", status: "planned" as const },
+  { id: "c16", number: "16", title: "Quantization", status: "planned" as const }
+];
+
+const chapterNav = chapterList.map((chapter) => ({
+  id: chapter.id,
+  number: chapter.number,
+  title: chapter.title,
+  status: chapter.status
+}));
+---
+
+<BaseLayout>
+  <header class="hero">
+    <p class="eyebrow">Interactive Explainer</p>
+    <h1>The Anatomy of an LLM</h1>
+    <p>
+      A visual walkthrough from real GPT tokenization to transformer internals, training dynamics, inference
+      trade-offs, and quantization.
+    </p>
+  </header>
+  <StoryProgressNav chapters={chapterNav} />
+
+  <main>
+    <section class="intro-section" aria-labelledby="intro-heading">
+      <p class="intro-kicker">Introduction</p>
+      <h2 id="intro-heading">Introduction</h2>
+      <p class="intro-lead">
+        Currently you read about LLMs everywhere, but it is still hard to see what is actually happening under the hood.
+        This explainer opens the model up and follows the internal path step by step.
+      </p>
+      <p class="intro-pipeline">text -> tokens -> vectors -> attention -> probabilities -> sampled output</p>
+      <div class="intro-grid">
+        <article>
+          <p>What you get</p>
+          <p>Concrete visuals, small numbers first, and interactive controls that make each transformation inspectable.</p>
+        </article>
+        <article>
+          <p>How to use it</p>
+          <p>Scroll top to bottom as a single narrative, or jump between chapters for a specific concept.</p>
+        </article>
+        <article>
+          <p>Who made this</p>
+          <p>
+            This explainer was created by <a href="https://www.openvalue.eu">openvalue</a> using OpenAI Codex and other tools.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    {
+      chapterList.map((chapter) => (
+        <div class="chapter-step">
+          <ChapterShell
+            id={chapter.id}
+            number={chapter.number}
+            title={chapter.title}
+            summary={chapter.number === "01"
+              ? "The first step in turning text into something a model can calculate with."
+              : chapter.number === "02"
+              ? "Each token ID becomes a row lookup in an embedding table, producing a high-dimensional vector."
+              : chapter.number === "03"
+              ? "Weighted inputs plus a bias create a pre-activation value, then a non-linearity shapes the neuron output."
+              : "Scrollytelling scaffold in place. This chapter will gain full interactive teaching visuals in upcoming milestones."}
+            visualTitle={`${chapter.number} Visual`}
+            showVisual={chapter.showVisual ?? true}
+          >
+            {
+              chapter.number === "01" ? (
+                <>
+                  <p class="story-lead">
+                    We start with the first thing a language model receives: text. Before any vectors, attention, or prediction
+                    can happen, that text has to be rewritten as a sequence of token IDs.
+                  </p>
+                  <TokenizationChapter data={tokenizationData} client:load />
+                  <div class="story-beat">
+                    <p>The thing to notice</p>
+                    <p>
+                      Token boundaries are not always word boundaries. Spaces, punctuation, uncommon words, code, and accents
+                      can all change how text is split. Everything that follows in the model starts from this sequence.
+                    </p>
+                  </div>
+                </>
+              ) : chapter.number === "02" ? (
+                <>
+                  <p class="story-lead">
+                    Token IDs are still just symbols. The embedding layer turns each one into a numeric vector so similar
+                    contexts can be represented and compared in continuous space.
+                  </p>
+                  <EmbeddingChapter
+                    tokenizationData={tokenizationData}
+                    embeddingData={embeddingsData}
+                    client:load
+                  />
+                  <div class="story-beat">
+                    <p>The thing to notice</p>
+                    <p>
+                      The model does not memorize one scalar meaning per token. It starts with a whole vector, and each
+                      dimension contributes a small part of the representation used by later layers.
+                    </p>
+                  </div>
+                </>
+              ) : chapter.number === "03" ? (
+                <>
+                  <p class="story-lead">
+                    The embedding vector then flows into neurons. Each neuron computes a weighted sum, adds a bias,
+                    and applies an activation function to produce a transformed signal for the next layer.
+                  </p>
+                  <SingleNeuronChapter client:load />
+                  <div class="story-beat">
+                    <p>The thing to notice</p>
+                    <p>
+                      The activation function is not cosmetic. It changes how information can flow and is the key reason
+                      stacked layers can model non-linear structure.
+                    </p>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <p class="story-lead">
+                    This chapter is now a real scroll target and will become a dedicated explanatory beat in the full experience.
+                  </p>
+                  <div class="story-beat">
+                    <p>Context</p>
+                    <p>Explain why this concept matters in the larger LLM pipeline.</p>
+                  </div>
+                  <div class="story-beat">
+                    <p>Mechanism</p>
+                    <p>Show the key mental model with one visual and one equation or transformation.</p>
+                  </div>
+                  <PrimitiveShowcase chapterNumber={chapter.number} />
+                  <div class="story-beat">
+                    <p>Takeaway</p>
+                    <p>Summarize what changes when scaling from toy values to real model settings.</p>
+                  </div>
+                  <div slot="visual">
+                    <PrimitiveShowcase chapterNumber={chapter.number} compact />
+                  </div>
+                </>
+              )
+            }
+          </ChapterShell>
+        </div>
+      ))
+    }
+  </main>
+</BaseLayout>
+
+<style>
+  .hero {
+    margin: 0 0 1.4rem;
+    padding: 1.8rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-subtle);
+    background:
+      radial-gradient(circle at 75% 0%, rgba(21, 106, 130, 0.12), transparent 40%),
+      linear-gradient(140deg, rgba(255, 255, 255, 0.9), rgba(245, 240, 227, 0.84));
+  }
+
+  .eyebrow {
+    margin: 0;
+    color: #57534e;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.78rem;
+  }
+
+  h1 {
+    margin: 0.45rem 0;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    color: #111827;
+    font-family: "Fraunces", "Iowan Old Style", "Georgia", serif;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+  }
+
+  .hero p {
+    max-width: 70ch;
+    margin: 0;
+    color: var(--text-secondary);
+  }
+
+  .chapter-step {
+    min-height: 115vh;
+    padding: 1.1rem 0 3.2rem;
+    border-top: 1px solid rgba(63, 63, 70, 0.1);
+  }
+
+  .chapter-step:first-of-type {
+    border-top: 0;
+  }
+
+  .story-lead {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .story-beat {
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.52);
+    padding: 0.8rem 0.9rem;
+  }
+
+  .story-beat p {
+    margin: 0;
+  }
+
+  .story-beat p:first-child {
+    color: #52525b;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.72rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .intro-section {
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    background:
+      radial-gradient(circle at 85% -10%, rgba(21, 106, 130, 0.18), transparent 45%),
+      linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(247, 243, 233, 0.88));
+    box-shadow: var(--shadow-soft);
+    padding: 1.4rem 1.45rem;
+    margin: 0 0 1.2rem;
+    display: grid;
+    gap: 0.85rem;
+  }
+
+  .intro-kicker {
+    margin: 0;
+    color: #155e75;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.76rem;
+  }
+
+  .intro-section h2 {
+    margin: 0;
+    font-size: clamp(1.65rem, 3.5vw, 2.5rem);
+    font-family: "Fraunces", "Iowan Old Style", "Georgia", serif;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    color: #111827;
+  }
+
+  .intro-lead {
+    margin: 0;
+    color: #27272a;
+    max-width: 88ch;
+    font-size: 1.02rem;
+    line-height: 1.65;
+  }
+
+  .intro-pipeline {
+    margin: 0;
+    font-family: "IBM Plex Mono", "SFMono-Regular", "Menlo", monospace;
+    font-size: 0.9rem;
+    color: #155e75;
+    border: 1px solid rgba(21, 106, 130, 0.2);
+    border-radius: 10px;
+    background: rgba(21, 106, 130, 0.08);
+    padding: 0.55rem 0.7rem;
+    width: fit-content;
+    max-width: 100%;
+  }
+
+  .intro-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.6rem;
+  }
+
+  .intro-grid article {
+    border: 1px solid rgba(39, 39, 42, 0.12);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.72);
+    padding: 0.62rem 0.68rem;
+    display: grid;
+    gap: 0.3rem;
+  }
+
+  .intro-grid article p {
+    margin: 0;
+  }
+
+  .intro-grid article p:first-child {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #52525b;
+  }
+
+  .intro-grid article p:last-child {
+    font-size: 0.83rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  @media (max-width: 900px) {
+    .chapter-step {
+      min-height: auto;
+      padding: 0.8rem 0 2rem;
+    }
+
+    .intro-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

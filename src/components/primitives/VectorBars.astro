@@ -1,0 +1,41 @@
+---
+interface Props {
+  values?: number[];
+}
+
+const { values = [0.75, 0.24, 0.58, 0.89, 0.41, 0.32, 0.67, 0.52] } = Astro.props;
+---
+
+<div class="vector-bars" aria-label="Vector bars sample">
+  {
+    values.map((value) => (
+      <span class="bar-wrap">
+        <span class="bar" style={`height:${Math.max(8, Math.round(value * 72))}px`} />
+      </span>
+    ))
+  }
+</div>
+
+<style>
+  .vector-bars {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 0.42rem;
+    align-items: end;
+    min-height: 90px;
+  }
+
+  .bar-wrap {
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    min-height: 78px;
+  }
+
+  .bar {
+    width: 100%;
+    border-radius: 8px 8px 4px 4px;
+    border: 1px solid rgba(109, 91, 208, 0.3);
+    background: linear-gradient(180deg, rgba(109, 91, 208, 0.78), rgba(109, 91, 208, 0.32));
+  }
+</style>

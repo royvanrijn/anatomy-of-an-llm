@@ -1,0 +1,24 @@
+{
+  "name": "the-anatomy-of-an-llm",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "CHOKIDAR_USEPOLLING=true astro dev --host",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "generate:data": "node scripts/generate-data.mjs",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@astrojs/svelte": "^7.1.0",
+    "astro": "^5.9.0",
+    "svelte": "^5.28.0",
+    "tiktoken": "^1.0.22"
+  },
+  "devDependencies": {
+    "jsdom": "^26.1.0",
+    "vitest": "^2.1.8"
+  }
+}

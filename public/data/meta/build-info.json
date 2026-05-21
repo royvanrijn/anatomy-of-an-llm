@@ -1,0 +1,8 @@
+{
+  "generatedAt": "deterministic-build",
+  "version": 2,
+  "datasets": [
+    "tokenization-o200k-base.json",
+    "embeddings-o200k-base.json"
+  ]
+}

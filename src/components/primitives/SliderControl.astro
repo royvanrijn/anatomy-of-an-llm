@@ -1,0 +1,36 @@
+---
+interface Props {
+  label: string;
+  value?: number;
+  min?: number;
+  max?: number;
+}
+
+const { label, value = 50, min = 0, max = 100 } = Astro.props;
+---
+
+<label class="slider-control">
+  <span class="label">{label}</span>
+  <input type="range" min={min} max={max} value={value} />
+  <span class="value">{value}</span>
+</label>
+
+<style>
+  .slider-control {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.55rem;
+    align-items: center;
+  }
+
+  .label,
+  .value {
+    font-size: 0.74rem;
+    color: var(--text-secondary);
+  }
+
+  input[type="range"] {
+    width: 100%;
+    accent-color: #156a82;
+  }
+</style>

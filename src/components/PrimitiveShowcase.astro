@@ -1,0 +1,84 @@
+---
+import FormulaCard from "./primitives/FormulaCard.astro";
+import MatrixGrid from "./primitives/MatrixGrid.astro";
+import NetworkGraph from "./primitives/NetworkGraph.astro";
+import ProbabilityBars from "./primitives/ProbabilityBars.astro";
+import SliderControl from "./primitives/SliderControl.astro";
+import StepperControls from "./primitives/StepperControls.astro";
+import TokenPill from "./primitives/TokenPill.astro";
+import VectorBars from "./primitives/VectorBars.astro";
+
+interface Props {
+  chapterNumber: string;
+  compact?: boolean;
+}
+
+const { chapterNumber, compact = false } = Astro.props;
+const chapter = Number.parseInt(chapterNumber, 10);
+---
+
+<section class={`primitive-showcase ${compact ? "compact" : ""}`} aria-label="Shared primitive preview">
+  {chapter <= 2 && (
+    <div class="stack">
+      <div class="token-row">
+        <TokenPill text="If" />
+        <TokenPill text="·the" active />
+        <TokenPill text="·brain" />
+      </div>
+      <VectorBars />
+    </div>
+  )}
+  {chapter > 2 && chapter <= 4 && (
+    <div class="stack">
+      <FormulaCard formula="z = w₁x₁ + w₂x₂ + b" />
+      <NetworkGraph />
+    </div>
+  )}
+  {chapter > 4 && chapter <= 7 && (
+    <div class="stack">
+      <ProbabilityBars />
+      <SliderControl label="Temperature" value={65} />
+      <StepperControls />
+    </div>
+  )}
+  {chapter > 7 && chapter <= 11 && (
+    <div class="stack">
+      <FormulaCard formula="softmax(QKᵀ / √dₖ)V" />
+      <MatrixGrid rows={4} cols={6} />
+    </div>
+  )}
+  {chapter > 11 && (
+    <div class="stack">
+      <FormulaCard formula="x + Attention(LN(x)) + MLP(LN(x))" />
+      <MatrixGrid rows={5} cols={5} />
+      <ProbabilityBars entries={[{ label: "8-bit", value: 0.65 }, { label: "4-bit", value: 0.28 }]} />
+    </div>
+  )}
+</section>
+
+<style>
+  .primitive-showcase {
+    display: grid;
+    gap: 0.7rem;
+    padding: 0.7rem;
+    border: 1px dashed rgba(39, 39, 42, 0.2);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.45);
+  }
+
+  .token-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .stack {
+    display: grid;
+    gap: 0.7rem;
+  }
+
+  .compact {
+    border-style: solid;
+    background: rgba(255, 255, 255, 0.6);
+  }
+</style>

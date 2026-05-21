@@ -1,0 +1,43 @@
+---
+interface Props {
+  formula: string;
+  caption?: string;
+}
+
+const { formula, caption = "Toy formula view for styling preview" } = Astro.props;
+---
+
+<figure class="formula-card">
+  <code>{formula}</code>
+  <figcaption>{caption}</figcaption>
+</figure>
+
+<style>
+  .formula-card {
+    margin: 0;
+    border: 1px solid rgba(39, 39, 42, 0.14);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 0.7rem 0.85rem;
+    display: grid;
+    gap: 0.36rem;
+  }
+
+  code {
+    font-family: "IBM Plex Mono", "SFMono-Regular", monospace;
+    font-size: 0.84rem;
+    color: #27272a;
+    white-space: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  code::-webkit-scrollbar {
+    display: none;
+  }
+
+  figcaption {
+    font-size: 0.71rem;
+    color: var(--text-muted);
+  }
+</style>

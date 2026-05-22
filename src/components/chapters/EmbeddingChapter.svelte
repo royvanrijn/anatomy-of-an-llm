@@ -1,4 +1,5 @@
 <script lang="ts">
+  import DimensionOverlay from "../DimensionOverlay.svelte";
   type TokenItem = {
     id: number;
     piece: string;
@@ -110,6 +111,23 @@
       <span class="inline-token">dog</span> = 
       <span class="inline-template">[0.7292, -0.3786, 0.1065, 0.3674, 0.1902, -0.7881, ... ]</span>
     </p>
+    <DimensionOverlay
+      buttonLabel="Explain vector dimensions"
+      title="Embedding Dimensions In This Chapter"
+      summary="We map each token ID to one embedding row vector."
+      equations={[
+        "v_token = EmbeddingTable[token_id]",
+        "EmbeddingTable shape: vocab_size x d_model",
+        "Toy chapter: d_model = 24"
+      ]}
+      items={[
+        "vocab_size = number of token IDs in the tokenizer vocabulary",
+        "24 = d_model in this toy example (24 floating-point values per token)",
+        "One selected token ID retrieves exactly one row: a 1x24 embedding vector",
+        "All tokens share the same embedding table; only the row index changes"
+      ]}
+      note="Real models often use much larger d_model widths; the lookup rule is unchanged."
+    />
   </div>
 
   <section class="controls">

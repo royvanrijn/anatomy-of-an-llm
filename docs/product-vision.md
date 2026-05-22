@@ -10,17 +10,16 @@ The goal is to teach developers how LLMs work from the ground up:
 - token IDs
 - embedding vectors
 - neurons and activation functions
-- tiny neural networks and matrix math
+- feed-forward neural networks and matrix math
 - logits, softmax, temperature, and sampling
 - loss, gradients, and backpropagation
 - optimizers
 - Q/K/V intuition
-- attention matrix math
-- multi-head attention
+- multi-head attention math
 - RoPE positional encoding
 - Transformer blocks
 - training phases and grokking
-- pretraining, instruction tuning, preference tuning
+- pre-training, instruction tuning, preference tuning
 - context windows and KV cache
 - quantization
 
@@ -220,19 +219,18 @@ src/
     01-tokenization/
     02-embeddings/
     03-neuron/
-    04-tiny-network/
+    04-neural-network/
     05-logits-sampling/
     06-backprop/
     07-optimizers/
     08-qkv-intuition/
-    09-attention-math/
-    10-multi-head/
-    11-rope/
-    12-transformer-block/
-    13-training-phases/
-    14-post-training/
-    15-kv-cache/
-    16-quantization/
+    09-multi-head-attention/
+    10-rope/
+    11-transformer-block/
+    12-training-phases/
+    13-post-training/
+    14-kv-cache/
+    15-quantization/
 
   data/
     types.ts

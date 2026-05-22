@@ -121,6 +121,19 @@ Shared primitives must feel from one design system:
 - concept colors map consistently across chapters
 - selected, hover, and disabled states remain readable in light mode
 
+### Dimension explainer pattern
+
+For chapters with matrix/vector shape load, use the shared `DimensionOverlay` pattern:
+
+- CTA style: small card-like button with kicker text (`Need A Shape Guide?`)
+- Placement: near the equation block or directly under the relevant visual guidance text
+- Content structure:
+  - one-sentence summary
+  - shape equations line-by-line
+  - explicit legend for what each number means
+  - short note distinguishing toy sizes vs real models
+- Keep copy practical and concrete; avoid unexplained symbols.
+
 ---
 
 ## Human review checklist for style

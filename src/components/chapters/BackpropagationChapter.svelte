@@ -9,8 +9,8 @@
     type Matrix
   } from "../../utils/backprop";
 
-  const prompt = "She started her";
-  const vocab = [" Car", " Laptop", " Song"];
+  const prompt = "Three, two, one...";
+  const vocab = [" rock", " paper", " scissors"];
   const x = [0.7, -0.4];
   const xYs = [60, 120];
   const h1Ys = [50, 130];
@@ -158,7 +158,7 @@
     <section class="card wide">
       <p class="label">Step 3 - Tell the model the correct answer</p>
       <p class="mini">
-        The model predicted <code>{vocab[forwardSnapshot.prediction].trim().toLowerCase()}</code>. Now choose the correct next token so we can compute error and learn.
+        The model predicted <code>{vocab[forwardSnapshot.prediction].trim().toLowerCase()}</code>. Now choose the token from the input data so we can compute error and learn.
       </p>
       <div class="target-picker" role="group" aria-label="Actual next token">
         <span>Actual next token</span>

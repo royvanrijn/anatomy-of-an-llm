@@ -1,5 +1,6 @@
 <script lang="ts">
   import { applyActivation, type ActivationId } from "../../utils/activations";
+  import DimensionOverlay from "../DimensionOverlay.svelte";
 
   let activation: ActivationId = "relu";
   let x1 = 0.8;
@@ -217,6 +218,25 @@
         {/each}
       </svg>
       <p class="mini">Hover the top labels to inspect matrices. Green border means firing, red means suppressed.</p>
+      <DimensionOverlay
+        buttonLabel="Explain matrix dimensions"
+        title="Dense Layer Dimension Walkthrough"
+        summary="This chapter uses a compact 2 -> 3 -> 2 dense network."
+        equations={[
+          "X (1x2) · W1 (2x3) = Z1 (1x3)",
+          "A1 = activation(Z1) (still 1x3)",
+          "A1 (1x3) · W2 (3x2) = Z2 (1x2)",
+          "A2 = activation(Z2) (1x2)"
+        ]}
+        items={[
+          "1 = one example row in this forward pass",
+          "2 = two input features (x1, x2)",
+          "3 = three hidden neurons in the middle layer",
+          "2 (final) = two output neurons",
+          "For A·B, inner dimensions must match; output keeps outer dimensions"
+        ]}
+        note="Larger networks use bigger matrices, but the multiplication rules stay identical."
+      />
     </section>
 
     <div class="controls">

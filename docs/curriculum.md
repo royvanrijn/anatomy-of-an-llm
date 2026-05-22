@@ -14,13 +14,12 @@ Implement chapters in this order:
 7. Optimizers as update strategies
 8. Q/K/V intuition
 9. Attention matrix math
-10. Multi-head attention
-11. RoPE positional encoding
-12. Full Transformer block and modern scale
-13. Training phases and grokking
-14. Pretraining, instruction tuning, preference tuning
-15. Context window and KV cache
-16. Quantization
+10. RoPE positional encoding
+11. Full Transformer block and modern scale
+12. Training phases and grokking
+13. Pre-training, instruction tuning, preference tuning
+14. Context window and KV cache
+15. Quantization
 ```
 
 Do not add RAG, agents, tools, prompt injection, or hallucination chapters unless explicitly requested later.
@@ -200,282 +199,104 @@ Current content focus:
 
 ---
 
-## Chapter 9 — Attention matrix math
+## Chapter 9 — Multi-Headed Attention (implemented)
 
-Show:
+Purpose: move from Q/K/V intuition to row-wise attention math and multi-head specialization.
 
-```text
-Q = XWq
-K = XWk
-V = XWv
+Current content focus:
 
-scores = QKᵀ / √d
-weights = softmax(scores)
-output = weights · V
-```
+* `Q = XWq`, `K = XWk`, `V = XWv`
+* `scores = QKᵀ / √d`, row-wise softmax, and `output = weights · V`
+* raw scores are shown before softmax normalization
+* multi-head behavior is introduced via head personality toggles
 
-Panels:
+Current interaction:
 
-```text
-token row
-Q/K dot product bars
-attention heatmap
-value mixing output vector
-```
-
-Controls:
-
-* select token
-* highlight selected row in attention matrix
-* show dot products
-* show softmax weights
-* show weighted value sum
-* toggle number view / heatmap view
-
-Always show tensor shapes.
-
-Toy example:
-
-```text
-X: 8 × 4
-Q: 8 × 4
-K: 8 × 4
-V: 8 × 4
-scores: 8 × 8
-output: 8 × 4
-```
+* select which token is asking the query
+* inspect selected row in the score matrix
+* inspect softmax row that sums to ~100%
+* compare head personalities for routing differences
+* inspect weighted value mixing output for the selected token
 
 ---
 
-## Chapter 10 — Multi-head attention
+## Chapter 10 — RoPE positional encoding (implemented)
 
-Show multiple attention heads in parallel.
+Purpose: explain positional awareness via Q/K rotation and relative offsets.
 
-Visual:
+Current interaction:
 
-```text
-Head 1 heatmap
-Head 2 heatmap
-Head 3 heatmap
-Head 4 heatmap
-```
+* choose sentence scenario
+* click token pills to set the relative reference token (`position: 0`)
+* inspect before/after vector bundles under token sequence
+* inspect how neighboring tokens rotate relative to the selected token
 
-Toy labels:
+Current content focus:
 
-```text
-Head 1: nearby words
-Head 2: reference resolution
-Head 3: punctuation/structure
-Head 4: phrase continuation
-```
-
-Include caveat:
-
-```text
-Real heads are not always this cleanly interpretable.
-```
-
-Show:
-
-```text
-head outputs
-→ concatenate
-→ linear projection
-→ combined output
-```
-
-Controls:
-
-* select head
-* toggle head visibility
-* compare heatmaps
-* show concatenation
-* show output projection
+* RoPE rotates Q/K pairs, not V
+* relative position (not absolute index alone) drives compatibility changes
+* different pair frequencies encode short and long-range structure
 
 ---
 
-## Chapter 11 — RoPE positional encoding
+## Chapter 11 — Full Transformer block and modern scale (implemented)
 
-Explain correctly.
+Purpose: combine prior chapters into one modern decoder-only block.
 
-Start with:
+Current interaction:
 
-```text
-dog bites man
-man bites dog
-```
+* click block components in a vertical architecture diagram
+* inspect per-component input/output shapes and equations
+* follow callback links to earlier chapters (attention, RoPE, activations)
+* inspect a second pipeline diagram showing repeated block stacking before logits
 
-RoPE rotates query and key vectors based on token position.
+Current content focus:
 
-Show:
-
-* vector split into 2D pairs
-* each pair rotates by position-dependent angle
-* different pairs rotate at different frequencies
-
-Controls:
-
-* position slider
-* dimension-pair selector
-* show two token positions `m` and `n`
-* show relative offset `m - n`
-* toggle plain vectors / RoPE-rotated vectors
-
-Key message:
-
-```text
-RoPE encodes position by rotating Q and K vectors, making attention sensitive to relative token positions.
-```
-
-Do not describe RoPE as simply adding a position vector.
+* modern Llama-style decoder dimensions (`d_model=4096`, `q_heads=32`, `kv_heads=8`, `d_head=128`, `d_ff=14336`)
+* grouped-query attention (`Q: 8×32×128`, `K/V: 8×8×128`)
+* RMSNorm + causal attention + RoPE + SwiGLU MLP + residual paths
+* repeated stack depth (for example ~32 layers in 8B-class setups)
 
 ---
 
-## Chapter 12 — Full Transformer block and modern scale
+## Chapter 12 — Training phases and grokking (in progress)
 
-Show full block:
+Purpose: show staged training behavior and delayed generalization at a conceptual level.
 
-```text
-input token vectors
-→ RMSNorm / LayerNorm
-→ causal self-attention
-→ residual add
-→ RMSNorm / LayerNorm
-→ MLP / SwiGLU
-→ residual add
-→ output token vectors
-```
+Current interaction:
 
-Interactions:
+* select phase (fit / plateau / delayed generalization)
+* move optimization-step marker across a toy curve
+* compare train vs validation loss trajectories at the marker step
 
-* click component to expand
-* show what it does
-* show tensor shape
-* show rough parameter contribution
-* show rough compute contribution
+Current content focus:
 
-Include mini visuals:
-
-Norm:
-
-```text
-messy vector -> normalized vector
-```
-
-Residual:
-
-```text
-x ───────────────┐
-                 +
-block(x) ────────┘
-```
-
-MLP:
-
-```text
-token vector
-→ expand
-→ activation/gate
-→ compress
-```
-
-Scale cards:
-
-```text
-Toy demo:
-layers = 2
-d_model = 16
-heads = 2
-
-Small open model:
-layers = dozens
-d_model = thousands
-parameters = billions
-
-Frontier-scale model:
-many more layers
-very wide vectors
-huge training corpus
-massive compute
-```
-
-Avoid exact frontier model claims unless separately sourced.
+* training and validation can improve at different rates
+* delayed validation improvement is presented as a toy grokking-style intuition
+* explicit caveat that this is conceptual and not a universal training signature
 
 ---
 
-## Chapter 13 — Training phases and grokking
+## Chapter 13 — Pre-training, instruction tuning, preference tuning (implemented)
 
-Show a training curve with a slider.
+Purpose: show how post-training changes behavior while building on pretrained capability.
 
-Phases:
+Current interaction:
 
-```text
-1. random predictions
-2. common surface patterns
-3. syntax and local structure
-4. useful internal representations
-5. stronger capabilities
-```
+* select one stage in a 3-step post-training pipeline
+* inspect stage objective and training signal
+* compare the same prompt output across base/instruction/preference stages
 
-Grokking view:
+Current content focus:
 
-```text
-training accuracy rises early
-validation accuracy stays low
-then validation accuracy suddenly jumps
-```
-
-Controls:
-
-* training-step slider
-* normal learning / overfitting / grokking toggle
-* train vs validation curve
-* sample prediction at current step
-
-Keep this visual and conceptual.
-
-Do not overclaim grokking as the standard behavior of all LLM training.
+* pre-training: broad capability via next-token learning on large corpora
+* instruction tuning: better task-following and answer format
+* preference tuning: more helpful and policy-aligned responses
+* key message: capability base vs behavior shaping
 
 ---
 
-## Chapter 14 — Pretraining, instruction tuning, preference tuning
-
-Show three-stage pipeline:
-
-```text
-large text/code corpus
-→ base model
-
-instruction examples
-→ instruction-tuned model
-
-preference comparisons
-→ assistant-style model
-```
-
-Use same prompt in three modes:
-
-```text
-Explain why the sky is blue.
-```
-
-Modes:
-
-```text
-base model: plausible continuation, not necessarily helpful
-instruction-tuned: answers directly
-preference-tuned: more helpful, careful, formatted
-```
-
-Key message:
-
-```text
-Pretraining creates broad capability. Post-training shapes behavior.
-```
-
----
-
-## Chapter 15 — Context window and KV cache
+## Chapter 14 — Context window and KV cache
 
 Show autoregressive generation:
 
@@ -514,7 +335,7 @@ Use relative bars, not exact model-specific claims.
 
 ---
 
-## Chapter 16 — Quantization
+## Chapter 15 — Quantization
 
 Show FP32 matrix:
 

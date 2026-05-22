@@ -69,7 +69,7 @@ Sign-off template per checkpoint:
 2. Shared primitives
 3. First chapters: tokenization, embeddings, neuron, neural network
 4. Output and learning: logits, backprop, optimizers
-5. Attention: Q/K/V, attention math, multi-head, RoPE
+5. Attention: Q/K/V, attention math (+ multi-head), RoPE
 6. Architecture/deployment concepts: transformer block, training phases, post-training, KV cache, quantization
 
 ---
@@ -186,7 +186,7 @@ Human:
 - [ ] correctness checkpoint: activation formulas and behavior reviewed
 - [ ] pedagogy checkpoint: pros/cons text is concise and accurate
 
-### Chapter 4 - Tiny Neural Network (Graph + Matrix Math)
+### Chapter 4 - Feed Forward Neural Network (Graph + Matrix Math)
 
 - [x] Build 3-pane layout (dataset / graph / matrix math)
 - [ ] Add datasets: circle/spiral/xor/two blobs
@@ -253,7 +253,7 @@ Human:
 
 ---
 
-## Milestone 5 - Attention (8-11)
+## Milestone 5 - Attention (8-10)
 
 ### Chapter 8 - Q/K/V Intuition
 
@@ -269,35 +269,37 @@ Human:
 
 ### Chapter 9 - Attention Matrix Math
 
-- [ ] Implement score matrix `QK^T / sqrt(d_k)`
-- [ ] Show softmax over rows and weighted value mixing
-- [ ] Animate/step through matrix construction
+- [x] Implement score matrix `QK^T / sqrt(d_k)`
+- [x] Show softmax over rows and weighted value mixing
+- [-] Animate/step through matrix construction
 
 Automated:
+- [x] chapter build/render checks pass
 - [ ] attention matrix math tests pass
 - [ ] shape validation tests pass
 
 Human:
 - [ ] pedagogy checkpoint: row-wise softmax behavior clearly understood
 
-### Chapter 10 - Multi-Head Attention
+### Multi-Head Attention (integrated into Chapter 9)
 
-- [ ] Show head splitting, per-head attention, concatenation, output projection
-- [ ] Visualize different heads focusing differently
+- [x] Show different heads focusing differently via head personality toggles inside Chapter 9
+- [ ] Add explicit concat/output projection view in Chapter 9 if needed
 
 Automated:
-- [ ] multi-head shape and concat tests pass
+- [ ] multi-head shape and concat tests pass (if concat view is implemented)
 
 Human:
 - [ ] assumptions checkpoint: per-head behavior described as illustrative/toy where needed
 
-### Chapter 11 - RoPE Positional Encoding
+### Chapter 10 - RoPE Positional Encoding
 
-- [ ] Implement conceptual RoPE correctly (Q/K rotation, dim pairs, position frequencies)
-- [ ] Show relative-position effect on dot products
-- [ ] Explicitly avoid "just add position embeddings" framing
+- [x] Implement conceptual RoPE correctly (Q/K rotation, dim pairs, position frequencies)
+- [x] Show relative-position effect on dot products
+- [x] Explicitly avoid "just add position embeddings" framing
 
 Automated:
+- [x] chapter build/render checks pass
 - [ ] RoPE toy rotation math tests pass
 
 Human:
@@ -305,42 +307,46 @@ Human:
 
 ---
 
-## Milestone 6 - Architecture And Deployment Concepts (12-16)
+## Milestone 6 - Architecture And Deployment Concepts (11-15)
 
-### Chapter 12 - Full Transformer Block And Modern Scale
+### Chapter 11 - Full Transformer Block And Modern Scale
 
-- [ ] Compose attention + MLP + residuals + norms into one block flow
-- [ ] Add "toy scale vs real scale" cards without unsourced exact frontier claims
+- [x] Compose attention + MLP + residuals + norms into one block flow
+- [x] Add "toy scale vs real scale" cards without unsourced exact frontier claims
+- [x] Add click-to-inspect block parts with per-part in/out dimensions and chapter callback links
 
 Automated:
-- [ ] chapter build/render checks pass
+- [x] chapter build/render checks pass
 
 Human:
 - [ ] assumptions checkpoint: scaling statements are sourced/qualitative only
 
-### Chapter 13 - Training Phases And Grokking
+### Chapter 12 - Training Phases And Grokking
 
-- [ ] Show phase progression conceptually (fit, generalize, delayed jumps)
-- [ ] Keep numerical examples clearly labeled as toy
+- [x] Show phase progression conceptually (fit, generalize, delayed jumps)
+- [x] Keep numerical examples clearly labeled as toy
+- [x] Add interactive phase selector and step marker on toy train/validation loss curves
 
 Automated:
+- [x] chapter build/render checks pass
 - [ ] deterministic phase curve fixtures pass
 
 Human:
 - [ ] pedagogy checkpoint: grokking caveats are explicit
 
-### Chapter 14 - Pretraining, Instruction Tuning, Preference Tuning
+### Chapter 13 - Pre-training, Instruction Tuning, Preference Tuning
 
-- [ ] Explain each stage and how objectives differ
-- [ ] Show data/behavior shift at each stage conceptually
+- [x] Explain each stage and how objectives differ
+- [x] Show data/behavior shift at each stage conceptually
+- [x] Add same-prompt comparison across base / instruction-tuned / preference-tuned outputs
 
 Automated:
-- [ ] chapter build/render checks pass
+- [x] chapter build/render checks pass
 
 Human:
 - [ ] assumptions checkpoint: terminology and sequencing are accurate and non-hyped
 
-### Chapter 15 - Context Window And KV Cache
+### Chapter 14 - Context Window And KV Cache
 
 - [ ] Explain token window limits and truncation behavior
 - [ ] Show decode loop with and without KV cache
@@ -352,7 +358,7 @@ Automated:
 Human:
 - [ ] correctness checkpoint: cache behavior and limitations validated
 
-### Chapter 16 - Quantization
+### Chapter 15 - Quantization
 
 - [ ] Show high-precision to low-bit mapping
 - [ ] Visualize value snapping and accuracy/efficiency trade-offs

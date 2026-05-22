@@ -2,6 +2,11 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import EmbeddingChapter from "../components/chapters/EmbeddingChapter.svelte";
 import SingleNeuronChapter from "../components/chapters/SingleNeuronChapter.svelte";
+import TinyNetworkChapter from "../components/chapters/TinyNetworkChapter.svelte";
+import LogitsSamplingChapter from "../components/chapters/LogitsSamplingChapter.svelte";
+import BackpropagationChapter from "../components/chapters/BackpropagationChapter.svelte";
+import OptimizersChapter from "../components/chapters/OptimizersChapter.svelte";
+import QkvChapter from "../components/chapters/QkvChapter.svelte";
 import TokenizationChapter from "../components/chapters/TokenizationChapter.svelte";
 import ChapterShell from "../components/ChapterShell.astro";
 import PrimitiveShowcase from "../components/PrimitiveShowcase.astro";
@@ -10,14 +15,14 @@ import embeddingsData from "../data/generated/embeddings-o200k-base.json";
 import tokenizationData from "../data/generated/tokenization-o200k-base.json";
 
 const chapterList = [
-  { id: "c1", number: "01", title: "Tokenization", status: "active" as const, showVisual: false },
-  { id: "c2", number: "02", title: "Vector Embedding", status: "active" as const, showVisual: false },
-  { id: "c3", number: "03", title: "Neuron Activation", status: "active" as const, showVisual: false },
-  { id: "c4", number: "04", title: "Tiny Network", status: "planned" as const },
-  { id: "c5", number: "05", title: "Logits and Sampling", status: "planned" as const },
-  { id: "c6", number: "06", title: "Backpropagation", status: "planned" as const },
-  { id: "c7", number: "07", title: "Optimizers", status: "planned" as const },
-  { id: "c8", number: "08", title: "QKV", status: "planned" as const },
+  { id: "c1", number: "01", title: "Tokenization", status: "active" as const },
+  { id: "c2", number: "02", title: "Vector Embedding", status: "active" as const },
+  { id: "c3", number: "03", title: "Neuron Activation", status: "active" as const },
+  { id: "c4", number: "04", title: "Neural Network", status: "active" as const },
+  { id: "c5", number: "05", title: "Logits and Sampling", status: "active" as const },
+  { id: "c6", number: "06", title: "Backpropagation", status: "active" as const },
+  { id: "c7", number: "07", title: "Optimizers", status: "active" as const },
+  { id: "c8", number: "08", title: "Attention Q/K/V", status: "active" as const },
   { id: "c9", number: "09", title: "Attention Math", status: "planned" as const },
   { id: "c10", number: "10", title: "Multi-Head", status: "planned" as const },
   { id: "c11", number: "11", title: "RoPE", status: "planned" as const },
@@ -48,7 +53,7 @@ const chapterNav = chapterList.map((chapter) => ({
   <StoryProgressNav chapters={chapterNav} />
 
   <main>
-    <section class="intro-section" aria-labelledby="intro-heading">
+    <section id="intro" class="intro-section" aria-labelledby="intro-heading">
       <p class="intro-kicker">Introduction</p>
       <h2 id="intro-heading">Introduction</h2>
       <p class="intro-lead">
@@ -72,6 +77,21 @@ const chapterNav = chapterList.map((chapter) => ({
           </p>
         </article>
       </div>
+      <div class="intro-toc" aria-labelledby="intro-toc-heading">
+        <p id="intro-toc-heading">Table of contents</p>
+        <ol>
+          {
+            chapterList.map((chapter) => (
+              <li>
+                <a href={`#${chapter.id}`}>
+                  <span>{chapter.number}</span>
+                  <span>{chapter.title}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
     </section>
 
     {
@@ -86,10 +106,18 @@ const chapterNav = chapterList.map((chapter) => ({
               : chapter.number === "02"
               ? "Each token ID becomes a row lookup in an embedding table, producing a high-dimensional vector."
               : chapter.number === "03"
-              ? "Weighted inputs plus a bias create a pre-activation value, then a non-linearity shapes the neuron output."
+              ? "Weighted inputs create a pre-activation value, then a non-linearity shapes the neuron output."
+              : chapter.number === "04"
+              ? "How single neurons are stacked into dense layers and executed as matrix multiplications from input to hidden to output."
+              : chapter.number === "05"
+              ? "How hidden states become logits, probabilities, and finally a sampled next token."
+              : chapter.number === "06"
+              ? "How prediction error turns into gradients, and how one update step nudges weights to reduce loss."
+              : chapter.number === "07"
+              ? "How different optimizer rules use the same gradients but still produce different update trajectories."
+              : chapter.number === "08"
+              ? "How each token becomes Query, Key, and Value vectors, and how similarity weights mix information."
               : "Scrollytelling scaffold in place. This chapter will gain full interactive teaching visuals in upcoming milestones."}
-            visualTitle={`${chapter.number} Visual`}
-            showVisual={chapter.showVisual ?? true}
           >
             {
               chapter.number === "01" ? (
@@ -129,7 +157,7 @@ const chapterNav = chapterList.map((chapter) => ({
               ) : chapter.number === "03" ? (
                 <>
                   <p class="story-lead">
-                    The embedding vector then flows into neurons. Each neuron computes a weighted sum, adds a bias,
+                    The embedding vector then flows into neurons. Each neuron computes a weighted sum,
                     and applies an activation function to produce a transformed signal for the next layer.
                   </p>
                   <SingleNeuronChapter client:load />
@@ -138,6 +166,101 @@ const chapterNav = chapterList.map((chapter) => ({
                     <p>
                       The activation function is not cosmetic. It changes how information can flow and is the key reason
                       stacked layers can model non-linear structure.
+                    </p>
+                  </div>
+                </>
+              ) : chapter.number === "04" ? (
+                <>
+                  <p class="story-lead">
+                    Now we zoom in on forward computation only. The point is to connect the familiar neuron drawing to
+                    the matrix form used in real implementations.
+                  </p>
+                  <TinyNetworkChapter client:load />
+                  <div class="story-beat">
+                    <p>The thing to notice</p>
+                    <p>
+                      The graph and matrices are exactly the same operation. Every edge corresponds to one weight matrix
+                      cell, and each layer output is computed as <code>X·W</code> before activation.
+                    </p>
+                  </div>
+                </>
+              ) : chapter.number === "05" ? (
+                <>
+                  <p class="story-lead">
+                    After the network computes a final hidden state, we project it onto the vocabulary to get logits.
+                    That means the output projection has one score per tokenizer vocabulary token
+                    (output width = tokenizer vocabulary size).
+                    Temperature and sampling strategy then decide how deterministic or diverse the next token is.
+                  </p>
+                  <LogitsSamplingChapter client:load />
+                  <div class="story-beat">
+                    <p>The thing to notice</p>
+                    <p>
+                      Logits are not probabilities yet. Softmax turns relative score differences into a distribution,
+                      and temperature reshapes that distribution before sampling.
+                    </p>
+                  </div>
+                  <div class="story-beat">
+                    <p>Fun fact</p>
+                    <p>
+                      The model becomes more and more deterministic as <code>temperature</code> approaches zero.
+                    </p>
+                    <p>
+                      In pure math, setting temperature to <code>0.0</code> would be fully deterministic. In real systems,
+                      runtime scheduling and floating-point rounding can still lead to occasional output differences.
+                    </p>
+                  </div>
+                </>
+              ) : chapter.number === "06" ? (
+                <>
+                  <p class="story-lead">
+                    Once we have logits and a target token, we can measure error with loss. Backpropagation then sends
+                    that error signal backward through the network to compute how every weight should change.
+                  </p>
+                  <BackpropagationChapter client:load />
+                  <div class="story-beat">
+                    <p>The thing to notice</p>
+                    <p>
+                      Gradients are local pieces multiplied together by the chain rule. That is why “blame” can flow
+                      from output back to earlier layers in a mathematically consistent way.
+                    </p>
+                  </div>
+                </>
+              ) : chapter.number === "07" ? (
+                <>
+                  <p class="story-lead">
+                    Gradients tell us the direction to go. Optimizers decide how to move along that direction over time.
+                    Different update rules can make training smooth, noisy, fast, or unstable.
+                  </p>
+                  <OptimizersChapter client:load />
+                  <div class="story-beat">
+                    <p>The thing to notice</p>
+                    <p>
+                      SGD, Momentum, and Adam can start from the same point and see the same gradients, yet follow
+                      different paths because each optimizer keeps different internal state.
+                    </p>
+                  </div>
+                </>
+              ) : chapter.number === "08" ? (
+                <>
+                  <p class="story-lead">
+                    Up to now, each token mostly carried its own transformed representation. Attention changes that:
+                    every token can look at other tokens, decide which ones matter for its current context, and pull
+                    a weighted mixture of their information forward.
+                  </p>
+                  <QkvChapter client:load />
+                  <div class="story-beat">
+                    <p>The thing to notice</p>
+                    <p>
+                      Query and key vectors are only used to compute attention weights. The actual content passed onward
+                      is the weighted mixture of value vectors.
+                    </p>
+                  </div>
+                  <div class="story-beat">
+                    <p>Why this helps</p>
+                    <p>
+                      This is the core mechanism behind context sensitivity. The same token can produce different outputs
+                      in different sentences, because its attention weights can shift toward different neighbors.
                     </p>
                   </div>
                 </>
@@ -158,9 +281,6 @@ const chapterNav = chapterList.map((chapter) => ({
                   <div class="story-beat">
                     <p>Takeaway</p>
                     <p>Summarize what changes when scaling from toy values to real model settings.</p>
-                  </div>
-                  <div slot="visual">
-                    <PrimitiveShowcase chapterNumber={chapter.number} compact />
                   </div>
                 </>
               )
@@ -207,7 +327,7 @@ const chapterNav = chapterList.map((chapter) => ({
   }
 
   .chapter-step {
-    min-height: 115vh;
+    min-height: auto;
     padding: 1.1rem 0 3.2rem;
     border-top: 1px solid rgba(63, 63, 70, 0.1);
   }
@@ -281,14 +401,15 @@ const chapterNav = chapterList.map((chapter) => ({
 
   .intro-pipeline {
     margin: 0;
-    font-family: "IBM Plex Mono", "SFMono-Regular", "Menlo", monospace;
-    font-size: 0.9rem;
-    color: #155e75;
+    font-family: "IBM Plex Mono", "SFMono-Regular", monospace;
+    font-size: 0.92rem;
+    color: #334155;
+    letter-spacing: 0.01em;
+    background: rgba(21, 106, 130, 0.06);
     border: 1px solid rgba(21, 106, 130, 0.2);
     border-radius: 10px;
-    background: rgba(21, 106, 130, 0.08);
-    padding: 0.55rem 0.7rem;
-    width: fit-content;
+    padding: 0.4rem 0.55rem;
+    display: inline-block;
     max-width: 100%;
   }
 
@@ -316,6 +437,64 @@ const chapterNav = chapterList.map((chapter) => ({
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: #52525b;
+  }
+
+  .intro-toc {
+    margin-top: 1rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    background: rgba(255, 252, 244, 0.62);
+    padding: 0.9rem;
+    display: grid;
+    gap: 0.55rem;
+  }
+
+  .intro-toc > p {
+    margin: 0;
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .intro-toc ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.35rem 0.75rem;
+  }
+
+  .intro-toc a {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.45rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-radius: 8px;
+    padding: 0.18rem 0.28rem;
+    transition: color 180ms ease, background-color 180ms ease;
+  }
+
+  .intro-toc a:hover,
+  .intro-toc a:focus-visible {
+    color: var(--text-primary);
+    background: rgba(21, 106, 130, 0.08);
+    outline: none;
+  }
+
+  .intro-toc a span:first-child {
+    font-family: "IBM Plex Mono", "SFMono-Regular", monospace;
+    font-size: 0.73rem;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 760px) {
+    .intro-toc ol {
+      grid-template-columns: 1fr;
+    }
   }
 
   .intro-grid article p:last-child {

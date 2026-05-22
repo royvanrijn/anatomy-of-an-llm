@@ -1,20 +1,16 @@
 ---
-import StickyVisual from "./StickyVisual.astro";
-
 interface Props {
   id: string;
   number: string;
   title: string;
   summary: string;
-  visualTitle?: string;
-  showVisual?: boolean;
 }
 
-const { id, number, title, summary, visualTitle = "Chapter Visual", showVisual = true } = Astro.props;
+const { id, number, title, summary } = Astro.props;
 ---
 
 <section id={id} class="chapter-shell" aria-labelledby={`chapter-${number}`}>
-  <div class={`chapter-content ${showVisual ? "" : "full-width"}`}>
+  <div class="chapter-content">
     <article class="chapter-main">
       <p class="chapter-kicker">Chapter {number}</p>
       <h2 id={`chapter-${number}`}>{title}</h2>
@@ -23,14 +19,6 @@ const { id, number, title, summary, visualTitle = "Chapter Visual", showVisual =
         <slot />
       </div>
     </article>
-
-    {
-      showVisual && (
-        <StickyVisual title={visualTitle}>
-          <slot name="visual" />
-        </StickyVisual>
-      )
-    }
   </div>
 </section>
 
@@ -42,7 +30,7 @@ const { id, number, title, summary, visualTitle = "Chapter Visual", showVisual =
   .chapter-content {
     display: grid;
     gap: 1.4rem;
-    grid-template-columns: minmax(0, 1.5fr) minmax(280px, 1fr);
+    grid-template-columns: 1fr;
     align-items: start;
   }
 
@@ -72,11 +60,21 @@ const { id, number, title, summary, visualTitle = "Chapter Visual", showVisual =
   }
 
   .chapter-summary {
-    margin: 1.5rem 0 0;
-    color: var(--text-secondary);
-    font-size: 1rem;
-    line-height: 1.6;
+    margin: 1.1rem 0 0;
+    color: rgba(39, 39, 42, 0.74);
+    font-size: 1.02rem;
+    line-height: 1.55;
     max-width: 64ch;
+    font-family: "Merriweather", "Quicksand", "Avenir Next", "Segoe UI", sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.004em;
+    background: rgba(21, 106, 130, 0.05);
+    border: 1px solid rgba(21, 106, 130, 0.2);
+    border-radius: 10px;
+    padding: 0.55rem 0.72rem 0.58rem;
+    display: inline-block;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.46);
+    position: relative;
   }
 
   .chapter-body {
@@ -84,19 +82,6 @@ const { id, number, title, summary, visualTitle = "Chapter Visual", showVisual =
     color: var(--text-secondary);
     display: grid;
     gap: 1rem;
-  }
-
-  .chapter-content.full-width {
-    grid-template-columns: 1fr;
-  }
-
-  .chapter-content.full-width .chapter-main {
-    width: 100%;
-    max-width: none;
-  }
-
-  .chapter-content.full-width .chapter-summary {
-    max-width: none;
   }
 
   @media (max-width: 900px) {

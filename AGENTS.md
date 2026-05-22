@@ -115,6 +115,8 @@ pip install -r requirements.txt
 Before a chapter is done:
 
 * static build works
+* dev server run + manual browser verification completed
+* no hydration/runtime errors in browser console
 * no runtime API calls
 * meaningful default view without interaction
 * at least one meaningful interaction
@@ -126,6 +128,22 @@ Before a chapter is done:
 * reset state exists
 * explanation is concise
 * chapter opens with concept and "why" before implementation details
+
+## Runtime verification (required for UI changes)
+
+After any frontend change (Astro/Svelte/CSS), always verify runtime behavior, not just build/test:
+
+1. Run `npm run dev`.
+2. Open `http://localhost:4321/` in the in-app browser.
+3. Navigate to the changed chapter/section and interact with it.
+4. Check browser console for runtime/hydration errors.
+5. Confirm no visual regressions in the changed component.
+6. Report in the final update:
+   - pages checked
+   - interactions performed
+   - console errors found (or `none`)
+
+A task is not complete if only `npm run build`/unit tests pass but runtime UI is broken.
 
 ## Git rules
 

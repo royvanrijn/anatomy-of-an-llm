@@ -7,7 +7,6 @@
   let w1 = 1.1;
   let w2 = -0.85;
   let w3 = 0.55;
-  let bias = 0.12;
   let activation: ActivationId = "gelu";
 
   const curveMin = -4;
@@ -17,7 +16,7 @@
   const chartHeight = 220;
   const chartPad = 26;
 
-  $: z = w1 * x1 + w2 * x2 + w3 * x3 + bias;
+  $: z = w1 * x1 + w2 * x2 + w3 * x3;
   $: output = applyActivation(activation, z);
   $: activeMeta = ACTIVATIONS.find((item) => item.id === activation) ?? ACTIVATIONS[0];
   $: glow = Math.max(0.12, Math.min(1, (output + 2) / 4));
@@ -63,13 +62,13 @@
   <div class="intro">
     <p class="kicker">Single neuron</p>
     <p>
-      A neuron takes inputs, applies weights, adds a bias, and then runs the result through an activation function.
+      A neuron takes inputs, applies weights, and then runs the result through an activation function.
       This non-linear step is what lets networks model richer patterns.
     </p>
   </div>
 
   <div class="equations">
-    <p><code>z = w1*x1 + w2*x2 + w3*x3 + b</code></p>
+    <p><code>z = w1*x1 + w2*x2 + w3*x3</code></p>
     <p><code>output = activation(z)</code></p>
   </div>
 
@@ -94,9 +93,8 @@
       <text x="96" y="163" text-anchor="middle" class="node-value">{x3.toFixed(2)}</text>
 
       <circle cx="332" cy="100" r="44" class="neuron-node" style={`fill-opacity:${(0.26 + glow * 0.38).toFixed(3)};`} />
-      <text x="332" y="89" text-anchor="middle" class="neuron-title">Σ + b</text>
-      <text x="332" y="104" text-anchor="middle" class="neuron-sub">b={bias.toFixed(2)}</text>
-      <text x="332" y="119" text-anchor="middle" class="neuron-sub">z={z.toFixed(2)}</text>
+      <text x="332" y="95" text-anchor="middle" class="neuron-title">Σ</text>
+      <text x="332" y="112" text-anchor="middle" class="neuron-sub">z={z.toFixed(2)}</text>
 
       <line x1="376" y1="100" x2="488" y2="100" class="edge" />
       <text x="408" y="86" class="edge-label">{activeMeta.label}</text>
@@ -104,9 +102,6 @@
       <circle cx="520" cy="100" r="32" class={`output-node ${isFiring ? "fire-on" : "fire-off"}`} />
       <text x="520" y="95" text-anchor="middle" class="node-title">out</text>
       <text x="520" y="110" text-anchor="middle" class="node-value">{output.toFixed(2)}</text>
-      <text x="520" y="146" text-anchor="middle" class={`fire-text ${isFiring ? "on" : "off"}`}>
-        {isFiring ? "firing" : "not firing"}
-      </text>
     </svg>
   </section>
 
@@ -119,11 +114,10 @@
     </section>
 
     <section class="control-panel">
-      <p class="label">Weights + Bias</p>
+      <p class="label">Weights</p>
       <label>w1 <input type="range" min="-2" max="2" step="0.01" bind:value={w1} /> <span>{w1.toFixed(2)}</span></label>
       <label>w2 <input type="range" min="-2" max="2" step="0.01" bind:value={w2} /> <span>{w2.toFixed(2)}</span></label>
       <label>w3 <input type="range" min="-2" max="2" step="0.01" bind:value={w3} /> <span>{w3.toFixed(2)}</span></label>
-      <label>b <input type="range" min="-2" max="2" step="0.01" bind:value={bias} /> <span>{bias.toFixed(2)}</span></label>
     </section>
 
     <section class="control-panel">
@@ -368,16 +362,6 @@
     font-size: 10.5px;
     fill: #7c2d12;
     font-family: "IBM Plex Mono", "SFMono-Regular", monospace;
-  }
-  .fire-text {
-    font-size: 11px;
-    font-weight: 600;
-  }
-  .fire-text.on {
-    fill: #14532d;
-  }
-  .fire-text.off {
-    fill: #7f1d1d;
   }
   @media (max-width: 980px) {
     .controls-grid {

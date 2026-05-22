@@ -43,6 +43,9 @@
       Each token is then looked up in a vocabulary and replaced by an integer ID. From that point on, the model no longer works
       with the original characters. It works with the ordered list of IDs.
     </p>
+    <p>
+      That vocabulary is the tokenizer vocabulary itself (for example <code>o200k_base</code>): one token entry per token ID.
+    </p>
   </div>
 
   <div class="reasoning">
@@ -55,7 +58,8 @@
   </div>
   <p class="encoding-note">
     The examples below use <code>{data.encoding}</code>. Switch sentences and notice where the boundaries land: sometimes a
-    token is a whole word, sometimes it is a word fragment, and sometimes it includes the space before a word.
+    token is a whole word, sometimes it is a word fragment, and sometimes it includes the space before a word. Later chapters
+    project to this same tokenizer vocabulary when producing logits.
   </p>
 
   <section class="playground">

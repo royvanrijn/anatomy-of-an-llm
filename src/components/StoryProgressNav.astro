@@ -15,6 +15,24 @@ const { chapters } = Astro.props;
 
 <nav class="story-nav" aria-label="Curriculum progress">
   <ol>
+    <li class="status-active">
+      <a
+        href="#intro"
+        data-chapter-link="intro"
+        data-chapter-title="Introduction"
+        aria-label="Home Introduction"
+        class="home-pill"
+      >
+        <span aria-hidden="true" class="home-icon">
+          <svg viewBox="0 0 24 24" width="14" height="14" role="presentation" focusable="false">
+            <path
+              d="M3.5 10.3L12 3.6l8.5 6.7v9.2a1 1 0 0 1-1 1h-5.2v-6h-4.6v6H4.5a1 1 0 0 1-1-1z"
+              fill="currentColor"
+            />
+          </svg>
+        </span>
+      </a>
+    </li>
     {
       chapters.map((chapter) => (
         <li class={`status-${chapter.status ?? "planned"}`}>
@@ -60,22 +78,54 @@ const { chapters } = Astro.props;
     const pickActiveSectionId = (entries) => {
       const visibleEntries = entries
         .filter((entry) => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        .sort((a, b) => {
+          const aTop = typeof a?.boundingClientRect?.top === "number" ? Math.abs(a.boundingClientRect.top) : Number.POSITIVE_INFINITY;
+          const bTop = typeof b?.boundingClientRect?.top === "number" ? Math.abs(b.boundingClientRect.top) : Number.POSITIVE_INFINITY;
+          if (aTop !== bTop) return aTop - bTop;
+          return b.intersectionRatio - a.intersectionRatio;
+        });
       if (visibleEntries.length === 0) return null;
-      return visibleEntries[0].target.getAttribute("id");
+      const top = visibleEntries[0];
+      return top.id ?? top?.target?.getAttribute?.("id") ?? null;
     };
 
     const initialId = links[0].getAttribute("data-chapter-link");
     if (initialId) setCurrentLink(initialId);
 
+    links.forEach((link) => {
+      link.addEventListener("click", (event) => {
+        const id = link.getAttribute("data-chapter-link");
+        if (!id) return;
+        event.preventDefault();
+        const section = document.getElementById(id);
+        if (section) {
+          section.scrollIntoView({ behavior: "smooth", block: "start" });
+          history.replaceState(null, "", `#${id}`);
+        }
+        setCurrentLink(id);
+      });
+    });
+
+    const sectionState = new Map();
+
     const observer = new IntersectionObserver(
       (entries) => {
-        const nextId = pickActiveSectionId(entries);
+        entries.forEach((entry) => {
+          const id = entry?.target?.getAttribute?.("id");
+          if (!id) return;
+          sectionState.set(id, {
+            id,
+            isIntersecting: Boolean(entry.isIntersecting),
+            intersectionRatio: Number(entry.intersectionRatio ?? 0),
+            boundingClientRect: entry.boundingClientRect ?? null
+          });
+        });
+        const nextId = pickActiveSectionId(Array.from(sectionState.values()));
         if (nextId) setCurrentLink(nextId);
       },
       {
-        rootMargin: "-38% 0px -42% 0px",
-        threshold: [0.15, 0.35, 0.6, 0.8]
+        rootMargin: "-28% 0px -52% 0px",
+        threshold: [0, 0.05, 0.2, 0.4, 0.65]
       }
     );
 
@@ -154,6 +204,16 @@ const { chapters } = Astro.props;
     line-height: 1;
     font-weight: 600;
     letter-spacing: 0.01em;
+  }
+
+  .home-pill {
+    width: 2.35rem;
+  }
+
+  .home-icon {
+    display: inline-grid;
+    place-items: center;
+    line-height: 0;
   }
 
   .story-nav a::after {

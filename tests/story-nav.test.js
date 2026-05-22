@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { JSDOM } from "jsdom";
-import { pickActiveSectionId, setCurrentLink } from "../src/utils/storyNav.js";
+import { pickActiveSectionId, setCurrentLink, updateSectionState } from "../src/utils/storyNav.js";
 
 describe("story nav scrollspy", () => {
   it("selects the most visible intersecting section", () => {
@@ -30,5 +30,34 @@ describe("story nav scrollspy", () => {
     expect(first.hasAttribute("aria-current")).toBe(false);
     expect(second.hasAttribute("data-current")).toBe(true);
     expect(second.getAttribute("aria-current")).toBe("true");
+  });
+
+  it("keeps stable active chapter when callback only includes changed entries", () => {
+    const state = new Map();
+    updateSectionState(state, [
+      {
+        isIntersecting: true,
+        intersectionRatio: 0.7,
+        boundingClientRect: { top: 40 },
+        target: { getAttribute: () => "c2" }
+      },
+      {
+        isIntersecting: true,
+        intersectionRatio: 0.6,
+        boundingClientRect: { top: 180 },
+        target: { getAttribute: () => "c3" }
+      }
+    ]);
+
+    updateSectionState(state, [
+      {
+        isIntersecting: true,
+        intersectionRatio: 0.2,
+        boundingClientRect: { top: 20 },
+        target: { getAttribute: () => "c1" }
+      }
+    ]);
+
+    expect(pickActiveSectionId(Array.from(state.values()))).toBe("c2");
   });
 });

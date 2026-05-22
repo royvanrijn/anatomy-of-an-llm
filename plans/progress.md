@@ -67,7 +67,7 @@ Sign-off template per checkpoint:
 
 1. Shell and style
 2. Shared primitives
-3. First chapters: tokenization, embeddings, neuron, tiny network
+3. First chapters: tokenization, embeddings, neuron, neural network
 4. Output and learning: logits, backprop, optimizers
 5. Attention: Q/K/V, attention math, multi-head, RoPE
 6. Architecture/deployment concepts: transformer block, training phases, post-training, KV cache, quantization
@@ -188,15 +188,16 @@ Human:
 
 ### Chapter 4 - Tiny Neural Network (Graph + Matrix Math)
 
-- [ ] Build 3-pane layout (dataset / graph / matrix math)
+- [x] Build 3-pane layout (dataset / graph / matrix math)
 - [ ] Add datasets: circle/spiral/xor/two blobs
-- [ ] Add controls: architecture, activation, LR, train/pause/reset
-- [ ] Implement hover linking between graph edges and matrix cells
-- [ ] Show node activations and synchronized `X·W+b` / `activation(Z)=A` views
+- [x] Add controls: architecture and activation for forward-pass exploration
+- [x] Implement hover linking between graph edges and matrix cells
+- [x] Show node activations and synchronized `X·W+b` / `activation(Z)=A` views
+- [x] Scope changed: chapter now focuses on dense layer forward pass instead of online toy training
 
 Automated:
-- [ ] deterministic toy training fixtures and replay pass
-- [ ] interaction smoke checks pass
+- [x] deterministic forward-pass values (fixed weights/biases) render statically
+- [x] interaction smoke checks pass
 
 Human:
 - [ ] assumptions checkpoint: training behavior explanation is not over-claiming
@@ -208,14 +209,14 @@ Human:
 
 ### Chapter 5 - Logits, Softmax, Temperature, Sampling
 
-- [ ] Show hidden vector -> logits -> softmax -> probabilities -> sampled token
-- [ ] Include tiny fixed vocab demo
-- [ ] Add temperature slider, sample button, 20-sample run, greedy/sampling toggle
-- [ ] Optional: top-k/top-p/seed controls
+- [x] Show hidden vector -> logits -> softmax -> probabilities -> sampled token
+- [x] Include tiny fixed vocab demo
+- [x] Add temperature slider, sample button, 20-sample run, greedy/sampling toggle
+- [x] Optional: top-k/top-p/seed controls
 
 Automated:
-- [ ] softmax/temperature numeric checks pass
-- [ ] sampling determinism checks pass for fixed seed paths
+- [x] softmax/temperature numeric checks pass
+- [x] sampling determinism checks pass for fixed seed paths
 
 Human:
 - [ ] correctness checkpoint: temperature interpretation validated
@@ -223,14 +224,14 @@ Human:
 
 ### Chapter 6 - Loss, Gradients, Backpropagation
 
-- [ ] Build forward pass + wrong prediction + target + loss view
-- [ ] Visualize gradient flow backward through layers
-- [ ] Add stepper for forward/backward/update phases
-- [ ] Show tensor shapes where relevant
+- [x] Build forward pass + wrong prediction + target + loss view
+- [x] Visualize gradient flow backward through layers
+- [x] Add stepper for forward/backward/update phases
+- [x] Show tensor shapes where relevant
 
 Automated:
-- [ ] gradient sanity tests pass on toy network
-- [ ] deterministic update-step fixtures pass
+- [x] gradient sanity tests pass on toy network
+- [x] deterministic update-step fixtures pass
 
 Human:
 - [ ] correctness checkpoint: signs/magnitudes intuition reviewed
@@ -238,13 +239,13 @@ Human:
 
 ### Chapter 7 - Optimizers
 
-- [ ] Implement optimizer comparison (SGD, momentum, Adam-style conceptual views)
-- [ ] Show how updates differ on same toy loss landscape
-- [ ] Keep explicit toy-data labeling
+- [x] Implement optimizer comparison (SGD, momentum, Adam-style conceptual views)
+- [x] Show how updates differ on same toy loss landscape
+- [x] Keep explicit toy-data labeling
 
 Automated:
-- [ ] optimizer update-rule tests pass
-- [ ] deterministic trajectory fixtures pass
+- [x] optimizer update-rule tests pass
+- [x] deterministic trajectory fixtures pass
 
 Human:
 - [ ] assumptions checkpoint: optimizer claims stay conceptual and accurate
@@ -256,12 +257,12 @@ Human:
 
 ### Chapter 8 - Q/K/V Intuition
 
-- [ ] Explain token projection into Q, K, V vectors
-- [ ] Show why query-key similarity selects value mixing
-- [ ] Use small sequence and dimensions with shape callouts
+- [x] Explain token projection into Q, K, V vectors
+- [x] Show why query-key similarity selects value mixing
+- [x] Use small sequence and dimensions with shape callouts
 
 Automated:
-- [ ] deterministic Q/K/V toy fixture checks pass
+- [x] deterministic Q/K/V toy fixture checks pass
 
 Human:
 - [ ] correctness checkpoint: intuition matches later math chapter

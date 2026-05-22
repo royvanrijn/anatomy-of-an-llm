@@ -15,7 +15,7 @@ If you use **project pages**, you must set Astro `base` to `/<repo>/`.
 
 Update `astro.config.mjs` to include `site` and `base`.
 
-Example for project pages (`repo` = `TheAnatomyofanLLM`):
+Example for project pages (`repo` = `anatomy-of-an-llm`):
 
 ```js
 import { defineConfig } from "astro/config";
@@ -23,7 +23,7 @@ import svelte from "@astrojs/svelte";
 
 export default defineConfig({
   site: "https://<user>.github.io",
-  base: "/TheAnatomyofanLLM",
+  base: "/anatomy-of-an-llm",
   integrations: [svelte()]
 });
 ```

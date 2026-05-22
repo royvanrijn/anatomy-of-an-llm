@@ -48,13 +48,13 @@ const chapterNav = chapterList.map((chapter) => ({
 ---
 
 <BaseLayout>
-  <aside class="beta-ribbon" tabindex="0" aria-label="Beta disclaimer">
-    <span>BETA</span>
-    <div class="beta-tooltip" role="note">
-      Work in progress: visuals, explanations, and values are still being refined. You may encounter issues or inaccuracies.
-    </div>
-  </aside>
   <header class="hero">
+    <aside class="beta-ribbon" tabindex="0" aria-label="Beta disclaimer">
+      <span>BETA</span>
+      <div class="beta-tooltip" role="note">
+        Work in progress: visuals, explanations, and values are still being refined. You may encounter issues or inaccuracies.
+      </div>
+    </aside>
     <p class="eyebrow">Interactive Explainer</p>
     <h1>The Anatomy of an LLM</h1>
     <p>
@@ -504,8 +504,17 @@ const chapterNav = chapterList.map((chapter) => ({
           <li><a href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a>: the original Transformer paper.</li>
         </ul>
       </div>
+      <a
+        class="closing-logo"
+        href="https://www.openvalue.eu"
+        target="_blank"
+        rel="noreferrer noopener"
+        aria-label="OpenValue"
+      >
+        <img src="/brand/openvalue-wordmark-white.svg" alt="OpenValue Tech Tribes" />
+      </a>
       <p class="closing-credit">
-        © 2026 · Created by Roy van Rijn at OpenValue · Built with OpenAI Codex
+        © 2026 · Created by Roy van Rijn · Built with OpenAI Codex
       </p>
     </section>
   </main>
@@ -513,20 +522,20 @@ const chapterNav = chapterList.map((chapter) => ({
 
 <style>
   .beta-ribbon {
-    position: fixed;
-    top: 0.75rem;
-    right: 0.75rem;
-    z-index: 80;
-    background: rgba(12, 74, 110, 0.92);
-    color: #f8fafc;
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    position: absolute;
+    top: 0.72rem;
+    right: 1.25rem;
+    z-index: 30;
+    background: #b45309;
+    color: #fff7ed;
+    border: 1px solid rgba(255, 247, 237, 0.7);
     border-radius: 999px;
-    padding: 0.28rem 0.62rem;
-    font-size: 0.67rem;
+    padding: 0.28rem 0.56rem 0.3rem;
+    font-size: 0.69rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     cursor: help;
-    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.25);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.34);
     user-select: none;
   }
 
@@ -537,8 +546,8 @@ const chapterNav = chapterList.map((chapter) => ({
 
   .beta-tooltip {
     position: absolute;
-    top: calc(100% + 0.5rem);
-    right: 0;
+    top: calc(100% + 0.7rem);
+    right: 0.1rem;
     width: min(20rem, 68vw);
     padding: 0.52rem 0.62rem;
     border-radius: 10px;
@@ -551,7 +560,7 @@ const chapterNav = chapterList.map((chapter) => ({
     text-transform: none;
     box-shadow: 0 10px 28px rgba(15, 23, 42, 0.18);
     opacity: 0;
-    transform: translateY(-4px);
+    transform: translateY(-6px);
     pointer-events: none;
     transition: opacity 140ms ease, transform 140ms ease;
   }
@@ -563,6 +572,7 @@ const chapterNav = chapterList.map((chapter) => ({
   }
 
   .hero {
+    position: relative;
     margin: 0 0 1.4rem;
     padding: 1.8rem;
     border-radius: var(--radius-lg);
@@ -834,15 +844,39 @@ const chapterNav = chapterList.map((chapter) => ({
 
   .closing-credit {
     margin: 0.25rem 0 0;
-    justify-self: end;
-    text-align: right;
+    justify-self: center;
+    text-align: center;
     color: #155e75;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     font-size: 0.72rem;
   }
 
+  .closing-logo {
+    justify-self: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    border-radius: 14px;
+    border: 1px solid rgba(148, 163, 184, 0.3);
+    background: rgba(43, 52, 60, 0.92);
+    padding: 0.38rem 0.78rem 0.4rem;
+    box-shadow: 0 8px 18px rgba(43, 52, 60, 0.28);
+    margin-top: 0.2rem;
+  }
+
+  .closing-logo img {
+    display: block;
+    height: 2rem;
+    width: auto;
+  }
+
   @media (max-width: 900px) {
+    .closing-logo img {
+      height: 0.84rem;
+    }
+
     .chapter-step {
       min-height: auto;
       padding: 0.8rem 0 2rem;

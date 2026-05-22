@@ -60,7 +60,6 @@
 
 <section class="neuron-chapter">
   <div class="intro">
-    <p class="kicker">Single neuron</p>
     <p>
       A neuron takes inputs, applies weights, and then runs the result through an activation function.
       This non-linear step is what lets networks model richer patterns.
@@ -163,13 +162,6 @@
     font-size: 1rem;
     color: var(--text-secondary);
     line-height: 1.6;
-  }
-  .kicker {
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    font-size: 0.75rem;
-    color: #52525b;
-    margin-bottom: 0.35rem;
   }
   .equations {
     border: 1px solid var(--border-subtle);

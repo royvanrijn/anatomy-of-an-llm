@@ -348,11 +348,13 @@ Human:
 
 ### Chapter 14 - Context Window And KV Cache
 
-- [ ] Explain token window limits and truncation behavior
-- [ ] Show decode loop with and without KV cache
-- [ ] Visualize compute reuse conceptually
+- [x] Explain token window limits and truncation behavior
+- [x] Show decode loop with and without KV cache
+- [x] Visualize compute reuse conceptually
+- [x] Add interactive context/generated-token controls and cache on/off tradeoff view
 
 Automated:
+- [x] chapter build/render checks pass
 - [ ] deterministic decode-step fixtures pass
 
 Human:
@@ -360,11 +362,13 @@ Human:
 
 ### Chapter 15 - Quantization
 
-- [ ] Show high-precision to low-bit mapping
-- [ ] Visualize value snapping and accuracy/efficiency trade-offs
-- [ ] Label toy quantization examples clearly
+- [x] Show high-precision to low-bit mapping
+- [x] Visualize value snapping and accuracy/efficiency trade-offs
+- [x] Label toy quantization examples clearly
+- [x] Add interactive precision selector with 8B-model size guestimate comparison
 
 Automated:
+- [x] chapter build/render checks pass
 - [ ] quantization mapping tests pass
 - [ ] deterministic fixtures pass
 
@@ -396,8 +400,8 @@ Human:
 ## Documentation Maintenance Cadence
 
 Per PR:
-- [ ] update this file (`plans/progress.md`)
-- [ ] update any changed assumptions in relevant docs
+- [x] update this file (`plans/progress.md`)
+- [x] update any changed assumptions in relevant docs
 - [ ] list changed files, tests run, open questions in PR description
 
 Per milestone completion:
@@ -447,9 +451,16 @@ Per milestone completion:
 - Open risks:
 
 #### Milestone 6 Summary
-- Date:
-- Owner:
-- Completed:
-- Automated gates:
-- Human checkpoint outcomes:
-- Open risks:
+- Date: 2026-05-22
+- Owner: Roy + Codex
+- Completed: Chapters 11-15 implemented and integrated into narrative flow; chapter 9 reframed to include multi-head attention directly; closing section added; BETA ribbon + disclaimer added.
+- Automated gates: `npm run build` passed repeatedly during milestone iteration, `npm run test` currently available (run per PR), static-only constraint preserved.
+- Human checkpoint outcomes: visual and pedagogy reviews ongoing during iterative implementation; chapter-by-chapter refinements applied.
+- Open risks: some chapters still need final content polish and stricter correctness pass before production launch.
+
+### Documentation Sync Log
+
+- [x] `docs/curriculum.md` updated to match implemented chapter behavior (notably chapters 12, 14, 15).
+- [x] `README.md` rewritten for public GitHub launch readiness.
+- [x] `docs/deployment-github-pages.md` added with reviewer-hosting steps.
+- [x] `src/pages/index.astro` updated with visible BETA disclaimer.

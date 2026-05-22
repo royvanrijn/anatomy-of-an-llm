@@ -12,6 +12,8 @@ import RopeChapter from "../components/chapters/RopeChapter.svelte";
 import TransformerBlockChapter from "../components/chapters/TransformerBlockChapter.svelte";
 import TrainingPhasesChapter from "../components/chapters/TrainingPhasesChapter.svelte";
 import PostTrainingChapter from "../components/chapters/PostTrainingChapter.svelte";
+import ContextKvCacheChapter from "../components/chapters/ContextKvCacheChapter.svelte";
+import QuantizationChapter from "../components/chapters/QuantizationChapter.svelte";
 import TokenizationChapter from "../components/chapters/TokenizationChapter.svelte";
 import ChapterShell from "../components/ChapterShell.astro";
 import PrimitiveShowcase from "../components/PrimitiveShowcase.astro";
@@ -33,8 +35,8 @@ const chapterList = [
   { id: "c11", number: "11", title: "Transformer Block", status: "active" as const },
   { id: "c12", number: "12", title: "Training Phases", status: "active" as const },
   { id: "c13", number: "13", title: "Post-Training", status: "active" as const },
-  { id: "c14", number: "14", title: "Context and KV Cache", status: "planned" as const },
-  { id: "c15", number: "15", title: "Quantization", status: "planned" as const }
+  { id: "c14", number: "14", title: "Context and KV Cache", status: "active" as const },
+  { id: "c15", number: "15", title: "Quantization", status: "active" as const }
 ];
 
 const chapterNav = chapterList.map((chapter) => ({
@@ -46,6 +48,12 @@ const chapterNav = chapterList.map((chapter) => ({
 ---
 
 <BaseLayout>
+  <aside class="beta-ribbon" tabindex="0" aria-label="Beta disclaimer">
+    <span>BETA</span>
+    <div class="beta-tooltip" role="note">
+      Work in progress: visuals, explanations, and values are still being refined. You may encounter issues or inaccuracies.
+    </div>
+  </aside>
   <header class="hero">
     <p class="eyebrow">Interactive Explainer</p>
     <h1>The Anatomy of an LLM</h1>
@@ -77,10 +85,7 @@ const chapterNav = chapterList.map((chapter) => ({
         <article>
           <p>Who made this</p>
           <p>
-            This explainer was created by:
-          </p>
-          <p>
-            Roy van Rijn @ <a href="https://www.openvalue.eu">openvalue</a>
+            Roy van Rijn working at <a href="https://www.openvalue.eu">openvalue</a>
           </p>
         </article>
       </div>
@@ -133,6 +138,7 @@ const chapterNav = chapterList.map((chapter) => ({
                     We start with the first thing a language model receives: text. Before any vectors, attention, or prediction
                     can happen, that text has to be rewritten as a sequence of token IDs.
                   </p>
+                  <p class="story-subtitle">Token pieces and IDs</p>
                   <TokenizationChapter data={tokenizationData} client:load />
                   <div class="story-beat">
                     <p>The thing to notice</p>
@@ -148,6 +154,7 @@ const chapterNav = chapterList.map((chapter) => ({
                     Token IDs are still just symbols. The embedding layer turns each one into a numeric vector so similar
                     contexts can be represented and compared in continuous space.
                   </p>
+                  <p class="story-subtitle">From token ID to embedding vector</p>
                   <EmbeddingChapter
                     tokenizationData={tokenizationData}
                     embeddingData={embeddingsData}
@@ -167,6 +174,7 @@ const chapterNav = chapterList.map((chapter) => ({
                     The embedding vector then flows into neurons. Each neuron computes a weighted sum,
                     and applies an activation function to produce a transformed signal for the next layer.
                   </p>
+                  <p class="story-subtitle">Single-neuron transformation</p>
                   <SingleNeuronChapter client:load />
                   <div class="story-beat">
                     <p>The thing to notice</p>
@@ -182,6 +190,7 @@ const chapterNav = chapterList.map((chapter) => ({
                     Now we zoom in on forward computation only. The point is to connect the familiar neuron drawing to
                     the matrix form used in real implementations.
                   </p>
+                  <p class="story-subtitle">Dense layer math, visually</p>
                   <NeuralNetworkChapter client:load />
                   <div class="story-beat">
                     <p>The thing to notice</p>
@@ -199,6 +208,7 @@ const chapterNav = chapterList.map((chapter) => ({
                     (output width = tokenizer vocabulary size).
                     Temperature and sampling strategy then decide how deterministic or diverse the next token is.
                   </p>
+                  <p class="story-subtitle">From logits to generated output</p>
                   <LogitsSamplingChapter client:load />
                   <div class="story-beat">
                     <p>The thing to notice</p>
@@ -224,6 +234,7 @@ const chapterNav = chapterList.map((chapter) => ({
                     Once we have logits and a target token, we can measure error with loss. Backpropagation then sends
                     that error signal backward through the network to compute how every weight should change.
                   </p>
+                  <p class="story-subtitle">Error becomes learning signal</p>
                   <BackpropagationChapter client:load />
                   <div class="story-beat">
                     <p>The thing to notice</p>
@@ -239,6 +250,7 @@ const chapterNav = chapterList.map((chapter) => ({
                     Gradients tell us the direction to go. Optimizers decide how to move along that direction over time.
                     Different update rules can make training smooth, noisy, fast, or unstable.
                   </p>
+                  <p class="story-subtitle">Different update rules, same gradients</p>
                   <OptimizersChapter client:load />
                   <div class="story-beat">
                     <p>The thing to notice</p>
@@ -255,6 +267,7 @@ const chapterNav = chapterList.map((chapter) => ({
                     every token can look at other tokens, decide which ones matter for its current context, and pull
                     a weighted mixture of their information forward.
                   </p>
+                  <p class="story-subtitle">How tokens exchange information</p>
                   <QkvChapter client:load />
                   <div class="story-beat">
                     <p>The thing to notice</p>
@@ -276,7 +289,12 @@ const chapterNav = chapterList.map((chapter) => ({
                   <p class="story-lead">
                     Now we move from intuition to exact attention math. We compute query-key scores, normalize them
                     row-wise with softmax, and use those weights to mix value vectors into a new output representation.
-                   </p>
+                  </p>
+                  <p class="story-lead">
+                    One token asks a question through its query vector, every token advertises a key, and softmax converts
+                    compatibility scores into a 100% attention budget over the sequence.
+                  </p>
+                  <p class="story-subtitle">Raw scores -> softmax weights -> value mixing</p>
                   <AttentionMathChapter client:load />
                   <div class="story-beat">
                     <p>The thing to notice</p>
@@ -292,6 +310,11 @@ const chapterNav = chapterList.map((chapter) => ({
                     RoPE (Rotary Positional Encoding) makes attention position-aware by rotating query and key dimension
                     pairs based on token position. This keeps token identity while changing compatibility by relative offset.
                   </p>
+                  <p class="story-lead">
+                    The important part is relative distance: after rotation, dot products change with token offsets, so
+                    order information is available to attention without adding a plain position vector to values.
+                  </p>
+                  <p class="story-subtitle">Relative position through rotation</p>
                   <RopeChapter client:load />
                   <div class="story-beat">
                     <p>The thing to notice</p>
@@ -307,6 +330,11 @@ const chapterNav = chapterList.map((chapter) => ({
                     Now we assemble one full Transformer block so each piece has a place in the bigger system:
                     norm, attention, residual connection, norm, and feed-forward network.
                   </p>
+                  <p class="story-lead">
+                    This chapter bridges toy visuals and real systems by showing the repeated block pattern that powers
+                    modern decoder-only models.
+                  </p>
+                  <p class="story-subtitle">One modern decoder block, end-to-end</p>
                   <TransformerBlockChapter client:load />
                   <div class="story-beat">
                     <p>The thing to notice</p>
@@ -322,6 +350,11 @@ const chapterNav = chapterList.map((chapter) => ({
                     Next we zoom out from one block and look at training dynamics over time: rapid fitting early on,
                     slower consolidation, and sometimes delayed generalization.
                   </p>
+                  <p class="story-lead">
+                    Rather than memorizing one curve shape, focus on behavior over time: early progress can look noisy,
+                    and some generalization effects appear much later.
+                  </p>
+                  <p class="story-subtitle">How behavior changes across training</p>
                   <TrainingPhasesChapter client:load />
                   <div class="story-beat">
                     <p>The thing to notice</p>
@@ -337,12 +370,57 @@ const chapterNav = chapterList.map((chapter) => ({
                     After base pre-training, we tune behavior in stages: instruction-following first, then preference
                     alignment. The capability base is similar, but output style and helpfulness shift a lot.
                   </p>
+                  <p class="story-lead">
+                    Post-training mostly changes response behavior: following instructions, clarifying, formatting well,
+                    and aligning with preferred safety and quality policies.
+                  </p>
+                  <p class="story-subtitle">From capability to assistant behavior</p>
                   <PostTrainingChapter client:load />
                   <div class="story-beat">
                     <p>The thing to notice</p>
                     <p>
                       Pre-training builds broad competence. Post-training mostly steers how that competence is used:
                       directness, formatting, and alignment with user intent.
+                    </p>
+                  </div>
+                </>
+              ) : chapter.number === "14" ? (
+                <>
+                  <p class="story-lead">
+                    Generation is step-by-step, so inference can become expensive as context grows. KV cache changes
+                    this by reusing previously computed keys and values instead of recomputing the full history each step.
+                  </p>
+                  <p class="story-lead">
+                    In practice this is a compute-memory tradeoff: hold more state in memory, save substantial repeated
+                    attention work per generated token.
+                  </p>
+                  <p class="story-subtitle">Compute-memory tradeoff during inference</p>
+                  <ContextKvCacheChapter client:load />
+                  <div class="story-beat">
+                    <p>The thing to notice</p>
+                    <p>
+                      KV cache trades memory for speed: we store more intermediate state, but avoid repeated attention
+                      compute over old tokens on every decode step.
+                    </p>
+                  </div>
+                </>
+              ) : chapter.number === "15" ? (
+                <>
+                  <p class="story-lead">
+                    Quantization compresses model weights to lower precision so large models can run on smaller hardware.
+                    This usually means a small quality tradeoff in exchange for a major memory and local deployment win.
+                  </p>
+                  <p class="story-lead">
+                    Lower bit-width means fewer bytes per parameter. The benefit is large memory reduction; the cost is
+                    approximation error from quantize/dequantize steps.
+                  </p>
+                  <p class="story-subtitle">Bit-width vs quality and memory</p>
+                  <QuantizationChapter client:load />
+                  <div class="story-beat">
+                    <p>The thing to notice</p>
+                    <p>
+                      Fewer bits per weight shrink total model size dramatically. For local usage, this can be the
+                      difference between “cannot load” and “runs comfortably”.
                     </p>
                   </div>
                 </>
@@ -371,10 +449,119 @@ const chapterNav = chapterList.map((chapter) => ({
         </div>
       ))
     }
+
+    <section id="closing" class="closing-section" aria-labelledby="closing-heading">
+      <p class="intro-kicker">Closing</p>
+      <p class="intro-lead">
+        At the start, a language model may have looked like a black box: text goes in, answers come out.
+      </p>
+      <p class="intro-lead">
+        Now you have seen the machinery inside. Text is split into tokens. Tokens become vectors. Attention moves
+        information between positions. RoPE gives attention a sense of order. MLP layers transform each token’s
+        representation. Transformer blocks repeat this process many times, and the final vector is turned into logits:
+        a probability distribution over the next token.
+      </p>
+      <p class="intro-lead">
+        Training is what makes those transformations useful. Every next-token mistake becomes a learning signal. Across
+        enormous amounts of text, the model slowly shapes its weights into a system that can complete, reason, summarize,
+        translate, code, and converse. Post-training does not create all of that from scratch; it teaches the model how
+        to use those capabilities in a way that better follows instructions and human preferences.
+      </p>
+      <p class="intro-lead">
+        This walkthrough is simplified, but the simplification is intentional. Once you understand the flow, the larger
+        systems become easier to reason about.
+      </p>
+      <div class="intro-grid closing-grid">
+        <article>
+          <p>What you now know</p>
+          <p>
+            How text becomes tokens, how tokens become vectors, how attention routes information, and how transformer
+            blocks turn context into next-token probabilities.
+          </p>
+        </article>
+        <article>
+          <p>What we simplified</p>
+          <p>
+            Real models use huge datasets, distributed training, mixed precision, specialized kernels, safety systems,
+            and many architecture-specific details.
+          </p>
+        </article>
+        <article>
+          <p>Where to go next</p>
+          <p>
+            Build a tiny GPT, inspect attention heads, read the Transformer paper, or compare modern architectures like
+            Llama, Mistral, and GPT-style decoder models.
+          </p>
+        </article>
+      </div>
+      <div class="closing-references">
+        <p>References</p>
+        <ul>
+          <li><a href="https://www.3blue1brown.com/topics/neural-networks">3Blue1Brown — Neural Networks / Transformers</a>: a visual, math-friendly series explaining neural networks, attention, and transformer internals.</li>
+          <li><a href="https://jalammar.github.io/illustrated-transformer/">Jay Alammar — The Illustrated Transformer</a>: a classic visual explanation of the original Transformer architecture and attention flow.</li>
+          <li><a href="https://karpathy.ai/zero-to-hero.html">Andrej Karpathy — Neural Networks: Zero to Hero</a>: a code-first path from tiny neural networks to building a GPT-style model from scratch.</li>
+          <li><a href="https://stanford-cs336.github.io/spring2025/">Stanford CS336 — Language Modeling from Scratch</a>: a modern course on building language models end-to-end: data, tokenization, training, scaling, evaluation, and deployment.</li>
+          <li><a href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a>: the original Transformer paper.</li>
+        </ul>
+      </div>
+      <p class="closing-credit">
+        © 2026 · Created by Roy van Rijn at OpenValue · Built with OpenAI Codex
+      </p>
+    </section>
   </main>
 </BaseLayout>
 
 <style>
+  .beta-ribbon {
+    position: fixed;
+    top: 0.75rem;
+    right: 0.75rem;
+    z-index: 80;
+    background: rgba(12, 74, 110, 0.92);
+    color: #f8fafc;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 999px;
+    padding: 0.28rem 0.62rem;
+    font-size: 0.67rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: help;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.25);
+    user-select: none;
+  }
+
+  .beta-ribbon > span {
+    display: inline-block;
+    font-weight: 700;
+  }
+
+  .beta-tooltip {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    width: min(20rem, 68vw);
+    padding: 0.52rem 0.62rem;
+    border-radius: 10px;
+    border: 1px solid rgba(148, 163, 184, 0.4);
+    background: rgba(248, 250, 252, 0.98);
+    color: #334155;
+    font-size: 0.78rem;
+    line-height: 1.45;
+    letter-spacing: 0.01em;
+    text-transform: none;
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.18);
+    opacity: 0;
+    transform: translateY(-4px);
+    pointer-events: none;
+    transition: opacity 140ms ease, transform 140ms ease;
+  }
+
+  .beta-ribbon:hover .beta-tooltip,
+  .beta-ribbon:focus-visible .beta-tooltip {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
   .hero {
     margin: 0 0 1.4rem;
     padding: 1.8rem;
@@ -422,6 +609,14 @@ const chapterNav = chapterList.map((chapter) => ({
     margin: 0;
     font-size: 1rem;
     line-height: 1.6;
+  }
+
+  .story-subtitle {
+    margin: -0.2rem 0 0.1rem;
+    color: #52525b;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    font-size: 0.74rem;
   }
 
   .story-beat {
@@ -577,6 +772,74 @@ const chapterNav = chapterList.map((chapter) => ({
     font-size: 0.83rem;
     color: var(--text-secondary);
     line-height: 1.5;
+  }
+
+  .closing-section {
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    background:
+      radial-gradient(circle at 15% 0%, rgba(21, 106, 130, 0.14), transparent 42%),
+      linear-gradient(150deg, rgba(255, 255, 255, 0.9), rgba(247, 243, 233, 0.88));
+    box-shadow: var(--shadow-soft);
+    padding: 1.35rem 1.4rem;
+    margin: 0.4rem 0 1.4rem;
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  .closing-grid article {
+    background: rgba(255, 255, 255, 0.68);
+  }
+
+  .closing-references {
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.62);
+    padding: 0.85rem 0.9rem;
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .closing-references > p {
+    margin: 0;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #52525b;
+  }
+
+  .closing-references ul {
+    margin: 0;
+    padding-left: 1.1rem;
+    display: grid;
+    gap: 0.25rem;
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+
+  .closing-references a {
+    color: #334155;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(51, 65, 85, 0.22);
+    transition: color 140ms ease, border-color 140ms ease;
+  }
+
+  .closing-references a:hover,
+  .closing-references a:focus-visible {
+    color: #155e75;
+    border-color: rgba(21, 94, 117, 0.5);
+    outline: none;
+  }
+
+  .closing-credit {
+    margin: 0.25rem 0 0;
+    justify-self: end;
+    text-align: right;
+    color: #155e75;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.72rem;
   }
 
   @media (max-width: 900px) {

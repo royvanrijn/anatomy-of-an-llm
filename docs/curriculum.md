@@ -259,15 +259,16 @@ Current content focus:
 
 ---
 
-## Chapter 12 — Training phases and grokking (in progress)
+## Chapter 12 — Training phases and grokking (implemented)
 
 Purpose: show staged training behavior and delayed generalization at a conceptual level.
 
 Current interaction:
 
-* select phase (fit / plateau / delayed generalization)
-* move optimization-step marker across a toy curve
-* compare train vs validation loss trajectories at the marker step
+* step slider drives stage progression (early fit -> consolidation -> later generalization)
+* stage cards and explanations update from slider position
+* only information up to current step is revealed on the curves
+* train/validation trajectories are intentionally noisy toy signals for intuition
 
 Current content focus:
 
@@ -296,92 +297,42 @@ Current content focus:
 
 ---
 
-## Chapter 14 — Context window and KV cache
+## Chapter 14 — Context window and KV cache (implemented)
 
-Show autoregressive generation:
+Purpose: explain autoregressive decode cost and why KV cache speeds up generation.
 
-```text
-prompt tokens
-→ predict next token
-→ append token
-→ repeat
-```
-
-KV cache visual:
-
-Without cache:
-
-```text
-recompute keys and values for all previous tokens every step
-```
-
-With cache:
-
-```text
-store K/V from previous tokens
-reuse them
-compute only new token’s K/V
-```
-
-Controls:
+Current interaction:
 
 * context length slider
-* generated tokens slider
-* KV cache on/off
-* compute cost display
-* memory cost display
+* generated token slider
+* direct side-by-side comparison cards (`without cache` vs `with cache`)
+* estimated memory growth indicator for stored K/V states
 
-Use relative bars, not exact model-specific claims.
+Current content focus:
+
+* decode loop: prompt -> next token -> append -> repeat
+* without cache: recompute historical attention states each step
+* with cache: reuse prior K/V and compute only for new token
+* tradeoff framing: lower compute vs higher memory footprint
 
 ---
 
-## Chapter 15 — Quantization
+## Chapter 15 — Quantization (implemented)
 
-Show FP32 matrix:
+Purpose: explain how lower-bit weights reduce model size and enable local deployment.
 
-```text
-[ 0.18374  -1.20491   0.00712 ]
-[ 2.91822   0.44201  -0.99123 ]
-```
+Current interaction:
 
-Show INT8 matrix:
+* precision selector (`FP32`, `FP16`, `INT8`, `INT4`)
+* single large 5x5 matrix view that updates by selected precision
+* range and unique-value summary for the selected quantized representation
+* 8B-model size estimate cards for selected precision
 
-```text
-[  8   -53    0 ]
-[127    19  -43 ]
+Current content focus:
 
-scale = 0.02298
-```
-
-Show reconstruction:
-
-```text
-int8 value × scale ≈ original value
-```
-
-Controls:
-
-* FP32 / FP16 / BF16 / INT8 / INT4
-* per-tensor scale / per-channel scale
-* reconstructed values
-* absolute error heatmap
-* parameter count slider
-
-Size calculator example:
-
-```text
-7B parameters:
-
-FP32: 28 GB
-FP16/BF16: 14 GB
-INT8: 7 GB
-INT4: 3.5 GB
-```
-
-Key message:
-
-```text
-Quantization stores weights with fewer bits. The challenge is preserving enough numerical structure.
-```
+* fewer bits per parameter reduce total memory footprint
+* FP16 visibly rounds compared to FP32
+* INT8/INT4 store integer codes plus scaling and reconstruct float-like values at runtime
+* local deployment benefit is substantial despite possible quality tradeoffs
 
 ---

@@ -97,7 +97,7 @@
 
 <section class="embedding-chapter">
   <div class="explainer">
-    <p class="title">From token ID to vector</p>
+    <p class="title">Embedding lookup</p>
     <p>
       After tokenization, each token ID is used as an index into an embedding table. The selected row is a
       high-dimensional vector that becomes the model's starting representation for that token.

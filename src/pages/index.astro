@@ -23,14 +23,14 @@ import tokenizationData from "../data/generated/tokenization-o200k-base.json";
 
 const chapterList = [
   { id: "c1", number: "01", title: "Tokenization", status: "active" as const },
-  { id: "c2", number: "02", title: "Vector Embedding", status: "active" as const },
+  { id: "c2", number: "02", title: "Vector Embeddings", status: "active" as const },
   { id: "c3", number: "03", title: "Neuron Activation", status: "active" as const },
-  { id: "c4", number: "04", title: "Feed Forward Neural Network", status: "active" as const },
+  { id: "c4", number: "04", title: "Feed-Forward Neural Network", status: "active" as const },
   { id: "c5", number: "05", title: "Logits and Sampling", status: "active" as const },
   { id: "c6", number: "06", title: "Backpropagation", status: "active" as const },
   { id: "c7", number: "07", title: "Optimizers", status: "active" as const },
-  { id: "c8", number: "08", title: "Attention Q/K/V", status: "active" as const },
-  { id: "c9", number: "09", title: "Multi-Headed Attention", status: "active" as const },
+  { id: "c8", number: "08", title: "Attention: Q, K, and V", status: "active" as const },
+  { id: "c9", number: "09", title: "Multi-Head Attention", status: "active" as const },
   { id: "c10", number: "10", title: "RoPE", status: "active" as const },
   { id: "c11", number: "11", title: "Transformer Block", status: "active" as const },
   { id: "c12", number: "12", title: "Training Phases", status: "active" as const },
@@ -46,6 +46,24 @@ const chapterNav = chapterList.map((chapter) => ({
   status: chapter.status
 }));
 
+const chapterHooks: Record<string, string> = {
+  "01": "Before a model can think about text, the text has to become numbers.",
+  "02": "Token IDs are just labels. Embeddings turn those labels into something the network can work with.",
+  "03": "A weighted sum is not enough. The non-linearity is where the network gets expressive.",
+  "04": "A real layer is not one neuron. It is many simple computations running in parallel.",
+  "05": "The model does not directly output a word. It outputs scores for possible next tokens.",
+  "06": "To learn, the model needs to know which parameters helped cause the mistake.",
+  "07": "Gradients point downhill. Optimizers decide how to walk.",
+  "08": "Attention lets tokens pull useful information from other tokens.",
+  "09": "One attention pattern is useful. Many attention patterns in parallel are much more powerful.",
+  "10": "Attention needs to know order. RoPE gives position information directly to the attention mechanism.",
+  "11": "This is where the pieces become the repeated structure of the model.",
+  "12": "Training is not magic. It is many small prediction errors turned into parameter updates.",
+  "13": "Pretraining gives the model capability. Post-training shapes how that capability behaves.",
+  "14": "Generating text one token at a time would be painfully wasteful without caching.",
+  "15": "Big models are often limited by memory. Quantization makes them smaller by storing numbers with fewer bits."
+};
+
 const brandLogoSrc = `${import.meta.env.BASE_URL}/brand/openvalue-wordmark-white.svg`;
 ---
 
@@ -60,8 +78,8 @@ const brandLogoSrc = `${import.meta.env.BASE_URL}/brand/openvalue-wordmark-white
     <p class="eyebrow">Interactive Explainer</p>
     <h1>The Anatomy of an LLM</h1>
     <p>
-      A visual walkthrough from real GPT tokenization to transformer internals, training dynamics, inference
-      trade-offs, and quantization.
+      A visual walk through the machinery inside a large language model: from raw text, to tokens, to vectors,
+      to attention, to the next token.
     </p>
   </header>
   <StoryProgressNav chapters={chapterNav} />
@@ -71,10 +89,24 @@ const brandLogoSrc = `${import.meta.env.BASE_URL}/brand/openvalue-wordmark-white
       <p class="intro-kicker">Introduction</p>
       <h2 id="intro-heading">Introduction</h2>
       <p class="intro-lead">
-        Currently you read about LLMs everywhere, but it is still hard to see what is actually happening under the hood.
-        This explainer opens the model up and follows the internal path step by step.
+        Large language models can feel like black boxes. You type a prompt, something smart comes back, and
+        somewhere in the middle billions of parameters supposedly did "AI".
       </p>
-      <p class="intro-pipeline">text -> tokens -> vectors -> attention -> probabilities -> sampled output</p>
+      <p class="intro-lead">This guide opens that box.</p>
+      <p class="intro-lead">
+        We will follow one chain from beginning to end. First, text is split into tokens. Those tokens become
+        vectors. The vectors move through layers of attention and feed-forward networks. At the end, the model
+        produces scores for possible next tokens, and a decoding strategy chooses what comes out.
+      </p>
+      <p class="intro-lead">
+        The goal is not to memorize every formula. The goal is to understand what changes at each step, and why
+        that step exists at all.
+      </p>
+      <p class="intro-lead">By the end, you should be able to trace the full path:</p>
+      <p class="intro-pipeline">text -> tokens -> vectors -> transformer blocks -> logits -> sampling -> output</p>
+      <p class="intro-lead">
+        And once you can trace that path, the black box becomes a lot smaller.
+      </p>
       <div class="intro-grid">
         <article>
           <p>What you get</p>
@@ -115,46 +147,71 @@ const brandLogoSrc = `${import.meta.env.BASE_URL}/brand/openvalue-wordmark-white
             id={chapter.id}
             number={chapter.number}
             title={chapter.title}
-            summary={chapter.number === "01"
-              ? "The first step in turning text into something a model can calculate with."
-              : chapter.number === "02"
-              ? "Each token ID becomes a row lookup in an embedding table, producing a high-dimensional vector."
-              : chapter.number === "03"
-              ? "Weighted inputs create a pre-activation value, then a non-linearity shapes the neuron output."
-              : chapter.number === "04"
-              ? "How feed-forward layers transform token representations using matrix multiplications and activations."
-              : chapter.number === "05"
-              ? "How hidden states become logits, probabilities, and finally a sampled next token."
-              : chapter.number === "06"
-              ? "How prediction error turns into gradients, and how one update step nudges weights to reduce loss."
-              : chapter.number === "07"
-              ? "How different optimizer rules use the same gradients but still produce different update trajectories."
-              : chapter.number === "08"
-              ? "How each token becomes Query, Key, and Value vectors, and how similarity weights mix information."
-              : "How this concept fits into the LLM pipeline, with a focused visual walkthrough and a concrete practical takeaway."}
+            summary={chapterHooks[chapter.number]}
           >
             {
               chapter.number === "01" ? (
                 <>
                   <p class="story-lead">
-                    We start with the first thing a language model receives: text. Before any vectors, attention, or prediction
-                    can happen, that text has to be rewritten as a sequence of token IDs.
+                    A language model does not read words and sentences the way we do. It reads a sequence of token IDs:
+                    integers produced by a tokenizer.
+                  </p>
+                  <p class="story-lead">
+                    That makes tokenization the real entrance to the model. Everything after this point works with
+                    numbers, not raw characters.
+                  </p>
+                  <p class="story-lead">
+                    A token can be a whole word, part of a word, punctuation, whitespace, or a piece of something strange
+                    like code, emoji, or a name. This is why tokenization often looks a bit weird when you first see it.
+                    The tokenizer is not trying to split text the way a human would. It is trying to represent text
+                    efficiently using a fixed vocabulary.
+                  </p>
+                  <p class="story-lead">
+                    If every token were a full word, the vocabulary would explode. If every token were a single character
+                    or byte, every sentence would become very long. Modern tokenizers live between those extremes.
                   </p>
                   <p class="story-subtitle">Token pieces and IDs</p>
                   <TokenizationChapter data={tokenizationData} client:load />
                   <div class="story-beat">
-                    <p>The thing to notice</p>
+                    <p>Important takeaway</p>
                     <p>
-                      Token boundaries are not always word boundaries. Spaces, punctuation, uncommon words, code, and accents
-                      can all change how text is split. Everything that follows in the model starts from this sequence.
+                      Tokenization is not just preprocessing. It determines what the model can see in one context window,
+                      how expensive your text is, and which pieces the model is allowed to predict next.
+                    </p>
+                  </div>
+                  <div class="story-beat">
+                    <p>One word is not one token</p>
+                    <p>
+                      Different models use different tokenizers. The same sentence can become a different number of tokens
+                      depending on the model.
                     </p>
                   </div>
                 </>
               ) : chapter.number === "02" ? (
                 <>
                   <p class="story-lead">
-                    Token IDs are still just symbols. The embedding layer turns each one into a numeric vector so similar
-                    contexts can be represented and compared in continuous space.
+                    After tokenization, every token is represented by an integer ID. But an ID by itself has no useful
+                    geometry. Token <code>15339</code> is not "close to" token <code>15340</code> in any meaningful way.
+                    The numbers are just labels, like row numbers in a table.
+                  </p>
+                  <p class="story-lead">
+                    The embedding layer solves this by turning each token ID into a vector: a list of learned numbers.
+                    Technically, this is a lookup. The model has an embedding matrix, and each token ID selects one row
+                    from that matrix.
+                  </p>
+                  <p class="story-lead">
+                    Conceptually, this is the moment where discrete symbols enter a continuous space. Once tokens become
+                    vectors, the model can compare them, combine them, rotate them, project them, and gradually reshape them.
+                  </p>
+                  <p class="story-lead">
+                    The values inside these vectors are learned during training. Tokens that appear in similar contexts
+                    often end up with related vectors, but this is not a clean dictionary of meanings. It is more like a
+                    messy, high-dimensional coordinate system full of useful signals.
+                  </p>
+                  <p class="story-lead">
+                    The initial embedding is mostly context-free. The token "bank" starts with the same embedding in
+                    "river bank" and "investment bank". Later layers use surrounding tokens to rewrite that vector into
+                    something more specific.
                   </p>
                   <p class="story-subtitle">From token ID to embedding vector</p>
                   <EmbeddingChapter
@@ -163,266 +220,529 @@ const brandLogoSrc = `${import.meta.env.BASE_URL}/brand/openvalue-wordmark-white
                     client:load
                   />
                   <div class="story-beat">
-                    <p>The thing to notice</p>
+                    <p>Important takeaway</p>
                     <p>
-                      The model does not memorize one scalar meaning per token. It starts with a whole vector, and each
-                      dimension contributes a small part of the representation used by later layers.
+                      An embedding is the token's starting representation, not its final meaning. The rest of the model
+                      will keep rewriting that vector as context flows through the network.
+                    </p>
+                  </div>
+                  <div class="story-beat">
+                    <p>Toy scale</p>
+                    <p>
+                      In this explainer we use small vectors because they fit on screen. Real models use much wider
+                      vectors: hundreds, thousands, or more dimensions per token.
                     </p>
                   </div>
                 </>
               ) : chapter.number === "03" ? (
                 <>
                   <p class="story-lead">
-                    The embedding vector then flows into neurons. Each neuron computes a weighted sum,
-                    and applies an activation function to produce a transformed signal for the next layer.
+                    A neuron takes inputs, multiplies them by weights, adds them together, and produces a number. But if
+                    that were the whole story, deep learning would not be very deep.
+                  </p>
+                  <p class="story-lead">
+                    Without activation functions, stacking layers would still behave like one large linear transformation.
+                    You could multiply matrices together and collapse the whole stack into a single matrix.
+                  </p>
+                  <p class="story-lead">
+                    The activation function breaks that linearity. It decides how much of a signal passes through. Some
+                    values are amplified, some are softened, some are pushed toward zero.
+                  </p>
+                  <p class="story-lead">
+                    This lets the network build curved, conditional, non-linear transformations instead of only scaling
+                    and rotating vectors. Real models do this in huge batches using matrix operations, with millions of
+                    activations happening at once.
                   </p>
                   <p class="story-subtitle">Single-neuron transformation</p>
                   <SingleNeuronChapter client:load />
                   <div class="story-beat">
-                    <p>The thing to notice</p>
+                    <p>Important takeaway</p>
                     <p>
-                      The activation function is not cosmetic. It changes how information can flow and is the key reason
-                      stacked layers can model non-linear structure.
+                      The activation function is not decoration. It is what lets stacked layers become more than one big
+                      linear calculation.
+                    </p>
+                  </div>
+                  <div class="story-beat">
+                    <p>Modern choices</p>
+                    <p>
+                      Modern transformer models may use GELU, SiLU, or gated variants like SwiGLU. The exact choice changes
+                      both the forward signal and how gradients flow during training.
                     </p>
                   </div>
                 </>
               ) : chapter.number === "04" ? (
                 <>
                   <p class="story-lead">
-                    Now we zoom in on forward computation only. The point is to connect the familiar neuron drawing to
-                    the matrix form used in real implementations.
+                    A single neuron is a useful teaching tool, but models do not process one neuron at a time. A
+                    feed-forward network applies many learned transformations in parallel.
+                  </p>
+                  <p class="story-lead">
+                    Instead of drawing every neuron and every connection, implementations usually express the same thing
+                    as matrix multiplication. The friendly diagram says inputs flow through neurons. The implementation
+                    says multiply a matrix, apply an activation, multiply another matrix.
+                  </p>
+                  <p class="story-lead">
+                    Those are the same story at different scales.
+                  </p>
+                  <p class="story-lead">
+                    In transformer blocks, the feed-forward part usually works position by position. Each token vector is
+                    expanded into a wider hidden representation, passed through a non-linearity, and projected back to the
+                    model width.
+                  </p>
+                  <p class="story-lead">
+                    Attention moves information between positions. The feed-forward network transforms the information
+                    inside each position.
                   </p>
                   <p class="story-subtitle">Dense layer math, visually</p>
                   <NeuralNetworkChapter client:load />
                   <div class="story-beat">
-                    <p>The thing to notice</p>
+                    <p>Important takeaway</p>
                     <p>
-                      The graph and matrices are exactly the same operation. Every edge corresponds to one weight matrix
-                      cell, and each layer output is computed as <code>X·W</code> before activation.
+                      The feed-forward network is where each token vector gets rewritten. It is not about moving information
+                      between tokens; it is about transforming the representation at each token position.
+                    </p>
+                  </div>
+                  <div class="story-beat">
+                    <p>Matrix view</p>
+                    <p>
+                      The matrix view is not a less intuitive version of the neuron diagram. It is the scalable version of
+                      the same computation.
                     </p>
                   </div>
                 </>
               ) : chapter.number === "05" ? (
                 <>
                   <p class="story-lead">
-                    After the network computes a final hidden state, we project it onto the vocabulary to get logits.
-                    That means the output projection has one score per tokenizer vocabulary token
-                    (output width = tokenizer vocabulary size).
-                    Temperature and sampling strategy then decide how deterministic or diverse the next token is.
+                    After the model has processed the input, it still has not chosen a word. What it has produced is a
+                    vector of raw scores: one score for every token in the vocabulary. These scores are called logits.
+                  </p>
+                  <p class="story-lead">
+                    A logit is not a probability. It is just an unnormalized score. Higher usually means "the model thinks
+                    this token fits better here", but the numbers do not yet add up to 100%.
+                  </p>
+                  <p class="story-lead">
+                    To turn logits into probabilities, we apply softmax. Then comes decoding: the policy for choosing the
+                    next token from that distribution.
+                  </p>
+                  <p class="story-lead">
+                    Greedy decoding always picks the most likely token. Temperature changes the shape of the distribution.
+                    Top-k limits the choice to the k most likely tokens. Top-p, also called nucleus sampling, chooses from
+                    the smallest group of tokens whose total probability passes a threshold.
+                  </p>
+                  <p class="story-lead">
+                    The model produces the distribution. The decoder decides how adventurous we are when sampling from it.
                   </p>
                   <p class="story-subtitle">From logits to generated output</p>
                   <LogitsSamplingChapter client:load />
                   <div class="story-beat">
-                    <p>The thing to notice</p>
+                    <p>Important takeaway</p>
                     <p>
-                      Logits are not probabilities yet. Softmax turns relative score differences into a distribution,
-                      and temperature reshapes that distribution before sampling.
+                      The model usually does not contain one fixed answer. At each generation step, it produces a probability
+                      distribution over possible next tokens.
                     </p>
                   </div>
                   <div class="story-beat">
-                    <p>Fun fact</p>
+                    <p>Token by token</p>
                     <p>
-                      The model becomes more and more deterministic as <code>temperature</code> approaches zero.
-                    </p>
-                    <p>
-                      In pure math, setting temperature to <code>0.0</code> would be fully deterministic. In real systems,
-                      runtime scheduling and floating-point rounding can still lead to occasional output differences.
+                      A chatbot answer is built one token at a time. After each sampled token, the new token is added to
+                      the context and the process repeats.
                     </p>
                   </div>
                 </>
               ) : chapter.number === "06" ? (
                 <>
                   <p class="story-lead">
-                    Once we have logits and a target token, we can measure error with loss. Backpropagation then sends
-                    that error signal backward through the network to compute how every weight should change.
+                    Training starts with a simple question: how wrong was the model?
+                  </p>
+                  <p class="story-lead">
+                    The model predicts a distribution over the next token. We know which token actually came next in the
+                    training text. The loss measures how far the prediction was from that target.
+                  </p>
+                  <p class="story-lead">
+                    But measuring the loss is not enough. The model has billions of parameters. Which ones should change?
+                    And by how much?
+                  </p>
+                  <p class="story-lead">
+                    Backpropagation answers that question. It sends the error signal backward through the computation graph
+                    and calculates gradients: how sensitive the loss is to each parameter.
+                  </p>
+                  <p class="story-lead">
+                    The core idea is the chain rule. Every operation only needs to know how its output changes with respect
+                    to its input. By chaining those local derivatives together, training can calculate how a tiny change
+                    deep inside the model would affect the final loss.
                   </p>
                   <p class="story-subtitle">Error becomes learning signal</p>
                   <BackpropagationChapter client:load />
                   <div class="story-beat">
-                    <p>The thing to notice</p>
+                    <p>Important takeaway</p>
                     <p>
-                      Gradients are local pieces multiplied together by the chain rule. That is why “blame” can flow
-                      from output back to earlier layers in a mathematically consistent way.
+                      Backpropagation is not a second mysterious intelligence inside the model. It is an efficient way to
+                      calculate gradients through a large composed computation.
+                    </p>
+                  </div>
+                  <div class="story-beat">
+                    <p>Three passes</p>
+                    <p>
+                      Forward pass: make a prediction. Backward pass: calculate how to change the parameters. Optimizer
+                      step: actually change them.
                     </p>
                   </div>
                 </>
               ) : chapter.number === "07" ? (
                 <>
                   <p class="story-lead">
-                    Gradients tell us the direction to go. Optimizers decide how to move along that direction over time.
-                    Different update rules can make training smooth, noisy, fast, or unstable.
+                    A gradient tells us which direction should reduce the loss. But it does not fully answer how to update
+                    the model.
+                  </p>
+                  <p class="story-lead">
+                    How big should the step be? Should we trust the current gradient completely? Should we remember previous
+                    gradients? What if different parameters have wildly different gradient scales?
+                  </p>
+                  <p class="story-lead">
+                    That is the job of the optimizer.
+                  </p>
+                  <p class="story-lead">
+                    SGD, or stochastic gradient descent, is the simplest common version. It looks at a small batch of
+                    training examples, calculates the gradient, and takes one step in the direction that should reduce the
+                    loss. It is direct and easy to understand, but each step can be noisy because it only sees a slice of
+                    the training data.
+                  </p>
+                  <p class="story-lead">
+                    Momentum improves on this by remembering direction. If gradients keep pointing roughly the same way,
+                    momentum builds speed. If they zigzag, momentum smooths the path.
+                  </p>
+                  <p class="story-lead">
+                    Adam tracks both a moving average of the gradients and a moving estimate of their scale. That lets it
+                    adapt update sizes per parameter.
+                  </p>
+                  <p class="story-lead">
+                    The optimizer is not just a detail after backpropagation. It is part of the learning behavior.
                   </p>
                   <p class="story-subtitle">Different update rules, same gradients</p>
                   <OptimizersChapter client:load />
                   <div class="story-beat">
-                    <p>The thing to notice</p>
+                    <p>Important takeaway</p>
                     <p>
-                      SGD, Momentum, and Adam can start from the same point and see the same gradients, yet follow
-                      different paths because each optimizer keeps different internal state.
+                      Gradients tell the model where improvement may be. The optimizer decides how aggressively and in what
+                      style the model moves there.
+                    </p>
+                  </div>
+                  <div class="story-beat">
+                    <p>Same gradients, different path</p>
+                    <p>
+                      SGD, Momentum, and Adam can start from the same point and see the same gradients, yet follow different
+                      paths because each optimizer keeps different internal state.
                     </p>
                   </div>
                 </>
               ) : chapter.number === "08" ? (
                 <>
                   <p class="story-lead">
-                    Up to now, each token mostly carried its own transformed representation. Attention changes that:
-                    every token can look at other tokens, decide which ones matter for its current context, and pull
-                    a weighted mixture of their information forward.
+                    Embeddings alone are too context-free. Take a word like "mole". It might mean a small animal, a mark
+                    on skin, a spy, or a unit in chemistry. The starting embedding is the same token representation, but
+                    the meaning depends on the surrounding words.
+                  </p>
+                  <p class="story-lead">
+                    The model needs a way for tokens to talk to each other. That is what attention does.
+                  </p>
+                  <p class="story-lead">
+                    For each token, the model creates three learned views: query, key, and value. The query represents what
+                    this token is looking for. The key represents what this token can be matched on. The value represents
+                    the information this token can contribute.
+                  </p>
+                  <p class="story-lead">
+                    The model compares queries to keys to produce attention scores. Those scores are turned into weights,
+                    and the weights are used to mix the value vectors. So Q and K decide where information flows. V is the
+                    information that flows.
                   </p>
                   <p class="story-subtitle">How tokens exchange information</p>
                   <QkvChapter client:load />
                   <div class="story-beat">
-                    <p>The thing to notice</p>
+                    <p>Important takeaway</p>
                     <p>
-                      Query and key vectors are only used to compute attention weights. The actual content passed onward
-                      is the weighted mixture of value vectors.
+                      Attention is information routing. Query and key determine relevance; value carries the content that
+                      gets mixed in.
                     </p>
                   </div>
                   <div class="story-beat">
-                    <p>Why this helps</p>
+                    <p>Self-attention</p>
                     <p>
-                      This is the core mechanism behind context sensitivity. The same token can produce different outputs
-                      in different sentences, because its attention weights can shift toward different neighbors.
+                      In self-attention, tokens attend to other tokens in the same sequence. In a decoder-only LLM, causal
+                      masking prevents a token from attending to future tokens during generation.
                     </p>
                   </div>
                 </>
               ) : chapter.number === "09" ? (
                 <>
                   <p class="story-lead">
-                    Now we move from intuition to exact attention math. We compute query-key scores, normalize them
-                    row-wise with softmax, and use those weights to mix value vectors into a new output representation.
+                    A sentence contains many kinds of relationships at once. An adjective may modify a noun. A pronoun may
+                    refer to something earlier. A closing bracket may match an opening bracket. A verb may depend on the
+                    subject.
                   </p>
                   <p class="story-lead">
-                    One token asks a question through its query vector, every token advertises a key, and softmax converts
-                    compatibility scores into a 100% attention budget over the sequence.
+                    One attention head can learn one way of routing information. But one routing pattern is not enough.
+                    Multi-head attention runs several attention heads in parallel. Each head has its own learned projections,
+                    so each head can learn a different kind of relationship.
+                  </p>
+                  <p class="story-lead">
+                    After the heads produce their outputs, those outputs are combined and projected back into the model
+                    dimension. This does not mean every head has a clean human-readable job. Attention weights are useful
+                    clues, not perfect explanations.
+                  </p>
+                  <p class="story-lead">
+                    Modern models often use grouped-query attention. Groups of query heads share key/value heads, reducing
+                    memory use during inference, especially in the KV cache, while keeping much of the benefit of many
+                    query heads.
                   </p>
                   <p class="story-subtitle">Raw scores -> softmax weights -> value mixing</p>
                   <AttentionMathChapter client:load />
                   <div class="story-beat">
-                    <p>The thing to notice</p>
+                    <p>Important takeaway</p>
                     <p>
-                      So “blue” can mostly attend to “car”, while “hit” can mostly attend to “car” and “wall”. That is why one token
-                      can focus on different context than its neighbors even in the same sentence.
+                      Multi-head attention gives the model several ways to route information at the same time. Grouped-query
+                      attention is a practical modern variant that makes this cheaper during inference.
+                    </p>
+                  </div>
+                  <div class="story-beat">
+                    <p>Interpretation caveat</p>
+                    <p>
+                      Attention heads are not little thought modules. They are learned projections that may specialize,
+                      overlap, or behave in ways that are hard to summarize cleanly.
                     </p>
                   </div>
                 </>
               ) : chapter.number === "10" ? (
                 <>
                   <p class="story-lead">
-                    RoPE (Rotary Positional Encoding) makes attention position-aware by rotating query and key dimension
-                    pairs based on token position. This keeps token identity while changing compatibility by relative offset.
+                    Attention compares tokens by content. But language also depends on order. "Dog bites man" and "man
+                    bites dog" contain the same words, but they do not mean the same thing.
                   </p>
                   <p class="story-lead">
-                    The important part is relative distance: after rotation, dot products change with token offsets, so
-                    order information is available to attention without adding a plain position vector to values.
+                    Older transformer explanations often describe positional encodings as vectors added to token embeddings.
+                    That works, but many modern decoder-only models use something more integrated with attention: RoPE, or
+                    Rotary Positional Embeddings.
+                  </p>
+                  <p class="story-lead">
+                    RoPE rotates parts of the query and key vectors based on their token positions. When attention compares
+                    a query with a key, the comparison should depend on both content and relative position.
+                  </p>
+                  <p class="story-lead">
+                    Because RoPE modifies Q and K, it changes the attention scores. It does not directly rotate the value
+                    vectors, and it does not decide attention by itself. It changes which query/key pairs line up well.
                   </p>
                   <p class="story-subtitle">Relative position through rotation</p>
                   <RopeChapter client:load />
                   <div class="story-beat">
-                    <p>The thing to notice</p>
+                    <p>Important takeaway</p>
                     <p>
-                      RoPE is about rotating Q/K pairs, not adding a position vector. Different pair frequencies let the model
-                      encode relative position structure across short and long ranges.
+                      RoPE injects position into attention by rotating query and key vectors. It helps the model reason
+                      about relative position while computing attention.
+                    </p>
+                  </div>
+                  <div class="story-beat">
+                    <p>Compatibility, not payload</p>
+                    <p>
+                      RoPE affects compatibility, not payload. Q and K are rotated; V is not the main carrier of positional
+                      rotation here.
                     </p>
                   </div>
                 </>
               ) : chapter.number === "11" ? (
                 <>
                   <p class="story-lead">
-                    Now we assemble one full Transformer block so each piece has a place in the bigger system:
-                    norm, attention, residual connection, norm, and feed-forward network.
+                    A transformer is built by stacking blocks. Each block takes in a sequence of token vectors and returns
+                    a sequence of token vectors with the same basic shape. The rows still correspond to token positions.
+                    The width is still the model dimension.
                   </p>
                   <p class="story-lead">
-                    This chapter bridges toy visuals and real systems by showing the repeated block pattern that powers
-                    modern decoder-only models.
+                    What changes is the information inside those vectors.
+                  </p>
+                  <p class="story-lead">
+                    A modern decoder block usually normalizes the input, applies attention so tokens can exchange information,
+                    adds the result back through a residual connection, normalizes again, applies a feed-forward network,
+                    and adds that result back too.
+                  </p>
+                  <p class="story-lead">
+                    The residual stream is the running representation that moves through the network. Attention mixes
+                    information between positions. The feed-forward network transforms each position. Normalization helps
+                    keep values stable. Residual connections preserve a path for information and gradients through many layers.
+                  </p>
+                  <p class="story-lead">
+                    Layer by layer, the initially context-free embeddings become rich context-aware representations.
                   </p>
                   <p class="story-subtitle">One modern decoder block, end-to-end</p>
                   <TransformerBlockChapter client:load />
                   <div class="story-beat">
-                    <p>The thing to notice</p>
+                    <p>Important takeaway</p>
                     <p>
-                      A block is mostly shape-preserving routing and transformation. Tokens keep their row positions,
-                      while their vector content is repeatedly remixed by attention and MLP layers.
+                      A transformer block keeps the sequence shape mostly stable while repeatedly changing what each token
+                      vector represents.
+                    </p>
+                  </div>
+                  <div class="story-beat">
+                    <p>Modern decoder details</p>
+                    <p>
+                      In Llama-like models, you also see choices such as RMSNorm, RoPE, SwiGLU-style feed-forward layers,
+                      causal attention, and grouped-query attention.
                     </p>
                   </div>
                 </>
               ) : chapter.number === "12" ? (
                 <>
                   <p class="story-lead">
-                    Next we zoom out from one block and look at training dynamics over time: rapid fitting early on,
-                    slower consolidation, and sometimes delayed generalization.
+                    From the outside, training often looks like one smooth curve going down. Reality is messier.
                   </p>
                   <p class="story-lead">
-                    Rather than memorizing one curve shape, focus on behavior over time: early progress can look noisy,
-                    and some generalization effects appear much later.
+                    At the basic level, pretraining is simple to describe: show the model a lot of text and train it to
+                    predict the next token. It makes a prediction, measures the loss, computes gradients, and updates
+                    parameters.
+                  </p>
+                  <p class="story-lead">
+                    Repeat that billions or trillions of times, and the model slowly becomes better at modeling text. But
+                    "loss goes down" is not the whole story.
+                  </p>
+                  <p class="story-lead">
+                    Some patterns are learned early. Others appear much later. A model can improve on training data before
+                    it generalizes well. Sometimes better generalization arrives surprisingly late.
+                  </p>
+                  <p class="story-lead">
+                    For large language models, training is also a scaling problem. Model size, dataset size, data quality,
+                    sequence length, optimizer settings, batch size, and compute budget all interact.
                   </p>
                   <p class="story-subtitle">How behavior changes across training</p>
                   <TrainingPhasesChapter client:load />
                   <div class="story-beat">
-                    <p>The thing to notice</p>
+                    <p>Important takeaway</p>
                     <p>
-                      Training loss and validation loss do not always improve at the same pace. A late drop in
-                      validation can happen after long periods where progress looks flat.
+                      Pretraining teaches broad capability through next-token prediction. The loss curve is a useful signal,
+                      but it is only one view of what the model is learning.
+                    </p>
+                  </div>
+                  <div class="story-beat">
+                    <p>Loss is not the whole story</p>
+                    <p>
+                      A lower loss generally means better prediction. It does not automatically mean better reasoning,
+                      better honesty, or better assistant behavior.
                     </p>
                   </div>
                 </>
               ) : chapter.number === "13" ? (
                 <>
                   <p class="story-lead">
-                    After base pre-training, we tune behavior in stages: instruction-following first, then preference
-                    alignment. The capability base is similar, but output style and helpfulness shift a lot.
+                    A pretrained language model has learned a huge amount about text. It can continue patterns, imitate
+                    styles, answer some questions, write code, and represent many facts and concepts.
                   </p>
                   <p class="story-lead">
-                    Post-training mostly changes response behavior: following instructions, clarifying, formatting well,
-                    and aligning with preferred safety and quality policies.
+                    But that does not automatically make it a good assistant. A base model is trained to predict likely
+                    next tokens. If you ask it a question, it might answer, but it might also continue the prompt, imitate
+                    a webpage, produce messy completions, or behave inconsistently.
+                  </p>
+                  <p class="story-lead">
+                    Post-training teaches the model how we want it to respond. Instruction tuning shows the model examples
+                    of prompts and good task-oriented answers. Preference tuning compares possible answers and trains the
+                    model toward the ones people prefer: clearer, safer, more useful, better formatted, less rambling.
+                  </p>
+                  <p class="story-lead">
+                    Different systems use different methods: supervised fine-tuning, RLHF, DPO, constitutional approaches,
+                    and many variations. The details differ, but the high-level goal is the same.
                   </p>
                   <p class="story-subtitle">From capability to assistant behavior</p>
                   <PostTrainingChapter client:load />
                   <div class="story-beat">
-                    <p>The thing to notice</p>
+                    <p>Important takeaway</p>
                     <p>
-                      Pre-training builds broad competence. Post-training mostly steers how that competence is used:
-                      directness, formatting, and alignment with user intent.
+                      Pretraining mostly teaches what the model can do. Post-training strongly influences how, when, and
+                      in what style the model does it.
+                    </p>
+                  </div>
+                  <div class="story-beat">
+                    <p>Assistant behavior</p>
+                    <p>
+                      A post-trained assistant is not just a base model with more facts. It is a base model whose behavior
+                      has been shaped toward following instructions and user preferences.
                     </p>
                   </div>
                 </>
               ) : chapter.number === "14" ? (
                 <>
                   <p class="story-lead">
-                    Generation is step-by-step, so inference can become expensive as context grows. KV cache changes
-                    this by reusing previously computed keys and values instead of recomputing the full history each step.
+                    Decoder-only language models generate text autoregressively: one token at a time. Each new token
+                    depends on the tokens before it. So after generating a token, the model appends it to the context and
+                    runs another step to predict the next one.
                   </p>
                   <p class="story-lead">
-                    In practice this is a compute-memory tradeoff: hold more state in memory, save substantial repeated
-                    attention work per generated token.
+                    Naively, this would repeat a lot of work. If the prompt has already been processed, why recompute the
+                    same keys and values for all earlier tokens again and again?
+                  </p>
+                  <p class="story-lead">
+                    The KV cache solves that. During attention, the model computes key and value vectors for each token.
+                    These are exactly the things future tokens need when they attend back to previous context. So the model
+                    stores them.
+                  </p>
+                  <p class="story-lead">
+                    During generation, each new token only needs to compute its own new keys and values and attend to the
+                    cached previous ones. The cache saves compute, but it uses memory. The longer the context, the larger
+                    the KV cache becomes.
+                  </p>
+                  <p class="story-lead">
+                    It helps to separate two phases: prefill processes the prompt and builds the initial cache; decode
+                    generates new tokens one by one while reusing the cache.
                   </p>
                   <p class="story-subtitle">Compute-memory tradeoff during inference</p>
                   <ContextKvCacheChapter client:load />
                   <div class="story-beat">
-                    <p>The thing to notice</p>
+                    <p>Important takeaway</p>
                     <p>
-                      KV cache trades memory for speed: we store more intermediate state, but avoid repeated attention
-                      compute over old tokens on every decode step.
+                      The KV cache is not a summary of the conversation. It is stored attention data that avoids recomputing
+                      previous keys and values during generation.
+                    </p>
+                  </div>
+                  <div class="story-beat">
+                    <p>Speed vs memory</p>
+                    <p>
+                      KV cache speeds up repeated attention over previous tokens, but it increases memory use as the context
+                      grows.
                     </p>
                   </div>
                 </>
               ) : chapter.number === "15" ? (
                 <>
                   <p class="story-lead">
-                    Quantization compresses model weights to lower precision so large models can run on smaller hardware.
-                    This usually means a small quality tradeoff in exchange for a major memory and local deployment win.
+                    Neural networks are mostly numbers. A large language model contains billions of weights, and during
+                    inference it also creates intermediate activations and KV-cache tensors. Storing all of that at high
+                    precision takes a lot of memory.
                   </p>
                   <p class="story-lead">
-                    Lower bit-width means fewer bytes per parameter. The benefit is large memory reduction; the cost is
-                    approximation error from quantize/dequantize steps.
+                    Quantization reduces that memory pressure by representing numbers with fewer bits. Instead of storing a
+                    weight as a 16-bit or 32-bit floating-point value, we may store an approximation using 8 bits, 4 bits,
+                    or another compact format.
+                  </p>
+                  <p class="story-lead">
+                    The basic trade-off is simple: less precision -> less memory -> often faster or cheaper inference ->
+                    some approximation error.
+                  </p>
+                  <p class="story-lead">
+                    But "4-bit" or "8-bit" is not the whole story. Different quantization methods make different choices.
+                    Some quantize only weights. Some also quantize activations. Some protect outlier channels. Some target
+                    the KV cache.
+                  </p>
+                  <p class="story-lead">
+                    This is why two 4-bit models can behave differently. For local inference, quantization can be the
+                    difference between a model that does not fit in memory and a model that runs comfortably.
                   </p>
                   <p class="story-subtitle">Bit-width vs quality and memory</p>
                   <QuantizationChapter client:load />
                   <div class="story-beat">
-                    <p>The thing to notice</p>
+                    <p>Important takeaway</p>
                     <p>
-                      Fewer bits per weight shrink total model size dramatically. For local usage, this can be the
-                      difference between “cannot load” and “runs comfortably”.
+                      Quantization is controlled approximation. It reduces memory and often improves practical inference,
+                      but the quality depends on what is quantized and how.
+                    </p>
+                  </div>
+                  <div class="story-beat">
+                    <p>A family of trade-offs</p>
+                    <p>
+                      Quantization is not one technique. It is a family of compression and inference trade-offs.
                     </p>
                   </div>
                 </>
@@ -454,31 +774,45 @@ const brandLogoSrc = `${import.meta.env.BASE_URL}/brand/openvalue-wordmark-white
 
     <section id="closing" class="closing-section" aria-labelledby="closing-heading">
       <p class="intro-kicker">Closing</p>
+      <h2 id="closing-heading">Putting It All Together</h2>
       <p class="intro-lead">
-        At the start, a language model may have looked like a black box: text goes in, answers come out.
+        You have now followed the full path through a language model.
       </p>
       <p class="intro-lead">
-        Now you have seen the machinery inside. Text is split into tokens. Tokens become vectors. Attention moves
-        information between positions. RoPE gives attention a sense of order. MLP layers transform each token’s
-        representation. Transformer blocks repeat this process many times, and the final vector is turned into logits:
-        a probability distribution over the next token.
+        Text becomes tokens. Tokens become vectors. Attention moves information between positions. Feed-forward layers
+        rewrite each token representation. Transformer blocks repeat that pattern many times. The final representation
+        is projected into logits. Softmax and sampling turn those logits into the next token.
       </p>
       <p class="intro-lead">
-        Training is what makes those transformations useful. Every next-token mistake becomes a learning signal. Across
-        enormous amounts of text, the model slowly shapes its weights into a system that can complete, reason, summarize,
-        translate, code, and converse. Post-training does not create all of that from scratch; it teaches the model how
-        to use those capabilities in a way that better follows instructions and human preferences.
+        Then the new token is appended, and the process repeats.
       </p>
       <p class="intro-lead">
-        This walkthrough is simplified, but the simplification is intentional. Once you understand the flow, the larger
-        systems become easier to reason about.
+        Training teaches the model to build useful internal representations by predicting text. Post-training shapes those
+        capabilities into assistant-like behavior. During inference, techniques like KV caching and quantization make the
+        whole system practical enough to run at interactive speed.
+      </p>
+      <p class="intro-lead">
+        This guide simplified many details on purpose. Real production LLMs include data pipelines, distributed training,
+        specialized GPU kernels, safety systems, evaluation loops, alignment methods, serving infrastructure, and many
+        engineering trade-offs.
+      </p>
+      <div class="closing-path" aria-label="Core language model path">
+        <p>But the core path is now visible:</p>
+        <ol>
+          <li>symbols become vectors</li>
+          <li>vectors exchange information</li>
+          <li>layers rewrite representations</li>
+          <li>the final state becomes a distribution over what might come next</li>
+        </ol>
+      </div>
+      <p class="intro-lead">
+        The black box is still big, but it is no longer sealed.
       </p>
       <div class="intro-grid closing-grid">
         <article>
-          <p>What you now know</p>
+          <p>Final takeaway</p>
           <p>
-            How text becomes tokens, how tokens become vectors, how attention routes information, and how transformer
-            blocks turn context into next-token probabilities.
+            The model is no longer just "AI magic". It is a chain of transformations that can be traced and reasoned about.
           </p>
         </article>
         <article>
@@ -491,10 +825,17 @@ const brandLogoSrc = `${import.meta.env.BASE_URL}/brand/openvalue-wordmark-white
         <article>
           <p>Where to go next</p>
           <p>
-            Build a tiny GPT, inspect attention heads, read the Transformer paper, or compare modern architectures like
-            Llama, Mistral, and GPT-style decoder models.
+            Watch visual explanations, read illustrated transformer walkthroughs, implement a tiny transformer, experiment
+            with tokenizers, and compare real model configs.
           </p>
         </article>
+      </div>
+      <div class="story-beat">
+        <p>Most useful next exercise</p>
+        <p>
+          Take one prompt and trace it through the pipeline yourself. Where are the tokens? Where are the vectors? Where
+          does attention happen? Where do logits appear? Where does sampling make a choice?
+        </p>
       </div>
       <div class="closing-references">
         <p>References</p>
@@ -680,6 +1021,15 @@ const brandLogoSrc = `${import.meta.env.BASE_URL}/brand/openvalue-wordmark-white
     color: #111827;
   }
 
+  .closing-section h2 {
+    margin: 0;
+    font-size: clamp(1.65rem, 3.5vw, 2.5rem);
+    font-family: "Fraunces", "Iowan Old Style", "Georgia", serif;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    color: #111827;
+  }
+
   .intro-lead {
     margin: 0;
     color: #27272a;
@@ -801,6 +1151,39 @@ const brandLogoSrc = `${import.meta.env.BASE_URL}/brand/openvalue-wordmark-white
 
   .closing-grid article {
     background: rgba(255, 255, 255, 0.68);
+  }
+
+  .closing-path {
+    border-left: 3px solid rgba(21, 106, 130, 0.45);
+    padding: 0.2rem 0 0.2rem 0.85rem;
+    display: grid;
+    gap: 0.48rem;
+  }
+
+  .closing-path p {
+    margin: 0;
+    color: #27272a;
+    font-size: 1.02rem;
+    line-height: 1.55;
+  }
+
+  .closing-path ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.42rem;
+  }
+
+  .closing-path li {
+    border: 1px solid rgba(21, 106, 130, 0.2);
+    border-radius: 10px;
+    background: rgba(21, 106, 130, 0.06);
+    color: #334155;
+    padding: 0.34rem 0.5rem;
+    font-size: 0.9rem;
+    line-height: 1.35;
   }
 
   .closing-references {

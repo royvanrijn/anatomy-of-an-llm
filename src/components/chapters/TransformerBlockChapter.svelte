@@ -169,8 +169,8 @@
           <tr><th>Norm</th><td>{llamaDims.norm}</td></tr>
           <tr><th>Position encoding</th><td>{llamaDims.pos}</td></tr>
           <tr><th>MLP</th><td>{llamaDims.mlp}</td></tr>
-          <tr><th>Attention</th><td>{llamaDims.attention}</td></tr>
-          <tr><th>Block input/output shape</th><td>[{llamaDims.sequence} x {llamaDims.dModel}]</td></tr>
+          <tr class="wide"><th>Attention</th><td>{llamaDims.attention}</td></tr>
+          <tr class="wide"><th>Block input/output shape</th><td>[{llamaDims.sequence} x {llamaDims.dModel}]</td></tr>
         </tbody>
       </table>
     </div>
@@ -362,42 +362,59 @@
   }
   .dims-table-wrap {
     border: 1px solid rgba(148, 163, 184, 0.22);
-    border-radius: 12px;
-    background: linear-gradient(165deg, rgba(255, 255, 255, 0.86), rgba(248, 250, 252, 0.74));
-    overflow: hidden;
+    border-radius: 10px;
+    background: rgba(248, 250, 252, 0.58);
+    overflow-x: auto;
+    padding: 0.42rem;
   }
   .dims-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     font-size: 0.76rem;
+  }
+  .dims-table tbody {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(10.5rem, 1fr));
+    gap: 0.38rem;
+  }
+  .dims-table tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: 0.45rem;
+    min-height: 2.1rem;
+    padding: 0.34rem 0.48rem;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.72);
+  }
+  .dims-table tr.wide {
+    grid-column: span 3;
   }
   .dims-table th,
   .dims-table td {
-    padding: 0.34rem 0.52rem;
-    border-top: 1px solid rgba(148, 163, 184, 0.16);
-  }
-  .dims-table tr:first-child th,
-  .dims-table tr:first-child td {
-    border-top: 0;
+    padding: 0;
+    border: 0;
   }
   .dims-table th {
     text-align: left;
-    font-weight: 500;
+    font-weight: 600;
     color: #475569;
-    background: rgba(255, 255, 255, 0.5);
+    background: transparent;
+    line-height: 1.25;
   }
   .dims-table td {
     text-align: right;
     font-family: "IBM Plex Mono", "SFMono-Regular", monospace;
     color: #1e293b;
-    font-size: 0.74rem;
+    font-size: 0.72rem;
     letter-spacing: 0.01em;
+    line-height: 1.25;
+    white-space: nowrap;
   }
-  .dims-table tr:nth-child(odd) td {
-    background: rgba(255, 255, 255, 0.36);
-  }
-  .dims-table tr:nth-child(odd) th {
-    background: rgba(255, 255, 255, 0.62);
+  .dims-table tr.wide td {
+    white-space: normal;
   }
 
   .label { margin: 0; font-size: 0.72rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-muted); }
@@ -492,6 +509,14 @@
   .stack-card line { stroke: rgba(71, 85, 105, 0.74); stroke-width: 1.5; }
 
   @media (max-width: 900px) {
+    .dims-table tbody {
+      grid-template-columns: repeat(2, minmax(9rem, 1fr));
+    }
+
+    .dims-table tr.wide {
+      grid-column: span 2;
+    }
+
     .block-layout {
       grid-template-columns: 1fr;
     }
@@ -503,5 +528,15 @@
 
     .io-grid { grid-template-columns: 1fr; }
     .block-visual svg { min-height: 300px; }
+  }
+
+  @media (max-width: 560px) {
+    .dims-table tbody {
+      grid-template-columns: 1fr;
+    }
+
+    .dims-table tr.wide {
+      grid-column: auto;
+    }
   }
 </style>

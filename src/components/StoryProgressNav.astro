@@ -250,8 +250,11 @@ const { chapters } = Astro.props;
 
   @media (max-width: 900px) {
     .story-nav {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
       overflow-x: auto;
-      overflow-y: visible;
+      overflow-y: hidden;
       border-radius: 999px;
       scrollbar-width: none;
     }

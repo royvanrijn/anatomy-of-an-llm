@@ -171,34 +171,41 @@
     <p class="mini">{selectedPhase.note}</p>
   </section>
 
-  <section class="card explain">
-    <p class="label">What Is Being Learned In This Phase</p>
-    <p class="mini">
+  <div class="narrative-copy">
+    <p class="explainer-title">What is being learned in this phase</p>
+    <p>
       In large-scale pre-training, the model is mostly learning broad structure:
       world knowledge, language regularities, code patterns, and reasoning traces from text continuation.
     </p>
-    <p class="mini">
+    <p>
       This is why early improvements can look mostly statistical, while later improvements reflect better internal
       representations. The model is not yet being optimized for assistant behavior such as refusal style or helpful tone.
     </p>
-  </section>
-
-  <section class="card explain">
-    <p class="label">Where Alignment And Safety Enter</p>
-    <p class="mini">
+    <p class="explainer-title">Where alignment and safety enter</p>
+    <p>
       Alignment behavior is primarily shaped after pre-training. Post-training adds objectives such as following
       instructions, refusing unsafe requests, formatting answers clearly, asking clarifying questions, and staying helpful.
     </p>
-    <p class="mini">
+    <p>
       So this chapter is mostly about capability learning dynamics; the next chapter focuses on behavior shaping.
     </p>
-  </section>
+  </div>
 </section>
 
 <style>
   .training-phases { display: grid; gap: 0.9rem; }
   .intro { display: grid; gap: 0.4rem; }
   .intro p { margin: 0; color: var(--text-secondary); line-height: 1.62; }
+  .narrative-copy { display: grid; gap: 0.4rem; }
+  .narrative-copy p { margin: 0; color: var(--text-secondary); line-height: 1.62; }
+  .narrative-copy .explainer-title {
+    margin: 0.18rem 0 0;
+    font-size: 0.82rem;
+    font-weight: bold;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #155e75;
+  }
 
   .card {
     border: 1px solid var(--border-subtle);

@@ -83,6 +83,7 @@
   <section class="card sentence-map">
     <p class="label">Same Token, Different Position</p>
     <p class="mini">Example sentence: <code>The small dog chased the ball.</code></p>
+    <p class="mini">In this visual, clicking a word temporarily treats that word as relative index <code>0</code>. RoPE is relative in this sense: if you look from a different token, the position offsets change, so the rotations you compare change too.</p>
     <div class="token-strip" role="group" aria-label="Click a token to drive RoPE rotation example">
       {#each sentenceTokens as token, i}
         <button
@@ -135,13 +136,29 @@
     <p class="mini">Click any token to make it the reference frame. That token stays unrotated while all other tokens rotate relative to it.</p>
   </section>
 
-  <section class="card compare">
-    <p class="label">Relative Offset Insight</p>
-    <p class="mini">The selected token <code>{selectedSentenceToken.text}</code> (relative position <code>{m}</code>) is the anchor. Other tokens rotate by their position difference to this anchor.</p>
-    <p class="mini">In the dot product, the important angle is <code>theta_m - theta_n</code>, so compatibility depends on relative offset <code>m - n</code>.</p>
-    <p class="mini"><code>dot(before rotation) = {fmt(dotBefore)}</code></p>
-    <p class="mini"><code>dot(after RoPE rotation) = {fmt(dotAfter)}</code></p>
-    <p class="mini">As positions change, relative angle changes, and the query-key dot product changes too.</p>
+  <div class="narrative-copy">
+    <p class="explainer-title">Relative offset insight</p>
+    <p>
+      The selected token <code>{selectedSentenceToken.text}</code> is the anchor. Other tokens rotate by their position
+      difference to this anchor. In the dot product, the important angle is <code>theta_m - theta_n</code>, so
+      compatibility depends on relative offset <code>m - n</code>.
+    </p>
+    <p>
+      In this toy pair, <code>dot(before rotation) = {fmt(dotBefore)}</code> and
+      <code>dot(after RoPE rotation) = {fmt(dotAfter)}</code>. As positions change, relative angle changes, and the
+      query-key dot product changes too.
+    </p>
+    <p class="explainer-title">Multi-frequency pairs</p>
+    <p>
+      Real vectors have many dimension pairs. Different pairs rotate at different speeds: fast pairs capture nearby
+      offsets, while slow pairs preserve longer-range position patterns.
+    </p>
+    <p class="explainer-title">Connect back to attention</p>
+    <p>
+      RoPE changes the score matrix before softmax. It does not directly decide attention by itself; it changes which
+      <code>Q/K</code> pairs are compatible at different relative positions. RoPE gives attention a position-dependent
+      bias, and the model still has to learn how to use it.
+    </p>
     <DimensionOverlay
       buttonLabel="Explain RoPE dimensions"
       title="RoPE Shape + Pair Logic"
@@ -159,24 +176,23 @@
       ]}
       note="In real models, all pairs rotate in parallel for every token in the sequence."
     />
-  </section>
-
-  <section class="card compare">
-    <p class="label">Multi-Frequency Pairs</p>
-    <p class="mini">Real vectors have many dimension pairs. Different pairs rotate at different speeds: fast pairs capture nearby offsets, slow pairs preserve longer-range position patterns.</p>
-  </section>
-
-  <section class="card compare">
-    <p class="label">Connect Back To Attention</p>
-    <p class="mini">RoPE changes the score matrix before softmax. It does not directly decide attention by itself; it changes which <code>Q/K</code> pairs are compatible at different relative positions.</p>
-    <p class="mini">RoPE gives attention a position-dependent bias. The model still has to learn how to use it.</p>
-  </section>
+  </div>
 </section>
 
 <style>
   .rope { display: grid; gap: 0.9rem; }
   .intro-copy { display: grid; gap: 0.45rem; }
   .intro-copy p { margin: 0; line-height: 1.62; color: var(--text-secondary); }
+  .narrative-copy { display: grid; gap: 0.42rem; }
+  .narrative-copy p { margin: 0; line-height: 1.62; color: var(--text-secondary); }
+  .narrative-copy .explainer-title {
+    margin: 0.18rem 0 0;
+    font-size: 0.82rem;
+    font-weight: bold;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #155e75;
+  }
 
   .card { border: 1px solid var(--border-subtle); border-radius: 12px; background: rgba(255,255,255,0.62); padding: 0.75rem; display: grid; gap: 0.45rem; }
   .label { margin: 0; font-size: 0.72rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-muted); }

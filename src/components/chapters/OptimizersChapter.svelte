@@ -255,4 +255,23 @@
     .panel { grid-template-columns: 1fr; }
     .inline-controls { grid-template-columns: 1fr; }
   }
+
+  @media (max-width: 640px) {
+    .pipeline-line {
+      display: block;
+      font-size: 0.8rem;
+      line-height: 1.48;
+      white-space: normal;
+    }
+
+    .inline-controls,
+    .card {
+      padding: 0.56rem;
+    }
+
+    svg {
+      min-height: 250px;
+      touch-action: none;
+    }
+  }
 </style>

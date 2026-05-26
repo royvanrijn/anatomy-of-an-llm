@@ -360,4 +360,22 @@
       grid-template-columns: 1fr;
     }
   }
+
+  @media (max-width: 640px) {
+    .equations,
+    .control-panel,
+    .curve-card,
+    .neuron-map {
+      padding: 0.56rem;
+    }
+
+    label {
+      grid-template-columns: 1.2rem minmax(0, 1fr) 3rem;
+      gap: 0.35rem;
+    }
+
+    .neuron-map svg {
+      min-height: 170px;
+    }
+  }
 </style>

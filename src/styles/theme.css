@@ -73,6 +73,36 @@ a {
   :root {
     --radius-lg: 14px;
     --radius-md: 10px;
+    --space-page: 0.58rem;
+  }
+
+  body {
+    font-size: 15px;
+  }
+
+  button,
+  select,
+  input {
+    font: inherit;
+  }
+
+  button,
+  select {
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+
+  input[type="range"] {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  svg {
+    max-width: 100%;
+  }
+
+  code {
+    overflow-wrap: anywhere;
   }
 }
 

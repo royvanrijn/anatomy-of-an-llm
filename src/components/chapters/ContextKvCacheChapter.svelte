@@ -124,4 +124,16 @@
   @media (max-width: 900px) {
     .compare { grid-template-columns: 1fr; }
   }
+
+  @media (max-width: 640px) {
+    .card,
+    .compare article {
+      padding: 0.56rem;
+    }
+
+    .mono {
+      font-size: 0.76rem;
+      overflow-wrap: anywhere;
+    }
+  }
 </style>

@@ -509,4 +509,49 @@
     .grad-grids { grid-template-columns: 1fr; }
     .cards.explain-two { grid-template-columns: 1fr; }
   }
+
+  @media (max-width: 640px) {
+    .card {
+      padding: 0.56rem;
+    }
+
+    .pipeline-line {
+      display: block;
+      font-size: 0.8rem;
+      line-height: 1.48;
+      white-space: normal;
+    }
+
+    .prompt-line {
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+      font-size: 0.92rem;
+    }
+
+    .prompt-line select {
+      flex: 1 1 10rem;
+      min-width: 0;
+    }
+
+    .controls-inline > button,
+    .step-actions button,
+    .step-actions.bottom button {
+      width: 100%;
+    }
+
+    .row {
+      grid-template-columns: 4rem minmax(0, 1fr) 3rem;
+      gap: 0.32rem;
+    }
+
+    .flow-row {
+      grid-template-columns: minmax(5.7rem, 0.9fr) minmax(0, 1fr) 2.8rem;
+      gap: 0.34rem;
+    }
+
+    table {
+      font-size: 0.72rem;
+    }
+  }
 </style>

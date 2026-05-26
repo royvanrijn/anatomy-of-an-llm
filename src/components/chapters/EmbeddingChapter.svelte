@@ -510,4 +510,35 @@
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
+
+  @media (max-width: 640px) {
+    .mapping,
+    .vector-values,
+    .analogy {
+      padding: 0.56rem;
+    }
+
+    .chip {
+      max-width: 100%;
+      overflow-wrap: anywhere;
+    }
+
+    .value-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.32rem;
+    }
+
+    .value-cell {
+      padding: 0.32rem;
+    }
+
+    .relation-switch {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .relation-switch button {
+      min-height: 42px;
+    }
+  }
 </style>

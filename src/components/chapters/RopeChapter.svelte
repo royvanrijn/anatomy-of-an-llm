@@ -295,4 +295,31 @@
     .position-strip,
     .vector-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
+
+  @media (max-width: 640px) {
+    .card {
+      padding: 0.56rem;
+    }
+
+    .token-strip,
+    .position-strip,
+    .vector-row {
+      grid-template-columns: repeat(6, minmax(2.85rem, 1fr));
+      gap: 0.22rem;
+    }
+
+    .pill {
+      min-height: 42px;
+      padding: 0.22rem 0.28rem;
+      font-size: 0.72rem;
+    }
+
+    .position-strip span {
+      font-size: 0.68rem;
+    }
+
+    .mini-vec {
+      height: 92px;
+    }
+  }
 </style>

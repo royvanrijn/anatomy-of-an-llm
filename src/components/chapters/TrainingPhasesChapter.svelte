@@ -273,4 +273,25 @@
     from { transform: translateY(-1px); opacity: 0.3; }
     to { transform: translateY(1px); opacity: 0.55; }
   }
+
+  @media (max-width: 640px) {
+    .card {
+      padding: 0.56rem;
+    }
+
+    .chart-card svg {
+      min-height: 180px;
+    }
+
+    .slider {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 0.42rem;
+    }
+
+    .legend {
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+  }
 </style>

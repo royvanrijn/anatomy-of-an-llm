@@ -236,4 +236,30 @@
   @media (max-width: 900px) {
     .size-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
+
+  @media (max-width: 640px) {
+    .card,
+    .single-matrix {
+      padding: 0.56rem;
+    }
+
+    .modes {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .modes button {
+      min-height: 42px;
+      padding-inline: 0.48rem;
+    }
+
+    td {
+      padding: 0.24rem 0.22rem;
+      font-size: 0.68rem;
+    }
+
+    .size-grid {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>

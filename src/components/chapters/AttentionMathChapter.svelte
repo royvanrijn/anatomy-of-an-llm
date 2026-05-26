@@ -321,4 +321,36 @@
   @media (max-width: 980px) {
     .qkv-mini, .flow-grid { grid-template-columns: 1fr; }
   }
+
+  @media (max-width: 640px) {
+    .card {
+      padding: 0.56rem;
+    }
+
+    .head-picker {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .token,
+    .head-picker button {
+      min-height: 42px;
+      padding-inline: 0.64rem;
+    }
+
+    .matrix {
+      min-width: 520px;
+    }
+
+    .matrix th,
+    .matrix td {
+      padding: 0.3rem 0.32rem;
+      font-size: 0.68rem;
+    }
+
+    .weight-row {
+      grid-template-columns: 3.6rem minmax(0, 1fr) 3rem;
+      gap: 0.32rem;
+    }
+  }
 </style>

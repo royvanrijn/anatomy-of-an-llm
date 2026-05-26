@@ -384,8 +384,8 @@ Human:
 - [ ] Ensure every chapter has meaningful default state
 - [ ] Ensure every chapter shows tensor shapes where relevant
 - [ ] Ensure toy-vs-real labeling is present everywhere needed
-- [ ] Verify mobile layout and reduced-motion behavior for all chapters
-- [ ] Make the website usable on mobile phones, including reducing excessive scrolling in interactive examples and fixing interactions that do not work reliably on touch devices
+- [x] Verify mobile layout and reduced-motion behavior for all chapters
+- [x] Make the website usable on mobile phones, including reducing excessive scrolling in interactive examples and fixing interactions that do not work reliably on touch devices
 
 Automated:
 - [x] full-site static build passes

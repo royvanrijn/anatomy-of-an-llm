@@ -572,4 +572,48 @@
     .weight-grid { grid-template-columns: 1fr; }
     .arc-wrap { margin-bottom: 0.4rem; }
   }
+
+  @media (max-width: 640px) {
+    .card {
+      padding: 0.56rem;
+    }
+
+    .scenario-pills {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .scenario-pills button,
+    .token,
+    .reset {
+      min-height: 42px;
+    }
+
+    .token-row {
+      gap: 0.34rem;
+    }
+
+    .arc-wrap {
+      min-height: 72px;
+    }
+
+    .arc-svg {
+      height: 72px;
+    }
+
+    .pie-donut {
+      width: 152px;
+      height: 152px;
+    }
+
+    .pie-hole {
+      width: 78px;
+      height: 78px;
+    }
+
+    .legend-row {
+      grid-template-columns: 10px minmax(0, 1fr) auto;
+      gap: 0.34rem;
+    }
+  }
 </style>

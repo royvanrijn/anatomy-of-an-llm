@@ -1264,4 +1264,58 @@ const brandLogoSrc = `${import.meta.env.BASE_URL}/brand/openvalue-wordmark-white
       grid-template-columns: 1fr;
     }
   }
+
+  @media (max-width: 640px) {
+    .hero,
+    .intro-section,
+    .closing-section {
+      padding: 0.95rem;
+      border-radius: 14px;
+    }
+
+    .hero {
+      margin-bottom: 0.9rem;
+    }
+
+    h1 {
+      font-size: 2.1rem;
+      line-height: 1.05;
+    }
+
+    .intro-section h2,
+    .closing-section h2 {
+      font-size: 1.55rem;
+      line-height: 1.12;
+    }
+
+    .intro-lead,
+    .closing-path p {
+      font-size: 0.95rem;
+      line-height: 1.55;
+    }
+
+    .intro-pipeline {
+      display: block;
+      white-space: normal;
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+
+    .chapter-step {
+      padding: 0.62rem 0 1.35rem;
+    }
+
+    .story-beat,
+    .intro-grid article,
+    .intro-toc,
+    .closing-references {
+      padding: 0.62rem;
+      border-radius: 10px;
+    }
+
+    .closing-path ol {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+  }
 </style>

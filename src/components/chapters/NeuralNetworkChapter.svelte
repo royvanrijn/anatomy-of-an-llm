@@ -414,4 +414,20 @@
       display: grid;
     }
   }
+
+  @media (max-width: 640px) {
+    .controls,
+    .card {
+      padding: 0.56rem;
+    }
+
+    .diagram-card svg {
+      min-height: 190px;
+    }
+
+    .calc-table td {
+      padding: 0.28rem 0.3rem;
+      font-size: 0.68rem;
+    }
+  }
 </style>

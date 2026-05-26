@@ -271,4 +271,26 @@ const { chapters } = Astro.props;
       margin-inline: 0;
     }
   }
+
+  @media (max-width: 640px) {
+    .story-nav {
+      top: 0.35rem;
+      margin-bottom: 1.1rem;
+    }
+
+    .story-nav ol {
+      gap: 0.32rem;
+      padding: 0.42rem;
+    }
+
+    .story-nav a,
+    .home-pill {
+      width: 2.45rem;
+      height: 2.45rem;
+    }
+
+    .story-nav a::after {
+      display: none;
+    }
+  }
 </style>

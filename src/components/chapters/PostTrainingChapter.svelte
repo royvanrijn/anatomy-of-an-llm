@@ -290,4 +290,18 @@
       line-height: 1;
     }
   }
+
+  @media (max-width: 640px) {
+    .card,
+    .split article,
+    .selected-stage-panel,
+    .selected-response {
+      padding: 0.56rem;
+    }
+
+    .nodes button {
+      min-height: 58px;
+      padding: 0.5rem 0.56rem;
+    }
+  }
 </style>

@@ -160,4 +160,24 @@
     .controls { grid-template-columns: 1fr; }
     .cards { grid-template-columns: 1fr; }
   }
+
+  @media (max-width: 640px) {
+    .controls,
+    .card {
+      padding: 0.56rem;
+    }
+
+    .btns {
+      align-items: stretch;
+    }
+
+    .btns button {
+      width: 100%;
+    }
+
+    .row {
+      grid-template-columns: 4.1rem minmax(0, 1fr) 3.1rem;
+      gap: 0.32rem;
+    }
+  }
 </style>

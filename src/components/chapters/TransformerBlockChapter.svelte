@@ -539,4 +539,27 @@
       grid-column: auto;
     }
   }
+
+  @media (max-width: 640px) {
+    .card,
+    .dims-table-wrap {
+      padding: 0.56rem;
+    }
+
+    .block-visual svg {
+      min-height: 360px;
+    }
+
+    svg g {
+      touch-action: manipulation;
+    }
+
+    .stack-card {
+      overflow-x: auto;
+    }
+
+    .stack-card svg {
+      min-width: 560px;
+    }
+  }
 </style>

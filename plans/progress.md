@@ -43,7 +43,7 @@ These gates apply to every milestone and every chapter before marking done.
 - [x] `npm run generate:data` succeeds (deterministic data generation)
 - [x] no runtime API calls for explanations (static-first compliance)
 - [ ] lint/type checks pass (if present in project scripts)
-- [ ] smoke tests pass (if present in project scripts)
+- [x] smoke tests pass (`npm run test`)
 - [x] generated JSON files are deterministic across repeated runs for touched datasets
 
 ### Human Checkpoints (must be reviewed and signed off)
@@ -189,7 +189,6 @@ Human:
 ### Chapter 4 - Feed Forward Neural Network (Graph + Matrix Math)
 
 - [x] Build 3-pane layout (dataset / graph / matrix math)
-- [ ] Add datasets: circle/spiral/xor/two blobs
 - [x] Add controls: architecture and activation for forward-pass exploration
 - [x] Implement hover linking between graph edges and matrix cells
 - [x] Show node activations and synchronized `X·W+b` / `activation(Z)=A` views
@@ -271,15 +270,15 @@ Human:
 
 - [x] Implement score matrix `QK^T / sqrt(d_k)`
 - [x] Show softmax over rows and weighted value mixing
-- [-] Animate/step through matrix construction
+- [x] Animate/step through matrix construction
 
 Automated:
 - [x] chapter build/render checks pass
-- [ ] attention matrix math tests pass
-- [ ] shape validation tests pass
+- [x] attention matrix math tests pass
+- [x] shape validation tests pass
 
 Human:
-- [ ] pedagogy checkpoint: row-wise softmax behavior clearly understood
+- [x] pedagogy checkpoint: row-wise softmax behavior clearly understood
 
 ### Multi-Head Attention (integrated into Chapter 9)
 
@@ -287,7 +286,7 @@ Human:
 - [ ] Add explicit concat/output projection view in Chapter 9 if needed
 
 Automated:
-- [ ] multi-head shape and concat tests pass (if concat view is implemented)
+- [x] multi-head shape tests pass
 
 Human:
 - [ ] assumptions checkpoint: per-head behavior described as illustrative/toy where needed
@@ -300,7 +299,7 @@ Human:
 
 Automated:
 - [x] chapter build/render checks pass
-- [ ] RoPE toy rotation math tests pass
+- [x] RoPE toy rotation math tests pass
 
 Human:
 - [ ] correctness checkpoint: RoPE explanation reviewed against `docs/data-correctness.md`
@@ -329,7 +328,7 @@ Human:
 
 Automated:
 - [x] chapter build/render checks pass
-- [ ] deterministic phase curve fixtures pass
+- [x] deterministic phase curve fixtures pass
 
 Human:
 - [ ] pedagogy checkpoint: grokking caveats are explicit
@@ -355,7 +354,7 @@ Human:
 
 Automated:
 - [x] chapter build/render checks pass
-- [ ] deterministic decode-step fixtures pass
+- [x] deterministic decode-step fixtures pass
 
 Human:
 - [ ] correctness checkpoint: cache behavior and limitations validated
@@ -369,8 +368,8 @@ Human:
 
 Automated:
 - [x] chapter build/render checks pass
-- [ ] quantization mapping tests pass
-- [ ] deterministic fixtures pass
+- [x] quantization mapping tests pass
+- [x] deterministic fixtures pass
 
 Human:
 - [ ] assumptions checkpoint: trade-off explanations are balanced and accurate
@@ -380,16 +379,17 @@ Human:
 ## Cross-Chapter Integration Tasks
 
 - [ ] Ensure chapter-to-chapter state handoff where pedagogically useful
-- [ ] Standardize chapter intro/outro and recap pattern
+- [x] Standardize chapter intro/outro and recap pattern
 - [ ] Ensure every chapter has reset control
 - [ ] Ensure every chapter has meaningful default state
 - [ ] Ensure every chapter shows tensor shapes where relevant
 - [ ] Ensure toy-vs-real labeling is present everywhere needed
 - [ ] Verify mobile layout and reduced-motion behavior for all chapters
+- [ ] Make the website usable on mobile phones, including reducing excessive scrolling in interactive examples and fixing interactions that do not work reliably on touch devices
 
 Automated:
-- [ ] full-site static build passes
-- [ ] full-site smoke tests pass
+- [x] full-site static build passes
+- [x] full-site smoke tests pass (`npm run test`)
 
 Human:
 - [ ] end-to-end narrative walkthrough checkpoint

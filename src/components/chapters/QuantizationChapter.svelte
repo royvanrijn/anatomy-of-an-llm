@@ -98,7 +98,7 @@
   <div class="intro">
     <p>
       Quantization stores model weights with fewer bits. The goal is to reduce memory and make local inference more
-      practical, while accepting a small accuracy tradeoff.
+      practical, while accepting a small quality trade-off.
     </p>
   </div>
 

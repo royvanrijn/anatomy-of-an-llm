@@ -65,9 +65,58 @@ const chapterHooks: Record<string, string> = {
 };
 
 const brandLogoSrc = `${import.meta.env.BASE_URL}/brand/openvalue-wordmark-white.svg`;
+const seoTitle = "The Anatomy of an LLM | Interactive Visual Guide to How Language Models Work";
+const seoDescription =
+  "An interactive visual explainer for developers showing how LLMs work, from tokenization and embeddings to attention, transformers, training, KV cache, and quantization.";
+const canonicalUrl = "https://www.royvanrijn.com/anatomy-of-an-llm/";
+const imageUrl = "https://www.royvanrijn.com/anatomy-of-an-llm/social/og-image.png";
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "LearningResource",
+  name: "The Anatomy of an LLM",
+  headline: seoTitle,
+  description: seoDescription,
+  url: canonicalUrl,
+  image: imageUrl,
+  author: {
+    "@type": "Person",
+    name: "Roy van Rijn",
+    url: "https://www.royvanrijn.com/"
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "OpenValue",
+    url: "https://www.openvalue.eu/"
+  },
+  inLanguage: "en",
+  educationalLevel: "intermediate",
+  learningResourceType: "interactive explainer",
+  audience: {
+    "@type": "Audience",
+    audienceType: "Software developers"
+  },
+  about: [
+    "Large language models",
+    "Transformer architecture",
+    "Tokenization",
+    "Attention mechanism",
+    "KV cache",
+    "Quantization"
+  ],
+  teaches: chapterList.map((chapter) => chapter.title),
+  keywords:
+    "how LLMs work, how transformers work, attention mechanism explained, tokenization explained, KV cache explained, LLM quantization explained"
+};
 ---
 
-<BaseLayout>
+<BaseLayout
+  title={seoTitle}
+  description={seoDescription}
+  canonicalUrl={canonicalUrl}
+  imageUrl={imageUrl}
+  imageAlt="The Anatomy of an LLM interactive visual guide preview"
+  structuredData={structuredData}
+>
   <header class="hero">
     <aside class="beta-ribbon" tabindex="0" aria-label="Beta disclaimer">
       <span>BETA</span>
@@ -101,6 +150,10 @@ const brandLogoSrc = `${import.meta.env.BASE_URL}/brand/openvalue-wordmark-white
       <p class="intro-lead">
         The goal is not to memorize every formula. The goal is to understand what changes at each step, and why
         that step exists at all.
+      </p>
+      <p class="intro-lead">
+        If you are looking for how LLMs work, how transformers work, or how attention, tokenization, KV cache,
+        and quantization fit together, this page keeps those ideas connected in one visual path.
       </p>
       <p class="intro-lead">By the end, you should be able to trace the full path:</p>
       <p class="intro-pipeline">text -> tokens -> vectors -> transformer blocks -> logits -> sampling -> output</p>

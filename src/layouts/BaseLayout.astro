@@ -4,11 +4,21 @@ import "../styles/theme.css";
 interface Props {
   title?: string;
   description?: string;
+  canonicalUrl?: string;
+  imageUrl?: string;
+  imageAlt?: string;
+  ogType?: string;
+  structuredData?: Record<string, unknown>;
 }
 
 const {
   title = "The Anatomy of an LLM",
-  description = "A static interactive explainer about how modern LLMs work."
+  description = "A static interactive explainer about how modern LLMs work.",
+  canonicalUrl = "https://www.royvanrijn.com/anatomy-of-an-llm/",
+  imageUrl = "https://www.royvanrijn.com/anatomy-of-an-llm/social/og-image.png",
+  imageAlt = "The Anatomy of an LLM interactive visual guide preview",
+  ogType = "website",
+  structuredData
 } = Astro.props;
 ---
 
@@ -19,6 +29,31 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#fbfaf5" />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta property="og:site_name" content="Roy van Rijn" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+    <meta name="twitter:image:alt" content={imageAlt} />
+
+    {
+      structuredData && (
+        <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+      )
+    }
   </head>
   <body>
     <div class="site-shell">

@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">The Anatomy of an LLM</title>
+  <desc id="desc">Social preview image for an interactive visual guide to how language models work.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fffdf7"/>
+      <stop offset="0.56" stop-color="#f7f3e9"/>
+      <stop offset="1" stop-color="#e8f4f7"/>
+    </linearGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#156a82"/>
+      <stop offset="1" stop-color="#1f7a63"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#27272a" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="#f8f7f2"/>
+  <rect x="56" y="48" width="1088" height="534" rx="34" fill="url(#bg)" stroke="rgba(39,39,42,0.14)" filter="url(#softShadow)"/>
+
+  <g opacity="0.92">
+    <rect x="714" y="126" width="314" height="290" rx="22" fill="rgba(255,255,255,0.62)" stroke="rgba(39,39,42,0.16)"/>
+    <g fill="none" stroke-linecap="round" stroke-width="5">
+      <path d="M777 205 C844 150 900 262 966 204" stroke="#156a82" opacity="0.78"/>
+      <path d="M777 266 C844 211 900 323 966 265" stroke="#5b4f9d" opacity="0.7"/>
+      <path d="M777 327 C844 272 900 384 966 326" stroke="#1f7a63" opacity="0.74"/>
+    </g>
+    <g fill="#fffdf7" stroke="rgba(21,106,130,0.42)" stroke-width="3">
+      <circle cx="777" cy="205" r="22"/>
+      <circle cx="966" cy="204" r="22"/>
+      <circle cx="777" cy="266" r="22"/>
+      <circle cx="966" cy="265" r="22"/>
+      <circle cx="777" cy="327" r="22"/>
+      <circle cx="966" cy="326" r="22"/>
+    </g>
+    <g font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="22" fill="#334155" text-anchor="middle">
+      <text x="777" y="213">Q</text>
+      <text x="966" y="212">K</text>
+      <text x="777" y="274">V</text>
+      <text x="966" y="273">A</text>
+      <text x="777" y="335">T</text>
+      <text x="966" y="334">Y</text>
+    </g>
+  </g>
+
+  <g transform="translate(96 118)">
+    <text x="0" y="0" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif" font-size="28" letter-spacing="4" fill="#155e75">INTERACTIVE EXPLAINER</text>
+    <text x="0" y="92" font-family="Georgia, Iowan Old Style, Fraunces, serif" font-size="82" fill="#111827">The Anatomy</text>
+    <text x="0" y="182" font-family="Georgia, Iowan Old Style, Fraunces, serif" font-size="82" fill="#111827">of an LLM</text>
+    <text x="0" y="250" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif" font-size="30" fill="#3f3f46">How language models work, visually.</text>
+  </g>
+
+  <g transform="translate(96 488)" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="24" fill="#334155">
+    <rect x="0" y="-37" width="632" height="62" rx="14" fill="rgba(21,106,130,0.07)" stroke="rgba(21,106,130,0.22)"/>
+    <text x="24" y="3">tokens -> vectors -> attention -> output</text>
+  </g>
+</svg>

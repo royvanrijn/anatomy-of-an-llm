@@ -16,6 +16,7 @@ import ContextKvCacheChapter from "../components/chapters/ContextKvCacheChapter.
 import QuantizationChapter from "../components/chapters/QuantizationChapter.svelte";
 import TokenizationChapter from "../components/chapters/TokenizationChapter.svelte";
 import ChapterShell from "../components/ChapterShell.astro";
+import FlowPath from "../components/FlowPath.svelte";
 import PrimitiveShowcase from "../components/PrimitiveShowcase.astro";
 import StoryProgressNav from "../components/StoryProgressNav.astro";
 import embeddingsData from "../data/generated/embeddings-o200k-base.json";
@@ -63,6 +64,23 @@ const chapterHooks: Record<string, string> = {
   "14": "Generating text one token at a time would be painfully wasteful without caching.",
   "15": "Big models are often limited by memory. Quantization makes them smaller by storing numbers with fewer bits."
 };
+
+const introFlowSteps = [
+  { label: "01", title: "Text" },
+  { label: "02", title: "Tokens" },
+  { label: "03", title: "Vectors" },
+  { label: "04", title: "Transformer blocks" },
+  { label: "05", title: "Logits" },
+  { label: "06", title: "Sampling" },
+  { label: "07", title: "Output" }
+];
+
+const closingFlowSteps = [
+  { label: "01", title: "Symbols", note: "become vectors" },
+  { label: "02", title: "Vectors", note: "exchange information" },
+  { label: "03", title: "Layers", note: "rewrite representations" },
+  { label: "04", title: "Final state", note: "becomes a next-token distribution" }
+];
 
 const brandLogoSrc = `${import.meta.env.BASE_URL}/brand/openvalue-wordmark-white.svg`;
 const seoTitle = "The Anatomy of an LLM | Interactive Visual Guide to How Language Models Work";
@@ -156,7 +174,7 @@ const structuredData = {
         and quantization fit together, this page keeps those ideas connected in one visual path.
       </p>
       <p class="intro-lead">By the end, you should be able to trace the full path:</p>
-      <p class="intro-pipeline">text -> tokens -> vectors -> transformer blocks -> logits -> sampling -> output</p>
+      <FlowPath steps={introFlowSteps} ariaLabel="LLM processing path" />
       <p class="intro-lead">
         And once you can trace that path, the black box becomes a lot smaller.
       </p>
@@ -223,7 +241,6 @@ const structuredData = {
                     If every token were a full word, the vocabulary would explode. If every token were a single character
                     or byte, every sentence would become very long. Modern tokenizers live between those extremes.
                   </p>
-                  <p class="story-subtitle">Token pieces and IDs</p>
                   <TokenizationChapter data={tokenizationData} client:load />
                   <div class="story-beat">
                     <p>Important takeaway</p>
@@ -851,12 +868,7 @@ const structuredData = {
       </p>
       <div class="closing-path" aria-label="Core language model path">
         <p>But the core path is now visible:</p>
-        <ol>
-          <li>symbols become vectors</li>
-          <li>vectors exchange information</li>
-          <li>layers rewrite representations</li>
-          <li>the final state becomes a distribution over what might come next</li>
-        </ol>
+        <FlowPath steps={closingFlowSteps} ariaLabel="Core language model path" />
       </div>
       <p class="intro-lead">
         The black box is still big, but it is no longer sealed.
@@ -1084,20 +1096,6 @@ const structuredData = {
     line-height: 1.65;
   }
 
-  .intro-pipeline {
-    margin: 0;
-    font-family: "IBM Plex Mono", "SFMono-Regular", monospace;
-    font-size: 0.92rem;
-    color: #334155;
-    letter-spacing: 0.01em;
-    background: rgba(21, 106, 130, 0.06);
-    border: 1px solid rgba(21, 106, 130, 0.2);
-    border-radius: 10px;
-    padding: 0.4rem 0.55rem;
-    display: inline-block;
-    max-width: 100%;
-  }
-
   .intro-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1200,10 +1198,14 @@ const structuredData = {
   }
 
   .closing-path {
-    border-left: 3px solid rgba(21, 106, 130, 0.45);
-    padding: 0.2rem 0 0.2rem 0.85rem;
+    border: 1px solid rgba(21, 106, 130, 0.2);
+    border-radius: 16px;
+    background:
+      radial-gradient(circle at 0% 0%, rgba(21, 106, 130, 0.12), transparent 36%),
+      rgba(255, 255, 255, 0.56);
+    padding: 0.78rem;
     display: grid;
-    gap: 0.48rem;
+    gap: 0.7rem;
   }
 
   .closing-path p {
@@ -1211,25 +1213,6 @@ const structuredData = {
     color: #27272a;
     font-size: 1.02rem;
     line-height: 1.55;
-  }
-
-  .closing-path ol {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.42rem;
-  }
-
-  .closing-path li {
-    border: 1px solid rgba(21, 106, 130, 0.2);
-    border-radius: 10px;
-    background: rgba(21, 106, 130, 0.06);
-    color: #334155;
-    padding: 0.34rem 0.5rem;
-    font-size: 0.9rem;
-    line-height: 1.35;
   }
 
   .closing-references {
@@ -1347,13 +1330,6 @@ const structuredData = {
       line-height: 1.55;
     }
 
-    .intro-pipeline {
-      display: block;
-      white-space: normal;
-      font-size: 0.82rem;
-      line-height: 1.5;
-    }
-
     .chapter-step {
       padding: 0.62rem 0 1.35rem;
     }
@@ -1366,9 +1342,5 @@ const structuredData = {
       border-radius: 10px;
     }
 
-    .closing-path ol {
-      display: grid;
-      grid-template-columns: 1fr;
-    }
   }
 </style>

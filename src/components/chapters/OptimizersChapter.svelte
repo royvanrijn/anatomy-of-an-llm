@@ -1,4 +1,5 @@
 <script lang="ts">
+  import FlowPath from "../FlowPath.svelte";
   import { runOptimizers, type OptimizerRun } from "../../utils/optimizers";
 
   let startX = 1.6;
@@ -13,6 +14,11 @@
   const beta1 = 0.9;
   const beta2 = 0.999;
   const eps = 1e-8;
+  const flowSteps = [
+    { label: "01", title: "Same gradients" },
+    { label: "02", title: "Different update rules" },
+    { label: "03", title: "Different trajectories" }
+  ];
 
   $: stepsCount = Number(steps);
   $: runs = runOptimizers({
@@ -100,7 +106,7 @@
     <p>
       Backprop gives gradients. Optimizers decide how to turn those gradients into actual parameter updates.
     </p>
-    <p class="pipeline-line">same gradients -> different update rules -> different training trajectories</p>
+    <FlowPath steps={flowSteps} ariaLabel="Optimizer update path" />
   </div>
 
   <section class="card">
@@ -174,17 +180,6 @@
 <style>
   .optimizers { display:grid; gap:.9rem; }
   .intro p { margin:0; color:var(--text-secondary); line-height:1.6; }
-  .pipeline-line {
-    font-family: "IBM Plex Mono", "SFMono-Regular", monospace;
-    font-size: 0.92rem;
-    color: #334155;
-    letter-spacing: 0.01em;
-    background: rgba(21, 106, 130, 0.06);
-    border: 1px solid rgba(21, 106, 130, 0.2);
-    border-radius: 10px;
-    padding: 0.4rem 0.55rem;
-    display: inline-block;
-  }
   .inline-controls {
     display:grid;
     grid-template-columns: repeat(2,minmax(0,1fr));
@@ -257,13 +252,6 @@
   }
 
   @media (max-width: 640px) {
-    .pipeline-line {
-      display: block;
-      font-size: 0.8rem;
-      line-height: 1.48;
-      white-space: normal;
-    }
-
     .inline-controls,
     .card {
       padding: 0.56rem;

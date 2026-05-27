@@ -1,8 +1,11 @@
 <script lang="ts">
+  import FlowPath from "../FlowPath.svelte";
+
   const maxContext = 1_000_000;
   const maxGenerated = 1_000;
   const minContext = 256;
   const minGenerated = 1;
+
   let contextScale = 45;
   let generatedScale = 60;
 
@@ -57,7 +60,12 @@
 
   <section class="card pipeline">
     <p class="label">Autoregressive decode loop</p>
-    <p class="mono">prompt tokens -> predict next token -> append token -> repeat</p>
+
+    <div class="gain-callout">
+      <p>Compute reduction from caching</p>
+      <strong>{computeRatio.toFixed(1)}x</strong>
+      <span>less repeated attention work in this toy estimate</span>
+    </div>
 
     <div class="compare">
       <article>
@@ -76,10 +84,20 @@
       </article>
     </div>
 
-    <p class="mini summary">
-      Approximate compute multiplier of uncached path vs cached path:
-      <code>{computeRatio.toFixed(1)}x</code>
-    </p>
+    <div class="summary-grid">
+      <div>
+        <p class="k">Without cache</p>
+        <p class="v">{fmt(uncachedOps)}</p>
+      </div>
+      <div>
+        <p class="k">With cache</p>
+        <p class="v">{fmt(cachedOps)}</p>
+      </div>
+      <div>
+        <p class="k">KV memory</p>
+        <p class="v">{kvMemoryMb.toFixed(1)} MB</p>
+      </div>
+    </div>
   </section>
   <p class="mini note">
     These values are illustrative relative estimates. Exact memory and speed depend on architecture, precision,
@@ -102,8 +120,6 @@
 
   .label { margin: 0; font-size: 0.72rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-muted); }
   .mini { margin: 0; font-size: 0.84rem; line-height: 1.56; color: var(--text-secondary); }
-  .mono { margin: 0; font-family: "IBM Plex Mono", "SFMono-Regular", monospace; font-size: 0.86rem; color: #334155; }
-
   label { display: grid; gap: 0.2rem; font-size: 0.82rem; color: var(--text-secondary); }
   label span { font-size: 0.8rem; color: #64748b; font-family: "IBM Plex Mono", "SFMono-Regular", monospace; }
 
@@ -116,6 +132,65 @@
   .bar.cache span { background: rgba(21, 106, 130, 0.85); }
 
   .summary strong { color: #0f172a; }
+  .gain-callout {
+    border: 1px solid rgba(21, 106, 130, 0.22);
+    border-radius: 14px;
+    background:
+      radial-gradient(circle at 10% 0%, rgba(21, 106, 130, 0.1), transparent 38%),
+      linear-gradient(135deg, rgba(246, 251, 252, 0.92), rgba(255, 255, 255, 0.76));
+    padding: 0.66rem 0.78rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.12rem 0.85rem;
+    align-items: center;
+  }
+  .gain-callout p,
+  .gain-callout span {
+    margin: 0;
+  }
+  .gain-callout p {
+    color: rgba(21, 94, 117, 0.82);
+    font-size: 0.74rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .gain-callout strong {
+    grid-row: span 2;
+    color: rgba(21, 106, 130, 0.76);
+    font-size: clamp(1.9rem, 5.4vw, 3.35rem);
+    line-height: 0.95;
+    font-family: "Fraunces", "Iowan Old Style", "Georgia", serif;
+    font-weight: 600;
+  }
+  .gain-callout span {
+    color: var(--text-secondary);
+    font-size: 0.86rem;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.45rem;
+  }
+  .summary-grid > div {
+    border: 1px solid rgba(21, 106, 130, 0.16);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.68);
+    padding: 0.48rem 0.55rem;
+  }
+  .k {
+    margin: 0;
+    color: #64748b;
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .v {
+    margin: 0.12rem 0 0;
+    color: #0f172a;
+    font-family: "IBM Plex Mono", "SFMono-Regular", monospace;
+    font-size: 1rem;
+  }
 
   .note { font-size: 0.78rem; color: #64748b; }
 
@@ -123,6 +198,7 @@
 
   @media (max-width: 900px) {
     .compare { grid-template-columns: 1fr; }
+    .summary-grid { grid-template-columns: 1fr; }
   }
 
   @media (max-width: 640px) {
@@ -131,9 +207,12 @@
       padding: 0.56rem;
     }
 
-    .mono {
-      font-size: 0.76rem;
-      overflow-wrap: anywhere;
+    .gain-callout {
+      grid-template-columns: 1fr;
+    }
+
+    .gain-callout strong {
+      grid-row: auto;
     }
   }
 </style>

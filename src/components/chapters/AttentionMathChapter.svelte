@@ -220,9 +220,10 @@
           {#each scores as row, r}
             <tr class:selected-row={r === selected} class:faded-row={r !== selected}>
               <th>{tokens[r]}</th>
-              {#each row as cell}
+              {#each row as cell, c}
                 <td
                   class:selected-cell={r === selected}
+                  class:strongest-cell={r === selected && c === strongestIndex}
                   style={`background:${heat(cell, scoreMin, scoreMax)};`}
                 >
                   {fmt(cell)}
@@ -304,6 +305,12 @@
   .matrix tr.selected-row > th { color: #0f172a; background: rgba(21,106,130,0.14); }
   .matrix tr.faded-row { opacity: 0.28; }
   .matrix td.selected-cell { outline: 1px solid rgba(21,106,130,0.42); }
+  .matrix td.strongest-cell {
+    outline: 2px solid rgba(217, 119, 6, 0.78);
+    outline-offset: -2px;
+    box-shadow: inset 0 0 0 999px rgba(255, 247, 237, 0.24);
+    font-weight: 700;
+  }
 
   .flow-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); display: grid; gap: 0.65rem; }
   .flow-grid article { border: 1px solid rgba(100,116,139,0.22); border-radius: 10px; padding: 0.52rem; background: rgba(255,255,255,0.7); display: grid; gap: 0.35rem; }
@@ -315,6 +322,12 @@
   .weight-row { display: grid; grid-template-columns: 64px 1fr auto; gap: 0.4rem; align-items: center; }
   .weight-row .bar { height: 9px; background: rgba(203,213,225,0.55); border-radius: 999px; overflow: hidden; }
   .weight-row .bar span { display: block; height: 100%; background: rgba(21,106,130,0.72); }
+  .weight-row.best {
+    border-radius: 8px;
+    background: rgba(217,119,6,0.08);
+    padding: 0.12rem 0.18rem;
+    margin-inline: -0.18rem;
+  }
   .weight-row.best .bar span { background: rgba(217,119,6,0.85); }
 
 

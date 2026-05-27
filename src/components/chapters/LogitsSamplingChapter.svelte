@@ -1,4 +1,5 @@
 <script lang="ts">
+  import FlowPath from "../FlowPath.svelte";
   import {
     applyTopK,
     argmaxIndex,
@@ -8,6 +9,14 @@
   } from "../../utils/sampling";
 
   const vocab = [" calm", " inside", " outside", " cold", " angry", ".", ","];
+  const flowSteps = [
+    { label: "01", title: "Hidden" },
+    { label: "02", title: "Vocab projection" },
+    { label: "03", title: "Logits" },
+    { label: "04", title: "Softmax(T)" },
+    { label: "05", title: "Probabilities" },
+    { label: "06", title: "Sampled token" }
+  ];
   const hidden = [0.82, -0.35, 0.41, 0.18];
   const projection = [
     [0.62, -0.31, 0.44, 0.09],
@@ -49,7 +58,7 @@
       A model converts the final hidden vector into one score per vocabulary token. Those raw scores are logits.
       Softmax turns them into probabilities, and sampling chooses the next token.
     </p>
-    <p class="pipeline-line">hidden -> vocab projection -> logits -> softmax(T) -> probabilities -> sampled token</p>
+    <FlowPath steps={flowSteps} ariaLabel="Logits to sampled token path" />
   </div>
 
   <div class="controls">
@@ -108,17 +117,6 @@
 <style>
   .logits-sampling { display:grid; gap:.9rem; }
   .intro p { margin:0; color:var(--text-secondary); line-height:1.6; }
-  .pipeline-line {
-    font-family: "IBM Plex Mono", "SFMono-Regular", monospace;
-    font-size: 0.92rem;
-    color: #334155;
-    letter-spacing: 0.01em;
-    background: rgba(21, 106, 130, 0.06);
-    border: 1px solid rgba(21, 106, 130, 0.2);
-    border-radius: 10px;
-    padding: 0.4rem 0.55rem;
-    display: inline-block;
-  }
   .controls {
     display:grid;
     grid-template-columns: repeat(4,minmax(0,1fr));
@@ -179,5 +177,6 @@
       grid-template-columns: 4.1rem minmax(0, 1fr) 3.1rem;
       gap: 0.32rem;
     }
+
   }
 </style>

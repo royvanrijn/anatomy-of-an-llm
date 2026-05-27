@@ -87,6 +87,15 @@
   $: qMin = Math.min(...flat);
   $: qMax = Math.max(...flat);
 
+  function heat(value: number) {
+    const strongest = Math.max(Math.abs(qMin), Math.abs(qMax), 1e-9);
+    const strength = Math.min(1, Math.abs(value) / strongest);
+    const alpha = 0.08 + strength * 0.42;
+    if (value < 0) return `rgba(91, 79, 157, ${alpha.toFixed(3)})`;
+    if (value > 0) return `rgba(21, 106, 130, ${alpha.toFixed(3)})`;
+    return "rgba(148, 163, 184, 0.12)";
+  }
+
   function quantInfo(bits: number) {
     if (bits >= 16) return "Stored directly as floating-point values.";
     const levels = Math.pow(2, bits);
@@ -123,7 +132,7 @@
       <table>
         <tbody>
           {#each quantized as row}
-            <tr>{#each row as v}<td>{fmt(v)}</td>{/each}</tr>
+            <tr>{#each row as v}<td style={`background:${heat(v)};`}>{fmt(v)}</td>{/each}</tr>
           {/each}
         </tbody>
       </table>

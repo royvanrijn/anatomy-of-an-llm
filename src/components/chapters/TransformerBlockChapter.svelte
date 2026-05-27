@@ -185,21 +185,21 @@
         </marker>
       </defs>
 
-      <g class:selected={selectedPartId === "tok"} on:click={() => (selectedPartId = "tok")}>
+      <g class="part part-embedding" class:selected={selectedPartId === "tok"} on:click={() => (selectedPartId = "tok")}>
         <rect x="110" y="30" width="200" height="58" rx="12" />
         <text x="210" y="65" text-anchor="middle">Input X</text>
       </g>
 
       <line x1="210" y1="88" x2="210" y2="122" marker-end="url(#arrow)" />
 
-      <g class:selected={selectedPartId === "ln1"} on:click={() => (selectedPartId = "ln1")}>
+      <g class="part part-neuron" class:selected={selectedPartId === "ln1"} on:click={() => (selectedPartId = "ln1")}>
         <rect x="125" y="122" width="170" height="56" rx="12" />
         <text x="210" y="156" text-anchor="middle">RMSNorm 1</text>
       </g>
 
       <line x1="210" y1="178" x2="210" y2="214" marker-end="url(#arrow)" />
 
-      <g class:selected={selectedPartId === "attn"} on:click={() => (selectedPartId = "attn")}>
+      <g class="part part-attention" class:selected={selectedPartId === "attn"} on:click={() => (selectedPartId = "attn")}>
         <rect x="85" y="214" width="250" height="86" rx="12" />
         <text x="210" y="248" text-anchor="middle">Causal GQA + RoPE</text>
         <text x="210" y="272" text-anchor="middle" class="sub">Q/K/V -> scores -> mix</text>
@@ -207,7 +207,7 @@
 
       <line x1="210" y1="300" x2="210" y2="344" marker-end="url(#arrow)" />
 
-      <g class:selected={selectedPartId === "res1"} on:click={() => (selectedPartId = "res1")}>
+      <g class="part part-residual" class:selected={selectedPartId === "res1"} on:click={() => (selectedPartId = "res1")}>
         <rect x="135" y="344" width="150" height="56" rx="12" />
         <text x="210" y="378" text-anchor="middle">+ Residual</text>
       </g>
@@ -219,14 +219,14 @@
 
       <line x1="210" y1="400" x2="210" y2="438" marker-end="url(#arrow)" />
 
-      <g class:selected={selectedPartId === "ln2"} on:click={() => (selectedPartId = "ln2")}>
+      <g class="part part-neuron" class:selected={selectedPartId === "ln2"} on:click={() => (selectedPartId = "ln2")}>
         <rect x="125" y="438" width="170" height="56" rx="12" />
         <text x="210" y="472" text-anchor="middle">RMSNorm 2</text>
       </g>
 
       <line x1="210" y1="494" x2="210" y2="530" marker-end="url(#arrow)" />
 
-      <g class:selected={selectedPartId === "mlp"} on:click={() => (selectedPartId = "mlp")}>
+      <g class="part part-ffn" class:selected={selectedPartId === "mlp"} on:click={() => (selectedPartId = "mlp")}>
         <rect x="90" y="530" width="240" height="82" rx="12" />
         <text x="210" y="562" text-anchor="middle">SwiGLU MLP</text>
         <text x="210" y="586" text-anchor="middle" class="sub">4096 -> 14336 -> 4096</text>
@@ -234,7 +234,7 @@
 
       <line x1="210" y1="612" x2="210" y2="654" marker-end="url(#arrow)" />
 
-      <g class:selected={selectedPartId === "res2"} on:click={() => (selectedPartId = "res2")}>
+      <g class="part part-training" class:selected={selectedPartId === "res2"} on:click={() => (selectedPartId = "res2")}>
         <rect x="135" y="654" width="150" height="56" rx="12" />
         <text x="210" y="688" text-anchor="middle">+ Residual</text>
       </g>
@@ -248,9 +248,6 @@
       <text x="222" y="748" class="output">Y</text>
       </svg>
 
-      <div class="legend">
-        <span><i></i>Click a block part for details.</span>
-      </div>
     </div>
     <aside class="inspector-panel">
       <section class="card inspector">
@@ -439,29 +436,32 @@
   }
 
   svg g { cursor: pointer; }
-  svg rect { fill: rgba(241, 245, 249, 0.9); stroke: rgba(100, 116, 139, 0.46); stroke-width: 1.05; transition: fill 140ms ease, stroke-color 140ms ease, filter 140ms ease; }
-  svg g:hover rect { fill: rgba(226, 232, 240, 0.95); }
-  svg g.selected rect {
-    fill: rgba(21, 106, 130, 0.14);
-    stroke: rgba(21, 106, 130, 0.86);
-    stroke-width: 1.5;
-    filter: drop-shadow(0 1px 2px rgba(21, 106, 130, 0.2));
+  svg .part rect {
+    fill: color-mix(in srgb, var(--part-color) 12%, white);
+    stroke: color-mix(in srgb, var(--part-color) 54%, #64748b);
+    stroke-width: 1.1;
+    transition: fill 140ms ease, stroke-color 140ms ease, filter 140ms ease, transform 140ms ease;
   }
+  svg .part:hover rect {
+    fill: color-mix(in srgb, var(--part-color) 18%, white);
+    filter: drop-shadow(0 4px 7px color-mix(in srgb, var(--part-color) 22%, transparent));
+  }
+  svg .part.selected rect {
+    fill: color-mix(in srgb, var(--part-color) 24%, white);
+    stroke: color-mix(in srgb, var(--part-color) 86%, #0f172a);
+    stroke-width: 1.5;
+    filter: drop-shadow(0 2px 6px color-mix(in srgb, var(--part-color) 28%, transparent));
+  }
+  .part-embedding { --part-color: #0e7490; }
+  .part-neuron { --part-color: #b45309; }
+  .part-attention { --part-color: #156a82; }
+  .part-residual { --part-color: #64748b; }
+  .part-ffn { --part-color: #1f7a63; }
+  .part-training { --part-color: #be185d; }
   svg text { font-size: 13px; fill: #334155; font-weight: 600; }
   svg text.sub { font-size: 12px; font-weight: 500; fill: #64748b; }
   svg text.output { font-size: 13px; fill: #0f172a; font-weight: 700; }
   svg line { stroke: rgba(71, 85, 105, 0.7); stroke-width: 1.35; fill: none; }
-
-  .legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.65rem;
-    font-size: 0.74rem;
-    color: var(--text-muted);
-    justify-content: center;
-  }
-  .legend span { display: inline-flex; align-items: center; gap: 0.35rem; }
-  .legend i { width: 8px; height: 8px; border-radius: 999px; background: rgba(21, 106, 130, 0.48); display: inline-block; }
 
   .inspector h4 {
     margin: 0;

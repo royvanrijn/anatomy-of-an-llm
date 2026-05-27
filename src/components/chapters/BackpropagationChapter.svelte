@@ -1,4 +1,5 @@
 <script lang="ts">
+  import FlowPath from "../FlowPath.svelte";
   import {
     applyGradientStep,
     backwardPass,
@@ -11,6 +12,12 @@
 
   const prompt = "Three, two, one...";
   const vocab = [" rock", " paper", " scissors"];
+  const flowSteps = [
+    { label: "01", title: "Select target" },
+    { label: "02", title: "Forward snapshot" },
+    { label: "03", title: "Calculate backward" },
+    { label: "04", title: "Apply update" }
+  ];
   const x = [0.7, -0.4];
   const xYs = [60, 120];
   const h1Ys = [50, 130];
@@ -106,7 +113,7 @@
       We will train on one tiny example and reveal each step in order: forward prediction, backward gradients, then
       the weight update.
     </p>
-    <p class="pipeline-line">select target -> forward snapshot -> calculate backward -> apply update</p>
+    <FlowPath steps={flowSteps} ariaLabel="Backpropagation learning path" />
   </div>
 
   <section class="card training-card">
@@ -314,17 +321,6 @@
 <style>
   .backprop { display:grid; gap:.9rem; }
   .intro p { margin:0; color:var(--text-secondary); line-height:1.6; }
-  .pipeline-line {
-    font-family: "IBM Plex Mono", "SFMono-Regular", monospace;
-    font-size: 0.92rem;
-    color: #334155;
-    letter-spacing: 0.01em;
-    background: rgba(21, 106, 130, 0.06);
-    border: 1px solid rgba(21, 106, 130, 0.2);
-    border-radius: 10px;
-    padding: 0.4rem 0.55rem;
-    display: inline-block;
-  }
   .card {
     border:1px solid var(--border-subtle);
     border-radius:12px;
@@ -513,13 +509,6 @@
   @media (max-width: 640px) {
     .card {
       padding: 0.56rem;
-    }
-
-    .pipeline-line {
-      display: block;
-      font-size: 0.8rem;
-      line-height: 1.48;
-      white-space: normal;
     }
 
     .prompt-line {

@@ -69,6 +69,122 @@ a {
   clip: rect(0 0 0 0);
 }
 
+.chapter-shell .chapter-body > .card,
+.chapter-shell .chapter-body > section.card,
+.chapter-shell .chapter-body > .controls,
+.chapter-shell .chapter-body > section.controls,
+.chapter-shell .chapter-body > .vector-values,
+.chapter-shell .chapter-body > .analogy,
+.chapter-shell .chapter-body > .neuron-map,
+.chapter-shell .chapter-body > .curve-card,
+.chapter-shell .chapter-body > .equations {
+  border-color: rgba(var(--chapter-accent-rgb), 0.24);
+  background:
+    linear-gradient(180deg, rgba(var(--chapter-accent-rgb), 0.045), transparent 4.2rem),
+    rgba(255, 255, 255, 0.68);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    0 8px 24px rgba(15, 23, 42, 0.055);
+}
+
+.chapter-shell .chapter-body > .card::before,
+.chapter-shell .chapter-body > section.card::before,
+.chapter-shell .chapter-body > .controls::before,
+.chapter-shell .chapter-body > section.controls::before {
+  content: "";
+  display: block;
+  grid-column: 1 / -1;
+  width: 3.8rem;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(var(--chapter-accent-rgb), 0.72), rgba(var(--chapter-accent-rgb), 0.12));
+  margin-bottom: 0.06rem;
+}
+
+.chapter-shell .label,
+.chapter-shell .sub,
+.chapter-shell .story-subtitle,
+.chapter-shell .explainer-title,
+.chapter-shell .title {
+  color: var(--chapter-accent) !important;
+}
+
+.chapter-shell .chapter-body article:not(.chapter-main),
+.chapter-shell .single-matrix,
+.chapter-shell .size-grid > div,
+.chapter-shell .selected-stage-panel,
+.chapter-shell .selected-response,
+.chapter-shell .io-grid > div,
+.chapter-shell .dims-table tr,
+.chapter-shell .qkv-mini article,
+.chapter-shell .flow-grid article,
+.chapter-shell .compare article,
+.chapter-shell .split article {
+  border-color: rgba(var(--chapter-accent-rgb), 0.16);
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.62);
+}
+
+.chapter-shell button,
+.chapter-shell select {
+  transition:
+    transform 140ms ease,
+    box-shadow 140ms ease,
+    border-color 140ms ease,
+    background-color 140ms ease,
+    color 140ms ease;
+}
+
+.chapter-shell button:hover {
+  border-color: rgba(var(--chapter-accent-rgb), 0.42);
+  box-shadow: 0 4px 12px rgba(var(--chapter-accent-rgb), 0.1);
+}
+
+.chapter-shell button:active {
+  transform: translateY(1px);
+}
+
+.chapter-shell button.active,
+.chapter-shell button.selected,
+.chapter-shell .token.selected,
+.chapter-shell .token-btn.active,
+.chapter-shell .pill.active,
+.chapter-shell .relation-switch button.active,
+.chapter-shell .modes button.active,
+.chapter-shell .scenario-pills button.active {
+  border-color: rgba(var(--chapter-accent-rgb), 0.66) !important;
+  background: rgba(var(--chapter-accent-rgb), 0.16) !important;
+  color: #0f172a !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(var(--chapter-accent-rgb), 0.14),
+    0 4px 14px rgba(var(--chapter-accent-rgb), 0.14);
+}
+
+.chapter-shell svg {
+  filter: saturate(1.04);
+}
+
+.chapter-shell .diagram-card svg,
+.chapter-shell .chart-card svg,
+.chapter-shell .block-visual svg,
+.chapter-shell .stack-card svg,
+.chapter-shell .neuron-map svg,
+.chapter-shell .curve-card svg,
+.chapter-shell .arc-wrap,
+.chapter-shell .plane {
+  border-color: rgba(var(--chapter-accent-rgb), 0.2);
+  background:
+    radial-gradient(circle at 20% 0%, rgba(var(--chapter-accent-rgb), 0.08), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.76));
+}
+
+.chapter-shell .matrix-wrap,
+.chapter-shell .single-matrix {
+  background:
+    linear-gradient(135deg, rgba(var(--chapter-accent-rgb), 0.035), transparent 45%),
+    rgba(255, 255, 255, 0.72);
+}
+
 @media (max-width: 768px) {
   :root {
     --radius-lg: 14px;

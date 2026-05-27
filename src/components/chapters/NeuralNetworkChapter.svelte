@@ -65,6 +65,8 @@
     </p>
     <p>
       The same math from one neuron is now done in parallel using matrices:
+    </p>
+    <p class="matrix-equation">
       <code>X(1x2) · W1(2x3) = Z1(1x3)</code>,
       then <code>A1 = activation(Z1)</code>,
       then <code>A1(1x3) · W2(3x2) = Z2(1x2)</code>.
@@ -315,6 +317,9 @@
 <style>
   .dense-chapter { display: grid; gap: .9rem; }
   .intro p { margin: 0; font-size: 1rem; line-height: 1.6; color: var(--text-secondary); }
+  .intro .matrix-equation {
+    font-size: 0.94rem;
+  }
   code { font-family: "IBM Plex Mono", "SFMono-Regular", monospace; }
   .controls { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap:.6rem; border:1px solid var(--border-subtle); border-radius:12px; background:rgba(255,255,255,.58); padding:.65rem; }
   label { display:grid; gap:.25rem; font-size:.78rem; color:var(--text-secondary); }

@@ -36,32 +36,44 @@
   <div class="explainer">
     <p class="explainer-title">Slicing up the text</p>
     <p>
-      Tokenization is the rule for doing that rewrite. It splits the sentence into <strong>tokens</strong>: small reusable
-      pieces such as words, word parts, punctuation, or a leading space plus a word part.
+      Before text can enter a language model, it has to be rewritten as numbers.
     </p>
     <p>
-      Each token is then looked up in a vocabulary and replaced by an integer ID. From that point on, the model no longer works
-      with the original characters. It works with the ordered list of IDs.
+      Tokenization is the step that does this. It splits text into small reusable pieces called <strong>tokens</strong>.
+      A token can be a whole word, part of a word, punctuation, a number, or even a space plus the start of the next word.
     </p>
     <p>
-      That vocabulary is the tokenizer vocabulary itself (for example <code>o200k_base</code>): one token entry per token ID.
+      Each token has an entry in the tokenizer's vocabulary and is replaced by its corresponding integer ID. From that
+      point on, the model is no longer working with characters directly. It sees an ordered list of token IDs.
     </p>
   </div>
 
   <div class="reasoning">
-    <p class="reasoning-title">Why tokens instead of words or letters?</p>
+    <p class="reasoning-title">Why not just use words?</p>
     <p>
-      Whole words are too brittle: names, code fragments, typos, inflections, and multilingual text quickly create words the
-      model has never seen. Characters or bytes avoid that problem, but they make every input much longer. Subword tokens sit
-      between those extremes: common text stays compact, while unusual strings can still be assembled from smaller pieces.
+      Whole words are too rigid. New names, typos, code, inflections, compound words, and multilingual text would
+      constantly produce words the model has never seen before.
+    </p>
+  </div>
+  <div class="reasoning">
+    <p class="reasoning-title">Why not just use letters or bytes?</p>
+    <p>
+      That solves the "unknown word" problem, but makes every input much longer. More pieces means more work for the model
+      and less context fits in the same window. Subword tokens are the reasonable compromise: common text stays compact, while unusual text can still be built from smaller pieces.
     </p>
   </div>
   <p class="encoding-note">
-    The examples below use <code>{data.encoding}</code>. Switch sentences and notice where the boundaries land: sometimes a
-    token is a whole word, sometimes it is a word fragment, and sometimes it includes the space before a word. Later chapters
-    project to this same tokenizer vocabulary when producing logits.
+    Below you can experiment with OpenAI's <code>{data.encoding}</code> tokenizer. Try switching sentences and watch where the
+    boundaries land.
   </p>
-
+  <p class="encoding-note">
+    Later in this explainer, when the model predicts the <i>next</i> token, it predicts over this same vocabulary.
+  </p>
+  <p class="tech-note">
+    Technical note: the examples below are generated with
+    <a href="https://github.com/openai/tiktoken" target="_blank" rel="noreferrer"><code>tiktoken</code></a>
+    using the <code>{data.encoding}</code> encoding.
+  </p>
   <section class="playground">
     <div class="controls">
       <label>
@@ -138,11 +150,44 @@
     line-height: 1.6;
   }
 
+  .explainer a {
+    color: #155e75;
+    text-decoration: none;
+    border-bottom: 1px dotted rgba(21, 94, 117, 0.45);
+  }
+
+  .explainer a:hover,
+  .explainer a:focus-visible {
+    color: #0f4f61;
+    border-bottom-color: rgba(15, 79, 97, 0.72);
+    outline: none;
+  }
+
   .encoding-note {
     margin: 0;
     font-size: 1rem;
     color: var(--text-secondary);
     line-height: 1.6;
+  }
+
+  .tech-note {
+    margin: -0.45rem 0 0;
+    font-size: 0.72rem;
+    color: rgba(82, 82, 91, 0.82);
+    line-height: 1.4;
+  }
+
+  .tech-note a {
+    color: #155e75;
+    text-decoration: none;
+    border-bottom: 1px dotted rgba(21, 94, 117, 0.42);
+  }
+
+  .tech-note a:hover,
+  .tech-note a:focus-visible {
+    color: #0f4f61;
+    border-bottom-color: rgba(15, 79, 97, 0.7);
+    outline: none;
   }
 
   .reasoning {
@@ -160,7 +205,7 @@
     color: #52525b;
   }
 
-  .reasoning p:last-child {
+  .reasoning p:not(.reasoning-title) {
     margin: 0;
     font-size: 0.9rem;
     color: #4b5563;

@@ -32,34 +32,35 @@
   .flow-path {
     margin: 0;
     padding: 0.82rem;
-    border: 1px solid rgba(var(--chapter-accent-rgb, 21, 106, 130), 0.22);
+    border: 1px solid rgba(var(--chapter-accent-rgb, 21, 106, 130), 0.14);
     border-radius: 18px;
     background:
-      radial-gradient(circle at 0% 50%, rgba(var(--chapter-accent-rgb, 21, 106, 130), 0.12), transparent 34%),
       linear-gradient(
         90deg,
-        rgba(var(--chapter-accent-rgb, 21, 106, 130), 0.1),
-        rgba(255, 255, 255, 0.62) 42%,
-        rgba(var(--chapter-accent-rgb, 21, 106, 130), 0.06)
+        rgba(var(--chapter-accent-rgb, 21, 106, 130), 0.035),
+        rgba(255, 255, 255, 0.62) 46%,
+        rgba(var(--chapter-accent-rgb, 21, 106, 130), 0.025)
       ),
-      rgba(255, 255, 255, 0.52);
+      rgba(255, 255, 255, 0.58);
     display: grid;
     gap: 0;
     align-items: center;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.78);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.72),
+      0 8px 22px rgba(15, 23, 42, 0.035);
   }
 
   .flow-card {
     min-height: 4.9rem;
-    border: 1px solid rgba(var(--chapter-accent-rgb, 21, 106, 130), 0.19);
+    border: 1px solid rgba(var(--chapter-accent-rgb, 21, 106, 130), 0.13);
     border-radius: 15px;
     background:
-      linear-gradient(160deg, rgba(255, 255, 255, 0.92), rgba(var(--chapter-accent-rgb, 21, 106, 130), 0.06));
+      linear-gradient(160deg, rgba(255, 255, 255, 0.94), rgba(var(--chapter-accent-rgb, 21, 106, 130), 0.025));
     padding: 0.56rem 0.62rem;
     display: grid;
     gap: 0.16rem;
     align-content: start;
-    box-shadow: 0 7px 18px rgba(15, 23, 42, 0.06);
+    box-shadow: 0 5px 14px rgba(15, 23, 42, 0.035);
   }
 
   .flow-arrow {
@@ -68,15 +69,15 @@
     justify-self: center;
     display: grid;
     place-items: center;
-    border: 1px solid rgba(var(--chapter-accent-rgb, 21, 106, 130), 0.32);
+    border: 1px solid rgba(var(--chapter-accent-rgb, 21, 106, 130), 0.2);
     border-radius: 999px;
     background: rgba(248, 252, 253, 0.96);
-    color: rgba(var(--chapter-accent-rgb, 21, 106, 130), 0.82);
+    color: rgba(var(--chapter-accent-rgb, 21, 106, 130), 0.68);
     font-family: "IBM Plex Mono", "SFMono-Regular", monospace;
     font-size: 0.76rem;
     font-weight: 700;
     line-height: 1;
-    box-shadow: 0 2px 7px rgba(15, 23, 42, 0.08);
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.045);
   }
 
   .flow-index {

@@ -221,7 +221,12 @@
   .start-dot { fill: rgba(15, 23, 42, 0.9); stroke: rgba(255,255,255,.9); stroke-width: 1.1; }
   .start-dot.dragging { fill: rgba(14,116,144,.9); }
   .start-ring { fill: none; stroke: rgba(15,23,42,.2); stroke-width: 1; }
-  .start-ring.hint { animation: ringFade 1.6s ease-in-out infinite; }
+  .start-ring.hint {
+    animation: ringFade 1.6s ease-in-out infinite;
+    transform-box: fill-box;
+    transform-origin: center;
+    will-change: opacity, transform;
+  }
   .end-dot { stroke: none; }
   .sgd-dot { fill: rgba(3,105,161,.95); }
   .mom-dot { fill: rgba(190,24,93,.95); }
@@ -242,9 +247,9 @@
   .stat.momentum { border-color: rgba(190,24,93,.5); }
   .stat.adam { border-color: rgba(5,150,105,.5); }
   @keyframes ringFade {
-    0% { stroke-opacity: .38; }
-    50% { stroke-opacity: .1; }
-    100% { stroke-opacity: .38; }
+    0% { opacity: .38; transform: scale(1); }
+    50% { opacity: .12; transform: scale(1.08); }
+    100% { opacity: .38; transform: scale(1); }
   }
   @media (max-width: 980px) {
     .panel { grid-template-columns: 1fr; }

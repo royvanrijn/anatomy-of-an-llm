@@ -1,6 +1,4 @@
 <script lang="ts">
-  import FlowPath from "../FlowPath.svelte";
-
   const maxContext = 1_000_000;
   const maxGenerated = 1_000;
   const minContext = 256;

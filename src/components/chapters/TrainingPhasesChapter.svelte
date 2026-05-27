@@ -165,7 +165,7 @@
 
   <section class="card phase-summary">
     <p class="label">Auto-detected phase summary</p>
-    <h4>{selectedPhase.label}</h4>
+    <h3>{selectedPhase.label}</h3>
     <p class="mini"><strong>Train:</strong> {selectedPhase.train}</p>
     <p class="mini"><strong>Validation:</strong> {selectedPhase.val}</p>
     <p class="mini">{selectedPhase.note}</p>
@@ -259,7 +259,7 @@
   .legend .train-dot { background: rgba(37, 99, 235, 0.95); }
   .legend .val-dot { background: rgba(217, 119, 6, 0.95); }
 
-  .phase-summary h4 {
+  .phase-summary h3 {
     margin: 0;
     font-family: "Fraunces", "Iowan Old Style", "Georgia", serif;
     font-size: 1.18rem;

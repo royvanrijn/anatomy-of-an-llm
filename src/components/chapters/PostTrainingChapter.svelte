@@ -87,7 +87,7 @@
     </div>
 
     <div class="selected-stage-panel">
-        <h4>{selectedStage.label}</h4>
+        <h3>{selectedStage.label}</h3>
         <p class="mini"><strong>Objective:</strong> {selectedStage.objective}</p>
         <p class="mini"><strong>Signal:</strong> {selectedStage.data}</p>
         <p class="mini">
@@ -230,7 +230,7 @@
     gap: 0.26rem;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.66);
   }
-  .selected-stage-panel h4 {
+  .selected-stage-panel h3 {
     margin: 0 0 0.06rem 0;
     font-family: "Fraunces", "Iowan Old Style", "Georgia", serif;
     font-size: 1.02rem;

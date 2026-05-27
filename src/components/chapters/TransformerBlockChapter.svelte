@@ -252,7 +252,7 @@
     <aside class="inspector-panel">
       <section class="card inspector">
         <p class="label">Selected Part</p>
-        <h4>{selectedPart.label}</h4>
+        <h3>{selectedPart.label}</h3>
         <p class="mini">{selectedPart.short}</p>
 
         <p class="mini">
@@ -463,7 +463,7 @@
   svg text.output { font-size: 13px; fill: #0f172a; font-weight: 700; }
   svg line { stroke: rgba(71, 85, 105, 0.7); stroke-width: 1.35; fill: none; }
 
-  .inspector h4 {
+  .inspector h3 {
     margin: 0;
     font-family: "Fraunces", "Iowan Old Style", "Georgia", serif;
     font-weight: 500;

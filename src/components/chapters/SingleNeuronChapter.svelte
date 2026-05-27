@@ -121,7 +121,8 @@
 
     <section class="control-panel">
       <p class="label">Activation</p>
-      <select bind:value={activation}>
+      <label class="sr-only" for="single-neuron-activation">Activation function</label>
+      <select id="single-neuron-activation" bind:value={activation}>
         {#each ACTIVATIONS as item}
           <option value={item.id}>{item.label}</option>
         {/each}

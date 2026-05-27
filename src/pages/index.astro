@@ -287,7 +287,7 @@ const structuredData = {
                   <EmbeddingChapter
                     tokenizationData={tokenizationData}
                     embeddingData={embeddingsData}
-                    client:load
+                    client:visible
                   />
                   <div class="story-beat">
                     <p>Important takeaway</p>
@@ -324,7 +324,7 @@ const structuredData = {
                     activations happening at once.
                   </p>
                   <p class="story-subtitle">Single-neuron transformation</p>
-                  <SingleNeuronChapter client:load />
+                  <SingleNeuronChapter client:visible />
                   <div class="story-beat">
                     <p>Important takeaway</p>
                     <p>
@@ -364,7 +364,7 @@ const structuredData = {
                     inside each position.
                   </p>
                   <p class="story-subtitle">Dense layer math, visually</p>
-                  <NeuralNetworkChapter client:load />
+                  <NeuralNetworkChapter client:visible />
                   <div class="story-beat">
                     <p>Important takeaway</p>
                     <p>
@@ -403,7 +403,7 @@ const structuredData = {
                     The model produces the distribution. The decoder decides how adventurous we are when sampling from it.
                   </p>
                   <p class="story-subtitle">From logits to generated output</p>
-                  <LogitsSamplingChapter client:load />
+                  <LogitsSamplingChapter client:visible />
                   <div class="story-beat">
                     <p>Important takeaway</p>
                     <p>
@@ -442,7 +442,7 @@ const structuredData = {
                     deep inside the model would affect the final loss.
                   </p>
                   <p class="story-subtitle">Error becomes learning signal</p>
-                  <BackpropagationChapter client:load />
+                  <BackpropagationChapter client:visible />
                   <div class="story-beat">
                     <p>Important takeaway</p>
                     <p>
@@ -489,7 +489,7 @@ const structuredData = {
                     The optimizer is not just a detail after backpropagation. It is part of the learning behavior.
                   </p>
                   <p class="story-subtitle">Different update rules, same gradients</p>
-                  <OptimizersChapter client:load />
+                  <OptimizersChapter client:visible />
                   <div class="story-beat">
                     <p>Important takeaway</p>
                     <p>
@@ -526,7 +526,7 @@ const structuredData = {
                     information that flows.
                   </p>
                   <p class="story-subtitle">How tokens exchange information</p>
-                  <QkvChapter client:load />
+                  <QkvChapter client:visible />
                   <div class="story-beat">
                     <p>Important takeaway</p>
                     <p>
@@ -565,7 +565,7 @@ const structuredData = {
                     query heads.
                   </p>
                   <p class="story-subtitle">Raw scores -> softmax weights -> value mixing</p>
-                  <AttentionMathChapter client:load />
+                  <AttentionMathChapter client:visible />
                   <div class="story-beat">
                     <p>Important takeaway</p>
                     <p>
@@ -601,7 +601,7 @@ const structuredData = {
                     vectors, and it does not decide attention by itself. It changes which query/key pairs line up well.
                   </p>
                   <p class="story-subtitle">Relative position through rotation</p>
-                  <RopeChapter client:load />
+                  <RopeChapter client:visible />
                   <div class="story-beat">
                     <p>Important takeaway</p>
                     <p>
@@ -641,7 +641,7 @@ const structuredData = {
                     Layer by layer, the initially context-free embeddings become rich context-aware representations.
                   </p>
                   <p class="story-subtitle">One modern decoder block, end-to-end</p>
-                  <TransformerBlockChapter client:load />
+                  <TransformerBlockChapter client:visible />
                   <div class="story-beat">
                     <p>Important takeaway</p>
                     <p>
@@ -680,7 +680,7 @@ const structuredData = {
                     sequence length, optimizer settings, batch size, and compute budget all interact.
                   </p>
                   <p class="story-subtitle">How behavior changes across training</p>
-                  <TrainingPhasesChapter client:load />
+                  <TrainingPhasesChapter client:visible />
                   <div class="story-beat">
                     <p>Important takeaway</p>
                     <p>
@@ -717,7 +717,7 @@ const structuredData = {
                     and many variations. The details differ, but the high-level goal is the same.
                   </p>
                   <p class="story-subtitle">From capability to assistant behavior</p>
-                  <PostTrainingChapter client:load />
+                  <PostTrainingChapter client:visible />
                   <div class="story-beat">
                     <p>Important takeaway</p>
                     <p>
@@ -759,7 +759,7 @@ const structuredData = {
                     generates new tokens one by one while reusing the cache.
                   </p>
                   <p class="story-subtitle">Compute-memory tradeoff during inference</p>
-                  <ContextKvCacheChapter client:load />
+                  <ContextKvCacheChapter client:visible />
                   <div class="story-beat">
                     <p>Important takeaway</p>
                     <p>
@@ -801,7 +801,7 @@ const structuredData = {
                     difference between a model that does not fit in memory and a model that runs comfortably.
                   </p>
                   <p class="story-subtitle">Bit-width vs quality and memory</p>
-                  <QuantizationChapter client:load />
+                  <QuantizationChapter client:visible />
                   <div class="story-beat">
                     <p>Important takeaway</p>
                     <p>
@@ -912,7 +912,7 @@ const structuredData = {
         rel="noreferrer noopener"
         aria-label="OpenValue"
       >
-        <img src={brandLogoSrc} alt="OpenValue Tech Tribes" />
+        <img src={brandLogoSrc} alt="OpenValue Tech Tribes" width="3991" height="738" />
       </a>
       <p class="closing-credit">
         © 2026 · Created by Roy van Rijn · Built with OpenAI Codex

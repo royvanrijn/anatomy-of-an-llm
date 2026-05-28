@@ -59,11 +59,7 @@ const llmsTxtUrl = `${basePath}/llms.txt`;
       )
     }
   </head>
-  <body>
-    <div class="site-shell">
-      <slot />
-    </div>
-    <script is:inline>
+  <script is:inline>
       (() => {
         const loadAnalytics = () => {
           if (navigator.doNotTrack === "1" || window.__analyticsLoaded) {
@@ -88,6 +84,10 @@ const llmsTxtUrl = `${basePath}/llms.txt`;
           window.addEventListener("load", () => window.setTimeout(loadAnalytics, 1200), { once: true });
         }
       })();
-    </script>
+  </script>
+  <body>
+    <div class="site-shell">
+      <slot />
+    </div>
   </body>
 </html>

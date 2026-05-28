@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import DimensionOverlay from "../DimensionOverlay.svelte";
 
   const pairBases = [1, 2, 4, 8];
@@ -19,6 +20,11 @@
     { a: -66, b: 132, c: 24, la: 16, lb: 23, lc: 18 }
   ];
   let selectedSentenceIndex = 0;
+  let previousSelectedSentenceIndex = selectedSentenceIndex;
+  let displayAngles = sentenceTokens.map((_, i) => (i - selectedSentenceIndex) * 16);
+  let motionReady = false;
+  let reduceMotion = false;
+  let angleFrame = 0;
 
   // One toy Q/K pair before rotation.
   const qBase = { x: 0.82, y: 0.34 };
@@ -65,6 +71,42 @@
 
   $: baseAngle = 0;
   $: rotatedAngles = sentenceTokens.map((_, i) => (i - selectedSentenceIndex) * 16);
+  $: if (selectedSentenceIndex !== previousSelectedSentenceIndex) {
+    animateAngles(rotatedAngles);
+    previousSelectedSentenceIndex = selectedSentenceIndex;
+  }
+
+  function easeOutCubic(t: number) {
+    return 1 - Math.pow(1 - t, 3);
+  }
+
+  function animateAngles(targetAngles: number[]) {
+    cancelAnimationFrame(angleFrame);
+    if (!motionReady || reduceMotion) {
+      displayAngles = targetAngles;
+      return;
+    }
+
+    const startAngles = [...displayAngles];
+    const startedAt = performance.now();
+    const duration = 620;
+
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - startedAt) / duration);
+      const eased = easeOutCubic(t);
+      displayAngles = targetAngles.map((target, i) => startAngles[i] + (target - startAngles[i]) * eased);
+      if (t < 1) angleFrame = requestAnimationFrame(tick);
+    };
+
+    angleFrame = requestAnimationFrame(tick);
+  }
+
+  onMount(() => {
+    motionReady = true;
+    reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    displayAngles = rotatedAngles;
+    return () => cancelAnimationFrame(angleFrame);
+  });
 </script>
 
 <section class="rope">
@@ -126,9 +168,11 @@
             <path d={unitArrowPath(bundle.b, bundle.lb)} class="vec-line dashed-base" />
             <path d={unitArrowPath(bundle.c, bundle.lc)} class="vec-line dashed-base soft" />
 
-            <path d={unitArrowPath(rotatedAngles[i] + bundle.a, bundle.la)} class={`vec-line rotated-line soft ${i === selectedSentenceIndex ? "active" : ""}`} />
-            <path d={unitArrowPath(rotatedAngles[i] + bundle.b, bundle.lb)} class={`vec-line rotated-line ${i === selectedSentenceIndex ? "active" : ""}`} />
-            <path d={unitArrowPath(rotatedAngles[i] + bundle.c, bundle.lc)} class={`vec-line rotated-line soft ${i === selectedSentenceIndex ? "active" : ""}`} />
+            <g class="rotating-vector" transform={`rotate(${displayAngles[i]} 0 0)`}>
+              <path d={unitArrowPath(bundle.a, bundle.la)} class={`vec-line rotated-line soft ${i === selectedSentenceIndex ? "active" : ""}`} />
+              <path d={unitArrowPath(bundle.b, bundle.lb)} class={`vec-line rotated-line ${i === selectedSentenceIndex ? "active" : ""}`} />
+              <path d={unitArrowPath(bundle.c, bundle.lc)} class={`vec-line rotated-line soft ${i === selectedSentenceIndex ? "active" : ""}`} />
+            </g>
           </svg>
         {/each}
       </div>
@@ -225,6 +269,8 @@
     border-color: rgba(21, 106, 130, 0.58);
     background: rgba(21, 106, 130, 0.14);
     color: #0f172a;
+    box-shadow: 0 0 0 0 rgba(21, 106, 130, 0.18);
+    animation: referencePulse 3.2s ease-in-out infinite;
   }
   .vector-rows {
     display: grid;
@@ -276,11 +322,15 @@
     stroke: rgba(30, 64, 175, 0.72);
   }
   .dashed-base {
-    stroke: rgba(100, 116, 139, 0.58);
-    stroke-dasharray: 3 2;
+    stroke: rgba(100, 116, 139, 0.34);
+    stroke-dasharray: 2.5 3;
+    stroke-width: 1.35;
   }
   .soft {
     opacity: 0.72;
+  }
+  .dashed-base.soft {
+    opacity: 0.46;
   }
   .rotated-line {
     stroke: rgba(51, 65, 85, 0.88);
@@ -288,6 +338,17 @@
   .rotated-line.active {
     stroke: rgba(217, 119, 6, 0.95);
     stroke-width: 3;
+    animation: ropeVectorPulse 2.6s ease-in-out infinite;
+  }
+
+  @keyframes referencePulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(21, 106, 130, 0.14); }
+    50% { box-shadow: 0 0 0 5px rgba(21, 106, 130, 0); }
+  }
+
+  @keyframes ropeVectorPulse {
+    0%, 100% { opacity: 0.78; }
+    50% { opacity: 1; }
   }
 
   @media (max-width: 980px) {
@@ -320,6 +381,17 @@
 
     .mini-vec {
       height: 92px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rotating-vector {
+      transition: none;
+    }
+
+    .token-btn.active,
+    .rotated-line.active {
+      animation: none;
     }
   }
 </style>

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import FlowPath from "../FlowPath.svelte";
   import { runOptimizers, type OptimizerRun } from "../../utils/optimizers";
 
@@ -8,6 +9,7 @@
   let steps = 18;
   let dragging = false;
   let showDragHint = true;
+  let idleMotionActive = true;
   let svgEl: SVGSVGElement | null = null;
 
   const momentum = 0.88;
@@ -75,9 +77,14 @@
     startY = clamp(pxToModelY(p.y), -2, 2);
   }
 
-  function onSvgPointerDown(evt: PointerEvent) {
-    dragging = true;
+  function stopIdleMotion() {
+    idleMotionActive = false;
     showDragHint = false;
+  }
+
+  function onSvgPointerDown(evt: PointerEvent) {
+    stopIdleMotion();
+    dragging = true;
     svgEl?.setPointerCapture?.(evt.pointerId);
     updateStartFromPointer(evt);
   }
@@ -92,16 +99,38 @@
   }
 
   function onLrInput(evt: Event) {
+    stopIdleMotion();
     lr = Number((evt.currentTarget as HTMLInputElement).value);
   }
 
   function onStepsInput(evt: Event) {
+    stopIdleMotion();
     steps = Number((evt.currentTarget as HTMLInputElement).value);
   }
 
+  onMount(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      idleMotionActive = false;
+      return;
+    }
+
+    let frame = 0;
+    const startedAt = performance.now();
+    const animate = (now: number) => {
+      if (!idleMotionActive || dragging) return;
+      const t = ((now - startedAt) / 1000) * 0.5 - 1.1;
+      startX = clamp(Math.sin(t) * 1.78, -2, 2);
+      startY = clamp(Math.sin(t * 2 + 0.75) * 1.28 + Math.cos(t) * 0.28, -2, 2);
+      frame = requestAnimationFrame(animate);
+    };
+
+    frame = requestAnimationFrame(animate);
+
+    return () => cancelAnimationFrame(frame);
+  });
 </script>
 
-<section class="optimizers">
+<section class="optimizers" class:idle-motion={idleMotionActive} on:focusin={stopIdleMotion}>
   <div class="intro">
     <p>
       Backprop gives gradients. Optimizers decide how to turn those gradients into actual parameter updates.
@@ -110,7 +139,7 @@
   </div>
 
   <section class="card">
-    <p class="label">Optimizer trajectories on one toy loss surface</p>
+          <p class="label">Optimizer trajectories on one toy loss surface</p>
     <div class="panel">
       <div class="viz-col">
         <svg
@@ -213,7 +242,18 @@
     margin-bottom: .1rem;
   }
   .mini { margin:0; font-size:.82rem; color:var(--text-secondary); line-height:1.5; }
-  svg { width: 100%; height: auto; border:1px solid rgba(100,116,139,.2); border-radius:9px; background:rgba(248,250,252,.85); cursor: grab; }
+  svg {
+    width: 100%;
+    height: auto;
+    border:1px solid rgba(100,116,139,.2);
+    border-radius:9px;
+    background:
+      radial-gradient(circle at var(--idle-x, 72%) var(--idle-y, 22%), rgba(21,106,130,.08), transparent 24%),
+      rgba(248,250,252,.85);
+    cursor: grab;
+    transition: background-position 240ms ease;
+  }
+  .idle-motion svg { --idle-x: 68%; --idle-y: 26%; }
   .contour { fill:none; stroke: rgba(100,116,139,.25); stroke-width:1.2; }
   .minimum { fill: rgba(217,119,6,.78); }
   .start-handle { cursor: grab; }
@@ -234,6 +274,13 @@
   .sgd { fill:none; stroke: rgba(3,105,161,.85); stroke-width:1.6; }
   .mom { fill:none; stroke: rgba(190,24,93,.85); stroke-width:1.6; }
   .adam { fill:none; stroke: rgba(5,150,105,.85); stroke-width:1.6; }
+  .idle-motion .sgd,
+  .idle-motion .mom,
+  .idle-motion .adam {
+    animation: pathBreathe 3.8s ease-in-out infinite;
+  }
+  .idle-motion .mom { animation-delay: 0.35s; }
+  .idle-motion .adam { animation-delay: 0.7s; }
   .axis {
     font-size: .7rem;
     fill: #64748b;
@@ -251,6 +298,10 @@
     50% { opacity: .12; transform: scale(1.08); }
     100% { opacity: .38; transform: scale(1); }
   }
+  @keyframes pathBreathe {
+    0%, 100% { stroke-opacity: .72; }
+    50% { stroke-opacity: 1; }
+  }
   @media (max-width: 980px) {
     .panel { grid-template-columns: 1fr; }
     .inline-controls { grid-template-columns: 1fr; }
@@ -265,6 +316,15 @@
     svg {
       min-height: 250px;
       touch-action: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .idle-motion .sgd,
+    .idle-motion .mom,
+    .idle-motion .adam,
+    .start-ring.hint {
+      animation: none;
     }
   }
 </style>

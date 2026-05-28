@@ -23,25 +23,26 @@ import embeddingsData from "../data/generated/embeddings-o200k-base.json";
 import tokenizationData from "../data/generated/tokenization-o200k-base.json";
 
 const chapterList = [
-  { id: "c1", number: "01", title: "Tokenization", status: "active" as const },
-  { id: "c2", number: "02", title: "Vector Embeddings", status: "active" as const },
-  { id: "c3", number: "03", title: "Neuron Activation", status: "active" as const },
-  { id: "c4", number: "04", title: "Feed-Forward Neural Network", status: "active" as const },
-  { id: "c5", number: "05", title: "Logits and Sampling", status: "active" as const },
-  { id: "c6", number: "06", title: "Backpropagation", status: "active" as const },
-  { id: "c7", number: "07", title: "Optimizers", status: "active" as const },
-  { id: "c8", number: "08", title: "Attention: Q, K, and V", status: "active" as const },
-  { id: "c9", number: "09", title: "Multi-Head Attention", status: "active" as const },
-  { id: "c10", number: "10", title: "RoPE", status: "active" as const },
-  { id: "c11", number: "11", title: "Transformer Block", status: "active" as const },
-  { id: "c12", number: "12", title: "Training Phases", status: "active" as const },
-  { id: "c13", number: "13", title: "Post-Training", status: "active" as const },
-  { id: "c14", number: "14", title: "Context and KV Cache", status: "active" as const },
-  { id: "c15", number: "15", title: "Quantization", status: "active" as const }
+  { id: "c1", aliasIds: ["tokenization"], number: "01", title: "Tokenization", status: "active" as const },
+  { id: "c2", aliasIds: ["embeddings", "vector-embeddings"], number: "02", title: "Vector Embeddings", status: "active" as const },
+  { id: "c3", aliasIds: ["neuron-activation", "activations"], number: "03", title: "Neuron Activation", status: "active" as const },
+  { id: "c4", aliasIds: ["feed-forward-network", "ffn"], number: "04", title: "Feed-Forward Neural Network", status: "active" as const },
+  { id: "c5", aliasIds: ["logits", "sampling", "logits-and-sampling"], number: "05", title: "Logits and Sampling", status: "active" as const },
+  { id: "c6", aliasIds: ["backpropagation", "backprop"], number: "06", title: "Backpropagation", status: "active" as const },
+  { id: "c7", aliasIds: ["optimizers", "sgd-momentum-adam"], number: "07", title: "Optimizers", status: "active" as const },
+  { id: "c8", aliasIds: ["qkv", "attention-q-k-v"], number: "08", title: "Attention: Q, K, and V", status: "active" as const },
+  { id: "c9", aliasIds: ["multi-head-attention", "attention-math"], number: "09", title: "Multi-Head Attention", status: "active" as const },
+  { id: "c10", aliasIds: ["rope", "rotary-positional-embeddings"], number: "10", title: "RoPE", status: "active" as const },
+  { id: "c11", aliasIds: ["transformer-block", "decoder-block"], number: "11", title: "Transformer Block", status: "active" as const },
+  { id: "c12", aliasIds: ["training-phases", "grokking"], number: "12", title: "Training Phases", status: "active" as const },
+  { id: "c13", aliasIds: ["post-training", "instruction-tuning", "preference-tuning"], number: "13", title: "Post-Training", status: "active" as const },
+  { id: "c14", aliasIds: ["kv-cache", "context-window"], number: "14", title: "Context and KV Cache", status: "active" as const },
+  { id: "c15", aliasIds: ["quantization"], number: "15", title: "Quantization", status: "active" as const }
 ];
 
 const chapterNav = chapterList.map((chapter) => ({
   id: chapter.id,
+  hrefId: chapter.aliasIds[0] ?? chapter.id,
   number: chapter.number,
   title: chapter.title,
   status: chapter.status
@@ -200,7 +201,7 @@ const structuredData = {
           {
             chapterList.map((chapter) => (
               <li>
-                <a href={`#${chapter.id}`}>
+                <a href={`#${chapter.aliasIds[0] ?? chapter.id}`}>
                   <span>{chapter.number}</span>
                   <span>{chapter.title}</span>
                 </a>
@@ -216,6 +217,7 @@ const structuredData = {
         <div class="chapter-step">
           <ChapterShell
             id={chapter.id}
+            aliasIds={chapter.aliasIds}
             number={chapter.number}
             title={chapter.title}
             summary={chapterHooks[chapter.number]}

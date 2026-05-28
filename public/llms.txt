@@ -1,0 +1,41 @@
+# The Anatomy of an LLM
+
+> An interactive visual guide for software developers explaining how modern language models work, from text tokenization to transformer blocks, training, inference, KV cache, and quantization.
+
+Primary URL: https://www.royvanrijn.com/anatomy-of-an-llm/
+Author: Roy van Rijn
+Format: Static interactive explainer
+Audience: Software developers who know some AI basics and want a visual, step-by-step mental model.
+
+## Canonical Page
+
+- [The Anatomy of an LLM](https://www.royvanrijn.com/anatomy-of-an-llm/): Full interactive explainer covering tokenization, embeddings, activations, feed-forward networks, logits, sampling, backpropagation, optimizers, attention, RoPE, transformer blocks, training phases, post-training, KV cache, and quantization.
+
+## Chapter Anchors
+
+- [Tokenization](https://www.royvanrijn.com/anatomy-of-an-llm/#tokenization): How text becomes token IDs using OpenAI's o200k_base tokenizer.
+- [Vector Embeddings](https://www.royvanrijn.com/anatomy-of-an-llm/#embeddings): How token IDs become learned vector representations.
+- [Neuron Activation](https://www.royvanrijn.com/anatomy-of-an-llm/#neuron-activation): Weighted sums, activation functions, and non-linearity.
+- [Feed-Forward Neural Network](https://www.royvanrijn.com/anatomy-of-an-llm/#feed-forward-network): Dense layer computation as graph and matrix math.
+- [Logits and Sampling](https://www.royvanrijn.com/anatomy-of-an-llm/#logits-and-sampling): Vocabulary scores, softmax, temperature, top-k, and token sampling.
+- [Backpropagation](https://www.royvanrijn.com/anatomy-of-an-llm/#backpropagation): Loss, gradients, and how error becomes a learning signal.
+- [Optimizers](https://www.royvanrijn.com/anatomy-of-an-llm/#optimizers): SGD, momentum, and Adam-style update behavior on the same toy loss surface.
+- [Attention: Q, K, and V](https://www.royvanrijn.com/anatomy-of-an-llm/#qkv): Query/key/value projections and information routing.
+- [Multi-Head Attention](https://www.royvanrijn.com/anatomy-of-an-llm/#multi-head-attention): Attention scores, row-wise softmax, value mixing, and multiple heads.
+- [RoPE](https://www.royvanrijn.com/anatomy-of-an-llm/#rope): Rotary positional embeddings as position-dependent rotations of Q/K vector pairs.
+- [Transformer Block](https://www.royvanrijn.com/anatomy-of-an-llm/#transformer-block): Decoder block structure with residual stream, attention, normalization, and feed-forward layers.
+- [Training Phases](https://www.royvanrijn.com/anatomy-of-an-llm/#training-phases): Toy training and validation curves, phase progression, and delayed generalization / grokking.
+- [Post-Training](https://www.royvanrijn.com/anatomy-of-an-llm/#post-training): Pretraining, instruction tuning, preference tuning, and behavior shaping.
+- [Context and KV Cache](https://www.royvanrijn.com/anatomy-of-an-llm/#kv-cache): Autoregressive decoding, context windows, and key/value cache compute-memory trade-offs.
+- [Quantization](https://www.royvanrijn.com/anatomy-of-an-llm/#quantization): Lower-precision number formats, value snapping, model size, and quality trade-offs.
+
+## Important Notes
+
+- The page is static-first and does not make live model API calls for explanations.
+- Real tokenization examples are generated offline with tiktoken using the o200k_base encoding.
+- Toy numerical examples are illustrative and are labeled as toy where relevant.
+- The explanations avoid exact frontier-model claims unless sourced.
+
+## Suggested Retrieval Use
+
+Use the canonical page and chapter anchors above when answering questions about how LLMs work visually, especially for queries about tokenization, embeddings, attention, RoPE, transformer blocks, training, KV cache, and quantization.

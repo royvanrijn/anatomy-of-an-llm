@@ -1,6 +1,7 @@
 ---
 interface ChapterLink {
   id: string;
+  hrefId?: string;
   number: string;
   title: string;
   status?: "planned" | "active" | "done";
@@ -37,8 +38,9 @@ const { chapters } = Astro.props;
       chapters.map((chapter) => (
         <li class={`status-${chapter.status ?? "planned"}`}>
           <a
-            href={`#${chapter.id}`}
+            href={`#${chapter.hrefId ?? chapter.id}`}
             data-chapter-link={chapter.id}
+            data-chapter-hash={chapter.hrefId ?? chapter.id}
             data-chapter-title={chapter.title}
             aria-label={`${chapter.number} ${chapter.title}`}
           >
@@ -71,8 +73,11 @@ const { chapters } = Astro.props;
       if (!nav || !link) return;
       const navRect = nav.getBoundingClientRect();
       const linkRect = link.getBoundingClientRect();
-      nav.style.setProperty("--indicator-x", `${linkRect.left - navRect.left}px`);
-      nav.style.setProperty("--indicator-y", `${linkRect.top - navRect.top}px`);
+      const navStyle = window.getComputedStyle(nav);
+      const borderLeft = Number.parseFloat(navStyle.borderLeftWidth) || 0;
+      const borderTop = Number.parseFloat(navStyle.borderTopWidth) || 0;
+      nav.style.setProperty("--indicator-x", `${linkRect.left - navRect.left - borderLeft}px`);
+      nav.style.setProperty("--indicator-y", `${linkRect.top - navRect.top - borderTop}px`);
       nav.style.setProperty("--indicator-width", `${linkRect.width}px`);
       nav.style.setProperty("--indicator-height", `${linkRect.height}px`);
       nav.style.setProperty("--indicator-opacity", "1");
@@ -133,13 +138,14 @@ const { chapters } = Astro.props;
       link.addEventListener("click", (event) => {
         const id = link.getAttribute("data-chapter-link");
         if (!id) return;
+        const hashId = link.getAttribute("data-chapter-hash") || id;
         event.preventDefault();
         const section = document.getElementById(id);
         if (section) {
           lockToTarget(id);
           setCurrentLink(id);
           section.scrollIntoView({ behavior: "smooth", block: "start" });
-          history.replaceState(null, "", `#${id}`);
+          history.replaceState(null, "", `#${hashId}`);
         }
       });
     });
@@ -213,6 +219,7 @@ const { chapters } = Astro.props;
     top: 0;
     width: var(--indicator-width);
     height: var(--indicator-height);
+    box-sizing: border-box;
     border: 1px solid rgba(21, 106, 130, 0.62);
     border-radius: 999px;
     background:

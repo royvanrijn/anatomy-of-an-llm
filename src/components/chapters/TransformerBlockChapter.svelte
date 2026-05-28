@@ -3,7 +3,7 @@
     id: string;
     label: string;
     short: string;
-    chapterId: string;
+    chapterHref: string;
     chapterLabel: string;
     inShape: string;
     outShape: string;
@@ -32,7 +32,7 @@
       id: "tok",
       label: "Token + Positional Input",
       short: "Input vectors entering this block.",
-      chapterId: "c2",
+      chapterHref: "embeddings",
       chapterLabel: "Vector Embedding",
       inShape: "[8 x 4096]",
       outShape: "[8 x 4096]",
@@ -46,7 +46,7 @@
       id: "ln1",
       label: "Pre-Attention Norm",
       short: "Stabilizes scale before attention with RMSNorm.",
-      chapterId: "c3",
+      chapterHref: "neuron-activation",
       chapterLabel: "Neuron Activation",
       inShape: "[8 x 4096]",
       outShape: "[8 x 4096]",
@@ -60,7 +60,7 @@
       id: "attn",
       label: "Causal Multi-Head Attention + RoPE",
       short: "Route information between tokens with causal GQA + RoPE.",
-      chapterId: "c9",
+      chapterHref: "multi-head-attention",
       chapterLabel: "Multi-Headed Attention",
       inShape: "[8 x 4096]",
       outShape: "[8 x 4096]",
@@ -76,7 +76,7 @@
       id: "res1",
       label: "Residual Add",
       short: "Preserves original signal path.",
-      chapterId: "c4",
+      chapterHref: "feed-forward-network",
       chapterLabel: "Feed Forward Neural Network",
       inShape: "[8 x 4096] + [8 x 4096]",
       outShape: "[8 x 4096]",
@@ -90,7 +90,7 @@
       id: "ln2",
       label: "Pre-MLP Norm",
       short: "Stabilizes before feed-forward with RMSNorm.",
-      chapterId: "c3",
+      chapterHref: "neuron-activation",
       chapterLabel: "Neuron Activation",
       inShape: "[8 x 4096]",
       outShape: "[8 x 4096]",
@@ -104,7 +104,7 @@
       id: "mlp",
       label: "Feed-Forward MLP",
       short: "Per-token nonlinear transform with SwiGLU.",
-      chapterId: "c4",
+      chapterHref: "feed-forward-network",
       chapterLabel: "Feed Forward Neural Network",
       inShape: "[8 x 4096]",
       outShape: "[8 x 4096]",
@@ -118,7 +118,7 @@
       id: "res2",
       label: "Residual Add",
       short: "Final block output.",
-      chapterId: "c6",
+      chapterHref: "backpropagation",
       chapterLabel: "Backpropagation",
       inShape: "[8 x 4096] + [8 x 4096]",
       outShape: "[8 x 4096]",
@@ -257,17 +257,17 @@
 
         <p class="mini">
           Learn more in
-          <a href={`#${selectedPart.chapterId}`}>{selectedPart.chapterLabel}</a>.
+          <a href={`#${selectedPart.chapterHref}`}>{selectedPart.chapterLabel}</a>.
         </p>
         {#if selectedPart.id === "attn"}
           <p class="mini">
-            Positional behavior here comes from <a href="#c10">RoPE</a>, applied on Q/K before score computation.
+            Positional behavior here comes from <a href="#rope">RoPE</a>, applied on Q/K before score computation.
           </p>
         {/if}
         {#if selectedPart.id === "mlp"}
           <p class="mini">
             This MLP uses <code>SwiGLU</code>, which builds on the activation ideas from
-            <a href="#c3">Neuron Activation</a>.
+            <a href="#neuron-activation">Neuron Activation</a>.
           </p>
         {/if}
 

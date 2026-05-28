@@ -1,14 +1,16 @@
 ---
 interface Props {
   id: string;
+  aliasIds?: string[];
   number: string;
   title: string;
   summary: string;
 }
 
-const { id, number, title, summary } = Astro.props;
+const { id, aliasIds = [], number, title, summary } = Astro.props;
 ---
 
+{aliasIds.map((aliasId) => <span id={aliasId} class="chapter-anchor-alias" aria-hidden="true" />)}
 <section id={id} class="chapter-shell" aria-labelledby={`chapter-${number}`}>
   <div class="chapter-content">
     <article class="chapter-main">
@@ -29,6 +31,12 @@ const { id, number, title, summary } = Astro.props;
     --chapter-accent-rgb: 21, 106, 130;
     --chapter-accent-soft: rgba(var(--chapter-accent-rgb), 0.1);
     --chapter-accent-line: rgba(var(--chapter-accent-rgb), 0.34);
+  }
+
+  .chapter-anchor-alias {
+    display: block;
+    height: 0;
+    scroll-margin-top: 6rem;
   }
 
   .chapter-shell:nth-of-type(3n + 1) {

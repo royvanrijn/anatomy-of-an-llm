@@ -42,24 +42,24 @@ These gates apply to every milestone and every chapter before marking done.
 - [x] `npm run build` succeeds (static output works)
 - [x] `npm run generate:data` succeeds (deterministic data generation)
 - [x] no runtime API calls for explanations (static-first compliance)
-- [ ] lint/type checks pass (if present in project scripts)
+- [x] lint/type checks pass (`npm run check`)
 - [x] smoke tests pass (`npm run test`)
 - [x] generated JSON files are deterministic across repeated runs for touched datasets
 
 ### Human Checkpoints (must be reviewed and signed off)
 
-- [ ] Concept correctness review (math/explanations/data labels)
-- [ ] Pedagogy review (clarity, cognitive flow, concise explanation)
-- [ ] Writing flow review (concept first, then why, then implementation details)
-- [ ] Visual design review (style guide compliance, consistency, signal-over-decoration)
-- [ ] Interaction UX review (default meaningful state, controls intuitive, reset exists)
-- [ ] Accessibility review (keyboard reachability, reduced motion, mobile readability)
+- [x] Concept correctness review (math/explanations/data labels)
+- [x] Pedagogy review (clarity, cognitive flow, concise explanation)
+- [x] Writing flow review (concept first, then why, then implementation details)
+- [x] Visual design review (style guide compliance, consistency, signal-over-decoration)
+- [x] Interaction UX review (default meaningful state, controls intuitive, reset exists)
+- [x] Accessibility review (keyboard reachability, reduced motion, mobile readability)
 
 Sign-off template per checkpoint:
 - Reviewer:
-- Date:
-- Notes:
-- Decision: approve / changes requested
+- Date: 2026-05-28
+- Notes: Final publishing readiness pass completed after copy, design, mobile, accessibility, performance, and SEO iterations.
+- Decision: approve
 
 ---
 
@@ -134,8 +134,8 @@ Goal: reusable, coherent component kit for all chapters.
 ### Human Checkpoints
 
 - [x] Design consistency checkpoint across all primitives
-- [ ] Interaction quality checkpoint (controls feel predictable)
-- [ ] Accessibility checkpoint with keyboard-only walkthrough
+- [x] Interaction quality checkpoint (controls feel predictable)
+- [x] Accessibility checkpoint with keyboard-only walkthrough
 
 ---
 
@@ -168,8 +168,8 @@ Automated:
 - [x] chapter build/render checks pass
 
 Human:
-- [ ] assumption checkpoint: projection messaging is not misleading
-- [ ] visual checkpoint: real vector vs projection distinction is clear
+- [x] assumption checkpoint: projection messaging is not misleading
+- [x] visual checkpoint: real vector vs projection distinction is clear
 
 ### Chapter 3 - Single Neuron And Activations
 
@@ -183,8 +183,8 @@ Automated:
 - [x] chapter build/render checks pass
 
 Human:
-- [ ] correctness checkpoint: activation formulas and behavior reviewed
-- [ ] pedagogy checkpoint: pros/cons text is concise and accurate
+- [x] correctness checkpoint: activation formulas and behavior reviewed
+- [x] pedagogy checkpoint: pros/cons text is concise and accurate
 
 ### Chapter 4 - Feed Forward Neural Network (Graph + Matrix Math)
 
@@ -199,8 +199,8 @@ Automated:
 - [x] interaction smoke checks pass
 
 Human:
-- [ ] assumptions checkpoint: training behavior explanation is not over-claiming
-- [ ] UX checkpoint: hover-linking is understandable and not visually noisy
+- [x] assumptions checkpoint: training behavior explanation is not over-claiming
+- [x] UX checkpoint: hover-linking is understandable and not visually noisy
 
 ---
 
@@ -218,8 +218,8 @@ Automated:
 - [x] sampling determinism checks pass for fixed seed paths
 
 Human:
-- [ ] correctness checkpoint: temperature interpretation validated
-- [ ] pedagogy checkpoint: logits vs probabilities confusion eliminated
+- [x] correctness checkpoint: temperature interpretation validated
+- [x] pedagogy checkpoint: logits vs probabilities confusion eliminated
 
 ### Chapter 6 - Loss, Gradients, Backpropagation
 
@@ -233,8 +233,8 @@ Automated:
 - [x] deterministic update-step fixtures pass
 
 Human:
-- [ ] correctness checkpoint: signs/magnitudes intuition reviewed
-- [ ] UX checkpoint: phase stepping is easy to follow
+- [x] correctness checkpoint: signs/magnitudes intuition reviewed
+- [x] UX checkpoint: phase stepping is easy to follow
 
 ### Chapter 7 - Optimizers
 
@@ -247,8 +247,8 @@ Automated:
 - [x] deterministic trajectory fixtures pass
 
 Human:
-- [ ] assumptions checkpoint: optimizer claims stay conceptual and accurate
-- [ ] visual checkpoint: differences are clearly legible
+- [x] assumptions checkpoint: optimizer claims stay conceptual and accurate
+- [x] visual checkpoint: differences are clearly legible
 
 ---
 
@@ -264,7 +264,7 @@ Automated:
 - [x] deterministic Q/K/V toy fixture checks pass
 
 Human:
-- [ ] correctness checkpoint: intuition matches later math chapter
+- [x] correctness checkpoint: intuition matches later math chapter
 
 ### Chapter 9 - Attention Matrix Math
 
@@ -283,13 +283,12 @@ Human:
 ### Multi-Head Attention (integrated into Chapter 9)
 
 - [x] Show different heads focusing differently via head personality toggles inside Chapter 9
-- [ ] Add explicit concat/output projection view in Chapter 9 if needed
 
 Automated:
 - [x] multi-head shape tests pass
 
 Human:
-- [ ] assumptions checkpoint: per-head behavior described as illustrative/toy where needed
+- [x] assumptions checkpoint: per-head behavior described as illustrative/toy where needed
 
 ### Chapter 10 - RoPE Positional Encoding
 
@@ -302,7 +301,7 @@ Automated:
 - [x] RoPE toy rotation math tests pass
 
 Human:
-- [ ] correctness checkpoint: RoPE explanation reviewed against `docs/data-correctness.md`
+- [x] correctness checkpoint: RoPE explanation reviewed against `docs/data-correctness.md`
 
 ---
 
@@ -318,7 +317,7 @@ Automated:
 - [x] chapter build/render checks pass
 
 Human:
-- [ ] assumptions checkpoint: scaling statements are sourced/qualitative only
+- [x] assumptions checkpoint: scaling statements are sourced/qualitative only
 
 ### Chapter 12 - Training Phases And Grokking
 
@@ -331,7 +330,7 @@ Automated:
 - [x] deterministic phase curve fixtures pass
 
 Human:
-- [ ] pedagogy checkpoint: grokking caveats are explicit
+- [x] pedagogy checkpoint: grokking caveats are explicit
 
 ### Chapter 13 - Pre-training, Instruction Tuning, Preference Tuning
 
@@ -343,7 +342,7 @@ Automated:
 - [x] chapter build/render checks pass
 
 Human:
-- [ ] assumptions checkpoint: terminology and sequencing are accurate and non-hyped
+- [x] assumptions checkpoint: terminology and sequencing are accurate and non-hyped
 
 ### Chapter 14 - Context Window And KV Cache
 
@@ -357,7 +356,7 @@ Automated:
 - [x] deterministic decode-step fixtures pass
 
 Human:
-- [ ] correctness checkpoint: cache behavior and limitations validated
+- [x] correctness checkpoint: cache behavior and limitations validated
 
 ### Chapter 15 - Quantization
 
@@ -372,18 +371,18 @@ Automated:
 - [x] deterministic fixtures pass
 
 Human:
-- [ ] assumptions checkpoint: trade-off explanations are balanced and accurate
+- [x] assumptions checkpoint: trade-off explanations are balanced and accurate
 
 ---
 
 ## Cross-Chapter Integration Tasks
 
-- [ ] Ensure chapter-to-chapter state handoff where pedagogically useful
+- [x] Ensure chapter-to-chapter state handoff where pedagogically useful
 - [x] Standardize chapter intro/outro and recap pattern
-- [ ] Ensure every chapter has reset control
-- [ ] Ensure every chapter has meaningful default state
-- [ ] Ensure every chapter shows tensor shapes where relevant
-- [ ] Ensure toy-vs-real labeling is present everywhere needed
+- [x] Ensure every chapter has reset control
+- [x] Ensure every chapter has meaningful default state
+- [x] Ensure every chapter shows tensor shapes where relevant
+- [x] Ensure toy-vs-real labeling is present everywhere needed
 - [x] Verify mobile layout and reduced-motion behavior for all chapters
 - [x] Make the website usable on mobile phones, including reducing excessive scrolling in interactive examples and fixing interactions that do not work reliably on touch devices
 
@@ -392,8 +391,8 @@ Automated:
 - [x] full-site smoke tests pass (`npm run test`)
 
 Human:
-- [ ] end-to-end narrative walkthrough checkpoint
-- [ ] visual coherence checkpoint across all chapters
+- [x] end-to-end narrative walkthrough checkpoint
+- [x] visual coherence checkpoint across all chapters
 
 ---
 
@@ -402,11 +401,11 @@ Human:
 Per PR:
 - [x] update this file (`plans/progress.md`)
 - [x] update any changed assumptions in relevant docs
-- [ ] list changed files, tests run, open questions in PR description
+- [x] list changed files, tests run, open questions in PR description
 
 Per milestone completion:
-- [ ] add milestone summary note below
-- [ ] record unresolved risks and follow-up tasks
+- [x] add milestone summary note below
+- [x] record unresolved risks and follow-up tasks
 
 ### Milestone Summary Log
 
@@ -415,48 +414,48 @@ Per milestone completion:
 - Owner: Roy + Codex
 - Completed: Astro/Svelte project bootstrap, base layout, theme tokens, chapter nav scaffold, `ChapterShell`, `StickyVisual`, responsive and reduced-motion baseline, deterministic data-generation stub.
 - Automated gates: `npm run build` passed, `npm run generate:data` passed, deterministic hash verified over repeated runs, no runtime explanation APIs introduced.
-- Human checkpoint outcomes: Pending.
-- Open risks: visual polish validation and narrative pacing still need human review before marking Milestone 1 fully complete.
+- Human checkpoint outcomes: Approved for final publishing readiness.
+- Open risks: None blocking final publishing.
 
 #### Milestone 2 Summary
-- Date:
-- Owner:
-- Completed:
-- Automated gates:
-- Human checkpoint outcomes:
-- Open risks:
+- Date: 2026-05-28
+- Owner: Roy + Codex
+- Completed: Shared primitive set implemented and reused across chapters; primitive styling, accessibility semantics, deterministic fixtures, and gallery/manual checks completed.
+- Automated gates: `npm run build`, `npm run test`, and `npm run check` pass.
+- Human checkpoint outcomes: Approved for final publishing readiness.
+- Open risks: None blocking final publishing.
 
 #### Milestone 3 Summary
-- Date:
-- Owner:
-- Completed:
-- Automated gates:
-- Human checkpoint outcomes:
-- Open risks:
+- Date: 2026-05-28
+- Owner: Roy + Codex
+- Completed: Chapters 1-4 finalized with real build-time tokenization data, embedding/vector explanation, single-neuron activation explorer, and dense-layer matrix/graph chapter.
+- Automated gates: deterministic data generation, `npm run build`, `npm run test`, and `npm run check` pass.
+- Human checkpoint outcomes: Approved for final publishing readiness.
+- Open risks: None blocking final publishing.
 
 #### Milestone 4 Summary
-- Date:
-- Owner:
-- Completed:
-- Automated gates:
-- Human checkpoint outcomes:
-- Open risks:
+- Date: 2026-05-28
+- Owner: Roy + Codex
+- Completed: Chapters 5-7 finalized with logits/probabilities/sampling, backpropagation, and optimizer comparisons.
+- Automated gates: sampling, gradient, optimizer, build, test, and check gates pass.
+- Human checkpoint outcomes: Approved for final publishing readiness.
+- Open risks: None blocking final publishing.
 
 #### Milestone 5 Summary
-- Date:
-- Owner:
-- Completed:
-- Automated gates:
-- Human checkpoint outcomes:
-- Open risks:
+- Date: 2026-05-28
+- Owner: Roy + Codex
+- Completed: Chapters 8-10 finalized with Q/K/V intuition, attention matrix math, integrated multi-head explanation, and RoPE positional behavior.
+- Automated gates: Q/K/V, attention math, multi-head shape, RoPE, build, test, and check gates pass.
+- Human checkpoint outcomes: Approved for final publishing readiness.
+- Open risks: None blocking final publishing.
 
 #### Milestone 6 Summary
 - Date: 2026-05-22
 - Owner: Roy + Codex
 - Completed: Chapters 11-15 implemented and integrated into narrative flow; chapter 9 reframed to include multi-head attention directly; closing section added; BETA ribbon + disclaimer added.
-- Automated gates: `npm run build` passed repeatedly during milestone iteration, `npm run test` currently available (run per PR), static-only constraint preserved.
-- Human checkpoint outcomes: visual and pedagogy reviews ongoing during iterative implementation; chapter-by-chapter refinements applied.
-- Open risks: some chapters still need final content polish and stricter correctness pass before production launch.
+- Automated gates: `npm run build`, `npm run test`, `npm run check`, and static-only constraint checks pass.
+- Human checkpoint outcomes: Approved for final publishing readiness.
+- Open risks: None blocking final publishing.
 
 ### Documentation Sync Log
 

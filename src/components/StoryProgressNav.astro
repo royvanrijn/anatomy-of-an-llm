@@ -50,7 +50,7 @@ const { chapters } = Astro.props;
   </ol>
 </nav>
 
-<script>
+<script is:inline>
   const initStoryNav = () => {
     const links = Array.from(document.querySelectorAll("[data-chapter-link]"));
     const sections = links

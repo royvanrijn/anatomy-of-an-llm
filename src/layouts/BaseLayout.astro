@@ -51,7 +51,7 @@ const {
 
     {
       structuredData && (
-        <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+        <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
       )
     }
   </head>
@@ -59,7 +59,7 @@ const {
     <div class="site-shell">
       <slot />
     </div>
-    <script>
+    <script is:inline>
       (() => {
         const loadAnalytics = () => {
           if (navigator.doNotTrack === "1" || window.__analyticsLoaded) {

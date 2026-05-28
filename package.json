@@ -18,7 +18,9 @@
     "tiktoken": "^1.0.22"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.9",
     "jsdom": "^26.1.0",
+    "typescript": "^5.9.3",
     "vitest": "^2.1.8"
   }
 }

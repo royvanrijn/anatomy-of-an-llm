@@ -64,6 +64,9 @@ const { chapters } = Astro.props;
 
     if (links.length === 0 || sections.length === 0) return;
 
+    let scrollTargetId = null;
+    let scrollLockTimer = 0;
+
     const moveIndicator = (link) => {
       if (!nav || !link) return;
       const navRect = nav.getBoundingClientRect();
@@ -90,6 +93,25 @@ const { chapters } = Astro.props;
       moveIndicator(activeLink);
     };
 
+    const releaseScrollLock = () => {
+      scrollTargetId = null;
+      window.clearTimeout(scrollLockTimer);
+      scrollLockTimer = 0;
+    };
+
+    const lockToTarget = (id) => {
+      scrollTargetId = id;
+      window.clearTimeout(scrollLockTimer);
+      scrollLockTimer = window.setTimeout(releaseScrollLock, 1600);
+    };
+
+    const isTargetArrived = (id) => {
+      const section = document.getElementById(id);
+      if (!section) return true;
+      const top = Math.abs(section.getBoundingClientRect().top);
+      return top < Math.max(96, window.innerHeight * 0.18);
+    };
+
     const pickActiveSectionId = (entries) => {
       const visibleEntries = entries
         .filter((entry) => entry.isIntersecting)
@@ -114,10 +136,11 @@ const { chapters } = Astro.props;
         event.preventDefault();
         const section = document.getElementById(id);
         if (section) {
+          lockToTarget(id);
+          setCurrentLink(id);
           section.scrollIntoView({ behavior: "smooth", block: "start" });
           history.replaceState(null, "", `#${id}`);
         }
-        setCurrentLink(id);
       });
     });
 
@@ -135,6 +158,12 @@ const { chapters } = Astro.props;
             boundingClientRect: entry.boundingClientRect ?? null
           });
         });
+        if (scrollTargetId) {
+          setCurrentLink(scrollTargetId);
+          if (isTargetArrived(scrollTargetId)) releaseScrollLock();
+          return;
+        }
+
         const nextId = pickActiveSectionId(Array.from(sectionState.values()));
         if (nextId) setCurrentLink(nextId);
       },

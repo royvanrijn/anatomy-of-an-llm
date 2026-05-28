@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { onMount } from "svelte";
+
   type Phase = {
     id: string;
     label: string;
@@ -17,11 +19,12 @@
       trainBase + 0.06 * Math.sin(step / 38) + 0.03 * Math.cos(step / 17)
     );
 
-    const valBase = 2.35 - 0.95 * (1 - Math.exp(-step / 230));
-    const delayedGeneralization = step > 520 ? 0.62 * (1 - Math.exp(-(step - 520) / 130)) : 0;
+    const earlyValImprovement = 0.42 * (1 - Math.exp(-step / 145));
+    const plateauDrift = step > 260 && step < 560 ? 0.16 * ((step - 260) / 300) : step >= 560 ? 0.16 : 0;
+    const delayedGeneralization = step > 560 ? 0.86 * (1 - Math.exp(-(step - 560) / 90)) : 0;
     const val = Math.max(
       0.75,
-      valBase - delayedGeneralization + 0.09 * Math.sin(step / 46 + 0.7) + 0.04 * Math.cos(step / 23)
+      2.32 - earlyValImprovement + plateauDrift - delayedGeneralization + 0.07 * Math.sin(step / 48 + 0.7) + 0.035 * Math.cos(step / 25)
     );
 
     return { step, train, val };
@@ -58,6 +61,9 @@
   ];
 
   let markerStep = 40;
+  let autoplay = true;
+  let autoplayStep = markerStep;
+  let autoplayFrame = 0;
 
   $: nearest = points.reduce(
     (best, p) => (Math.abs(p.step - markerStep) < Math.abs(best.step - markerStep) ? p : best),
@@ -112,6 +118,34 @@
     const t = markerStep / 120 + i * 0.9;
     return Math.sin(t) * 0.45 + Math.cos(t * 0.63) * 0.25;
   }
+
+  function stopAutoplay() {
+    autoplayStep = markerStep;
+    autoplay = false;
+  }
+
+  onMount(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      autoplay = false;
+      return;
+    }
+
+    let last = performance.now();
+
+    const tick = (now: number) => {
+      if (!autoplay) return;
+      const dt = Math.min(120, now - last);
+      last = now;
+      autoplayStep = (autoplayStep + dt * 0.045) % 810;
+      markerStep = Math.round(autoplayStep / 10) * 10;
+      if (markerStep > 800) markerStep = 0;
+      autoplayFrame = requestAnimationFrame(tick);
+    };
+
+    autoplayFrame = requestAnimationFrame(tick);
+
+    return () => cancelAnimationFrame(autoplayFrame);
+  });
 </script>
 
 <section class="training-phases">
@@ -123,7 +157,12 @@
     <p>This chart is an illustrative curve, not a claim about one exact production run.</p>
   </div>
 
-  <section class="card chart-card">
+  <section
+    class="card chart-card"
+    class:autoplay
+    on:pointerdown={stopAutoplay}
+    on:focusin={stopAutoplay}
+  >
     <p class="label">Toy training curve (loss vs optimization steps)</p>
     <svg viewBox="0 0 820 280" role="img" aria-label="training and validation loss phases">
       <rect x="0" y="0" width="820" height="280" rx="10" fill="rgba(255,255,255,0.82)" />
@@ -154,7 +193,7 @@
     </svg>
 
     <label class="slider">Step marker
-      <input type="range" min="0" max="800" step="10" bind:value={markerStep} />
+      <input type="range" min="0" max="800" step="10" bind:value={markerStep} on:input={stopAutoplay} />
     </label>
 
     <div class="legend">
@@ -240,6 +279,15 @@
   .marker { stroke: rgba(51, 65, 85, 0.5); stroke-width: 1.2; stroke-dasharray: 4 4; }
   .train-point { fill: rgba(37, 99, 235, 0.95); }
   .val-point { fill: rgba(217, 119, 6, 0.95); }
+  .chart-card.autoplay .marker {
+    animation: markerPulse 1.8s ease-in-out infinite;
+  }
+  .chart-card.autoplay .train-point,
+  .chart-card.autoplay .val-point {
+    animation: pointPulse 1.8s ease-in-out infinite;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
   .noise-point {
     fill: rgba(37, 99, 235, 0.32);
     animation: drift 900ms ease-in-out infinite alternate;
@@ -274,6 +322,16 @@
     to { transform: translateY(1px); opacity: 0.55; }
   }
 
+  @keyframes markerPulse {
+    0%, 100% { stroke-opacity: 0.42; }
+    50% { stroke-opacity: 0.78; }
+  }
+
+  @keyframes pointPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.18); }
+  }
+
   @media (max-width: 640px) {
     .card {
       padding: 0.56rem;
@@ -292,6 +350,15 @@
     .legend {
       flex-wrap: wrap;
       gap: 0.45rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .chart-card.autoplay .marker,
+    .chart-card.autoplay .train-point,
+    .chart-card.autoplay .val-point,
+    .noise-point {
+      animation: none;
     }
   }
 </style>
